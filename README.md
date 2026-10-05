@@ -1,494 +1,358 @@
-﻿# Rapid-CMS
+﻿Milestone Status
 
-## Figma-First Visual Development Platform
+Rapid-CMS development is tracked through milestones.
+Each milestone records its intended scope, completion status, verification state, and the next development target.
 
-**Engine-First · Native Design Model · Production-Oriented**
+M0 — Project Foundation
 
-Rapid-CMS is a Figma-first visual development platform built around a native design-development engine.
+Status: ✅ COMPLETE
 
-The core product is **not the visual editor**.
-
-The core product is the **engine and native design model** that understands design semantics, structure, layout, components, styles, variables, assets, prototypes, responsive behavior, and production intent.
-
-The editor, renderer, code generator, SEO system, deployment system, and AI layer are consumers of that foundation.
-
-Figma Semantics ↓ Native Design Model ↓ Core Engines ↓ Resolved Design State ↓ Semantic / Responsive / SEO / Transformation ↓ Production Outputs ↓ Editor / Renderer / Code Generation / Deployment / AI
-
-
-> **Development Philosophy:** Engine First → Interface Second
-
----
-
-## Project Vision
-
-Rapid-CMS aims to become a native design-to-production platform where a single authoritative design state can drive multiple production outputs.
-
-The long-term platform includes:
-
-- Figma-compatible design semantics
-- Native design domain model
-- Layout and responsive engines
-- Component and instance system
-- Style and variable/token system
-- Asset management
-- Prototype system
-- Rendering
-- Semantic understanding
-- SEO
-- Code generation
-- Next.js generation
-- Build and preview
-- Visual editor
-- Deployment
-- AI-assisted workflows
-- Advanced Figma compatibility
-
-The editor is therefore **not the architecture**.
-
-The editor is a **consumer of the architecture**.
-
----
-
-# Core Architecture
-
-┌───────────────────────┐ │ Editor │ ├───────────────────────┤ │ Tools │ ├───────────────────────┤ │ Prototype UI │ ├───────────────────────┤ │ SEO UI │ ├───────────────────────┤ │ CodeGen UI │ ├───────────────────────┤ │ Deployment UI │ ├───────────────────────┤ │ AI UI │ └───────────┬───────────┘ │ ▼ ┌───────────────────────┐ │ Core Engines │ └───────────┬───────────┘ │ ▼ ┌───────────────────────┐ │ Native Design Model │ └───────────┬───────────┘ │ ▼ ┌───────────────────────┐ │ Figma Semantics │ └───────────────────────┘
-
-
-The **Native Design Model** is the central source of truth.
-
----
-
-# Native Design Model
-
-Core concepts include:
-
-- Project
-- Document
-- Page
-- Node
-- Frame
-- Section
-- Group
-- Shape
-- Vector
-- Text
-- Image
-- Component
-- Component Set
-- Instance
-- Variant
-- Style
-- Variable
-- Token
-- Asset
-- Prototype
-- Interaction
-- Reference
-- Metadata
-- Compatibility Metadata
+M0 established the initial Rapid-CMS repository and development foundation.
 
-The model emphasizes:
+M0 Completed
 
-- Stable native IDs
-- Explicit ownership
-- First-class references
-- Semantic geometry
-- Semantic layout
-- Auto Layout
-- Constraints
-- Responsive behavior
-- Styles
-- Variables
-- Resolved and source values
-- Components and instances
-- Inheritance
-- Overrides
-- Property-level reset
-- Variants
-- Assets
-- Images
-- Vectors
-- SVG preservation
-- Masks
-- Effects
-- Text runs
-- Typography
-- Prototype semantics
-- Serialization
-- Determinism
-- Referential integrity
-- Project isolation
+✅ Repository initialized
 
-### Fidelity Priority
+✅ Solution structure established
 
-Semantic Fidelity ↓ Structural Fidelity ↓ Visual Fidelity ↓ Implementation Convenience
+✅ Core .NET projects created
 
+✅ Domain project established
 
----
+✅ Application project established
 
-# Engine Architecture
+✅ Contracts project established
 
-Planned core engines include:
+✅ Engine project established
 
-- Document Engine
-- Node Engine
-- Layout Engine
-- Responsive Engine
-- Component Engine
-- Override Engine
-- Style Engine
-- Variable / Token Engine
-- Asset Engine
-- Prototype Engine
-- Dependency Engine
-- Change Propagation
-- Command Engine
-- Undo / Redo
-- Validation
-- Referential Integrity
-- Rendering Boundary
-- Semantic Engine Boundary
-- SEO Engine Boundary
-- Code Generation Boundary
-- Deployment Boundary
+✅ Infrastructure project established
 
-Native Design Model ↓ Core Engines ↓ Resolved State ↓ Rendering / Semantic / Responsive ↓ SEO / Code Generation ↓ Production Outputs
+✅ API project established
 
+✅ Test projects established
 
----
+✅ Solution/project references established
 
-# Architecture Principles
+✅ Initial documentation established
 
-## Native Design State Is the Source of Truth
+✅ Git-based development workflow established
 
-There is one authoritative design state.
+M0 provided the structural foundation required for further development.
 
-Generated code, caches, rendered output, and UI state are not the source of truth.
+M0: DONE ✅
 
-## UI Is a Consumer
+M1 — Architecture & Domain Direction
 
-UI business logic must not become the core architecture.
+Status: ✅ COMPLETE
 
-The engine must be usable without the editor.
+M1 established the architectural direction of Rapid-CMS and defined the Domain-first approach used by subsequent milestones.
 
-## Commands Control Major State Changes
+M1 Completed
 
-Uncontrolled direct state mutation is prohibited for major state transitions.
+✅ Engine-first architecture established
 
-## Engines Must Be Independently Testable
+✅ Native Design Model identified as the core source of truth
 
-Major engines must be testable without requiring the visual editor.
+✅ Domain layer separated from Application, Infrastructure and API concerns
 
-## Figma Compatibility Is an Integration Boundary
+✅ Strongly typed identity model introduced
 
-The platform may understand Figma semantics, but the core domain must not become dependent on Figma internals.
+✅ Entity and Value Object foundations established
 
-## Code Generation Starts From the Native Model
+✅ Initial Project / Document / Page / Node boundaries established
 
-Generated code is derived from the Native Design Model, not from editor UI state.
+✅ Core domain ownership direction established
 
-## Generated Code Is Not the Source Document
+✅ Component, Style, Variable and Reference concepts introduced
 
-Production output can be regenerated.
+✅ Prototype concept introduced
 
-The native design state remains authoritative.
+✅ Domain invariants made explicit
 
-## AI Is Not a Replacement for Deterministic Engines
+✅ Automated Domain testing established
 
-AI may assist the platform, but deterministic engines remain responsible for authoritative behavior.
+✅ Architecture direction documented in README
 
-## Circular Dependencies Are Forbidden
+M1 Architectural Principle
 
-Dependency direction must remain explicit and controlled.
+Engine First → Interface Second
 
-## Framework-Specific Logic Stays at the Boundary
+The visual editor is a consumer of the platform rather than the foundation of the platform.
 
-For example:
+M1: DONE ✅
 
-CodeGen └── NextJs
+M2 — Native Domain Foundation
 
+Status: ✅ COMPLETE
 
-Next.js-specific behavior must not leak into the core domain.
+M2 implemented and verified the first stable Native Design Model foundation.
 
----
+M2 Completed
 
-# Development Governance
+✅ Project aggregate and document ownership
 
-Rapid-CMS follows a **strict sequential, acceptance-gated, freeze-based development model**.
+✅ Stable strongly-typed domain IDs
 
-## One Active Milestone
+✅ Project → Document boundary
 
-Only one implementation milestone can be active at any time.
+✅ Document → Page ownership
 
-Current Milestone ↓ Discovery ↓ Requirements ↓ Architecture ↓ Implementation ↓ Tests ↓ Validation ↓ Acceptance ↓ FREEZE ↓ Next Milestone
+✅ Page root-node ownership
 
+✅ Node hierarchy
 
-> **No Next Milestone Before Current Milestone Acceptance & Freeze.**
+✅ Parent/child relationships
 
-Code Exists ≠ Complete
+✅ Duplicate-child protection
 
+✅ Multiple-parent protection
 
-Instead:
+✅ Direct cycle protection
 
-Requirements + Implementation + Tests + Validation + Acceptance + Freeze = Complete
+✅ Indirect cycle protection
 
+✅ Node component ownership
 
----
+✅ Node style ownership
 
-# Milestone Lifecycle
+✅ Style properties
 
-Every milestone must pass:
+✅ Style property replacement/update
 
-1. Discovery
-2. Requirements Extraction
-3. Acceptance Matrix
-4. Architecture / Design
-5. Implementation
-6. Unit Tests
-7. Integration Tests
-8. Edge Case Validation
-9. Documentation
-10. Acceptance Review
-11. Accepted
-12. Frozen
+✅ Variables and variable mutation
 
-Only after the milestone is frozen may the next implementation milestone become active.
+✅ Document references
 
----
+✅ Node references
 
-# Master Roadmap
+✅ Prototype links
 
-## Architecture Foundation
+✅ Domain validation and invariants
 
-M0 → Product & Architecture Rules ↓ M1 → Figma Compatibility Strategy ↓ M2 → Core Domain Model & Figma-Native Behavior ↓ M3 → Core Engines & Design-to-Production Architecture ↓ M4 → Visual Studio Implementation Architecture
+✅ Value-object equality
 
+✅ Entity identity boundaries
 
-M0–M4 establish the architectural foundation.
+✅ Empty/invalid identity protection
 
----
+✅ Domain-focused automated tests
 
-# Engineering Implementation
+M2 Verification
 
-M5 → Solution Bootstrap & Implementation Foundation M6 → Document & Node Engine M7 → Command / State / Transaction M8 → History & Undo / Redo M9 → Layout & Responsive M10 → Style & Variable Engine M11 → Asset Engine M12 → Component / Instance Engine M13 → Prototype Engine M14 → Persistence & Package Storage M15 → Figma Compatibility Implementation M16 → Rendering Engine M17 → Semantic / Web Understanding M18 → SEO Engine M19 → Code Generation Engine M20 → Next.js Generator M21 → Code Quality & Production Validation M22 → Build / Preview Engine M23 → Editor Application M24 → Tool System M25 → Project Application Layer M26 → Deployment Engine M27 → Performance & Scalability M28 → Security M29 → Complete Test & Certification M30 → AI Layer M31 → Advanced Figma Compatibility
+The complete solution was restored, built and tested successfully.
 
+.NET SDK: 10.0.401
 
-### Execution Rule
+Projects:
+- RapidCMS.Api
+- RapidCMS.Application
+- RapidCMS.Contracts
+- RapidCMS.Domain
+- RapidCMS.Engine
+- RapidCMS.Infrastructure
+- RapidCMS.Application.Tests
+- RapidCMS.Domain.Tests
+- RapidCMS.Engine.Tests
 
-M0 ↓ Accepted ↓ Frozen ↓ M1 ↓ Accepted ↓ Frozen ↓ M2 ↓ ... ↓ M31 ↓ Final Freeze
+Test Result:
+234 total
+234 passed
+0 failed
+0 skipped
 
 
-No milestone may be skipped, silently bypassed, merged into another milestone, or declared complete merely because related code already exists.
+Latest verification:
 
----
+Build succeeded
+Test summary: total: 234, failed: 0, succeeded: 234, skipped: 0
 
-# Current Development Status
 
-**Current Active Milestone: M2 — Core Domain Model & Figma-Native Behavior**
+git diff --check also completed without reported whitespace errors.
 
-M2 is responsible for establishing the Native Design Model and its fundamental Figma-native behavior.
+M2 Definition of Done
 
-Native Domain Foundation ↓ Requirements Complete ↓ Tests Complete ↓ Validation Complete ↓ Acceptance ↓ FREEZE
+M2 is considered complete because:
 
+The Domain project builds successfully.
 
-Until M2 is formally accepted and frozen, M3 implementation remains inactive.
+Domain invariants are explicitly enforced.
 
----
+Core identities reject empty values.
 
-# Future-Code Policy
+Project/document/page/node ownership boundaries are represented.
 
-Code related to a future milestone may exist in the repository.
+Node hierarchy prevents invalid parent relationships and cycles.
 
-That does **not** mean the milestone is complete.
+Components and styles cannot be attached to the wrong node.
 
-M12-related code exists ↓ M12 ≠ Complete ↓ M12 remains Future
+References and prototype links enforce their basic invariants.
 
+Domain behavior is covered by automated tests.
 
-When M12 becomes active:
+The complete solution passes the automated test suite.
 
-Existing Foundation ↓ Requirements Audit ↓ Gap Analysis ↓ Required Implementation ↓ Tests ↓ Acceptance ↓ M12 Freeze
+M2: DONE ✅
 
+Roadmap
+M3 — Expanded Native Design Model
 
-Existing code receives no automatic milestone-completion credit.
+Status: ⏳ NEXT
 
----
+Planned areas:
 
-# Controlled Dependency Exception
+Component Sets
 
-A future concept may only be implemented early when its **minimum technical foundation is required by the current milestone**.
+Component Variants
 
-Current Requirement ↓ Required Supporting Abstraction ↓ Minimum Foundation ↓ Return to Current Milestone
+Instances
 
+Component Properties
 
-This does not activate the future milestone and does not count as completing it.
+Assets
 
----
+Text and typography model
 
-# Definition of Engine Complete
+Frames
 
-An engine is considered complete only when:
+Sections
 
-- Its specification exists.
-- Its responsibility is clearly defined.
-- Required contracts exist.
-- Implementation is complete.
-- Validation exists.
-- Unit tests exist.
-- Integration tests exist where applicable.
-- Edge cases are covered.
-- Failure and recovery behavior are defined.
-- Performance is acceptable.
-- Serialization/recovery is complete where applicable.
-- Documentation exists.
-- The engine can operate without the UI.
-- Dependent engines can consume it.
-- Acceptance criteria pass.
+Groups
 
-ENGINE ↓ ACCEPTED ↓ FROZEN FOUNDATION
+Shapes
 
+Vectors
 
----
+Additional design-semantic primitives
 
-# Architecture Change Policy
+Richer document structure
 
-Frozen architectural decisions cannot be silently changed.
+M4 — Layout & Responsive Engine
 
-Existing Decision ↓ Reason for Change ↓ Impact Analysis ↓ New Decision ↓ Affected Documents ↓ Documentation Update ↓ New Baseline ↓ Acceptance ↓ Freeze
+Status: ⏳ PLANNED
 
+Planned areas:
 
----
+Layout constraints
 
-# Source-of-Truth Hierarchy
+Auto-layout semantics
 
-When project documents conflict:
+Sizing modes
 
-Approved Milestone Discovery
-↓
+Spacing
 
-Approved Acceptance Criteria
-↓
+Alignment
 
-Master Roadmap
-↓
+Responsive behavior
 
-Actual Codebase
-↓
+Breakpoints
 
-Current Implementation Notes
+Resolved layout state
 
-If implementation conflicts with an approved requirement, the implementation must be corrected to satisfy the approved requirement.
+M5 — Design State & Rendering Foundation
 
----
+Status: ⏳ PLANNED
 
-# Expected Solution Architecture
+Planned areas:
 
-DesignPlatform.sln │ ├── src │ ├── DesignPlatform.Domain │ ├── DesignPlatform.Application │ ├── DesignPlatform.Contracts │ ├── DesignPlatform.Engine │ ├── DesignPlatform.Engine.Layout │ ├── DesignPlatform.Engine.Components │ ├── DesignPlatform.Engine.Variables │ ├── DesignPlatform.Engine.Assets │ ├── DesignPlatform.Engine.Prototype │ ├── DesignPlatform.Engine.History │ ├── DesignPlatform.Engine.Validation │ ├── DesignPlatform.Engine.Dependency │ ├── DesignPlatform.Rendering │ ├── DesignPlatform.Import │ ├── DesignPlatform.Semantics │ ├── DesignPlatform.SEO │ ├── DesignPlatform.CodeGen │ ├── DesignPlatform.Storage │ └── DesignPlatform.Editor │ └── tests
+Resolved design state
 
+Rendering model
 
-The exact implementation structure may evolve through approved milestone decisions, but domain isolation and dependency direction remain architectural priorities.
+Design-to-render transformation
 
----
+Semantic representation
 
-# M5 Vertical Slice
+Deterministic output
 
-The first major implementation foundation is intended to prove:
+M6 — Code Generation & Production Output
 
-Create Document ↓ Create Page ↓ Create Node ↓ Validate ↓ Save ↓ Reload ↓ Verify Semantic Equality
+Status: ⏳ PLANNED
 
+Planned areas:
 
----
+Component generation
 
-# Quality Principles
+Next.js output
 
-Rapid-CMS prioritizes:
+CSS generation
 
-- Deterministic behavior
-- Semantic fidelity
-- Referential integrity
-- Stable identity
-- Explicit ownership
-- Testability
-- Recoverability
-- Serialization correctness
-- Architecture isolation
-- Production-oriented outputs
-- Long-term extensibility
+Design-token generation
 
-Convenience must not compromise the integrity of the Native Design Model.
+Production build pipeline
 
----
+Preview system
 
-# What Rapid-CMS Is Not
+M7 — Visual Editor
 
-Rapid-CMS is not designed as:
+Status: ⏳ PLANNED
 
-- A UI-first editor with an engine added later
-- A Figma clone whose internals depend directly on Figma
-- A code generator driven by editor state
-- An AI-first design system
-- A framework-specific CMS
-- A collection of independent UI features
+Planned areas:
 
-Instead:
+Canvas
 
-> **Rapid-CMS is a native design-development engine platform with visual interfaces built on top.**
+Selection
 
----
+Inspector
 
-# Product Direction
+Component editing
 
-NATIVE DESIGN STATE │ ┌──────────────┼──────────────┐ │ │ │ ▼ ▼ ▼ Renderer Semantics CodeGen │ │ │ ▼ ▼ ▼ Preview SEO Next.js / Output │ │ └──────────────┬──────────────┘ ▼ Production │ ▼ Deployment
+Layout editing
 
+Style editing
 
-The visual editor eventually becomes the primary human interface to this system, but it does not become the source of truth.
+Prototype editing
 
----
+M8 — Advanced Platform Capabilities
 
-# Development Philosophy
+Status: ⏳ PLANNED
 
-> **Build the machine first. Build the interface second.**
+Planned areas:
 
-DOMAIN ↓ ENGINE ↓ ENGINE ↓ ENGINE ↓ ENGINE ↓ COMPLETE PLATFORM FOUNDATION ↓ EDITOR ↓ TOOLS ↓ PRODUCTION OUTPUT
+SEO
 
+Deployment
 
----
+AI-assisted workflows
 
-# Project Status
+Advanced Figma compatibility
 
-| Property | Status |
-|---|---|
-| Architecture Model | M0–M4 |
-| Implementation Roadmap | M5–M31 |
-| Current Active Milestone | **M2** |
-| Development Mode | Strict Sequential |
-| Active Milestones | **1** |
-| Acceptance Model | Gate-Based |
-| Freeze Model | Mandatory |
-| Architecture Philosophy | Engine First → Interface Second |
+Production automation
 
----
+Current Milestone Position
+M0  Project Foundation             ✅ COMPLETE
+M1  Architecture & Domain Direction ✅ COMPLETE
+M2  Native Domain Foundation       ✅ COMPLETE
+M3  Expanded Native Design Model   ⏳ NEXT
+M4  Layout & Responsive Engine     ⏳
+M5  Design State & Rendering       ⏳
+M6  Code Generation & Production   ⏳
+M7  Visual Editor                  ⏳
+M8  Advanced Platform Capabilities ⏳
 
-# Master Rule
 
-ONE ACTIVE MILESTONE ↓ ONE ACCEPTANCE GATE ↓ ONE FREEZE ↓ NEXT MILESTONE
+Current development target: M3 — Expanded Native Design Model
 
+Development Principle
 
-> **No Skip.**  
-> **No Parallel Milestone Implementation.**  
-> **No Silent Completion.**  
-> **No Silent Architectural Drift.**
+Engine First → Interface Second
 
-> **No Next Milestone Before Current Milestone Acceptance & Freeze.**
+The editor is a consumer of the platform, not the foundation.
 
----
+The authoritative architecture is:
 
-## Documentation
+Figma Semantics
+      ↓
+Native Design Model
+      ↓
+Core Engines
+      ↓
+Resolved Design State
+      ↓
+Semantic / Responsive / SEO / Transformation
+      ↓
+Production Outputs
+      ↓
+Editor / Renderer / Code Generation / Deployment / AI
 
-The README provides the public project overview.
 
-The detailed **M2 Acceptance Matrix** and **Master Roadmap / Architecture / Development Governance** documents are maintained separately as the project's living development specifications.
-
----
-
-## License
-
-License information will be defined by the project maintainers.
+The Native Design Model remains the authoritative source of truth for the platform.

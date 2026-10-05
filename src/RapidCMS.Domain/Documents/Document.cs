@@ -12,6 +12,8 @@ public sealed partial class Document : Entity<DocumentId>
     private readonly List<ReferenceId> _referenceIds = new();
     private readonly List<ComponentId> _componentIds = new();
 
+    public ProjectId ProjectId { get; }
+
     public IReadOnlyList<PageId> PageIds => _pageIds;
     public IReadOnlyList<AssetId> AssetIds => _assetIds;
     public IReadOnlyList<VariableId> VariableIds => _variableIds;
@@ -19,15 +21,53 @@ public sealed partial class Document : Entity<DocumentId>
     public IReadOnlyList<ReferenceId> ReferenceIds => _referenceIds;
     public IReadOnlyList<ComponentId> ComponentIds => _componentIds;
 
-    private Document(DocumentId id)
+    private Document(
+        DocumentId id,
+        ProjectId projectId)
         : base(id)
     {
+        if (projectId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Project ID cannot be empty.",
+                nameof(projectId));
+
+        ProjectId = projectId;
     }
 
     public static Document Create()
     {
-        return new Document(DocumentId.New());
+        return new Document(
+            DocumentId.New(),
+            ProjectId.New());
     }
+
+    public static Document Create(ProjectId projectId)
+    {
+        if (projectId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Project ID cannot be empty.",
+                nameof(projectId));
+
+        return new Document(
+            DocumentId.New(),
+            projectId);
+    }
+
+    public static Document Create(DocumentId id, ProjectId projectId)
+    {
+        if (id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Document ID cannot be empty.",
+                nameof(id));
+
+        if (projectId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Project ID cannot be empty.",
+                nameof(projectId));
+
+        return new Document(id, projectId);
+    }
+
 
     public static Document Create(DocumentId id)
     {
@@ -36,7 +76,7 @@ public sealed partial class Document : Entity<DocumentId>
                 "Document ID cannot be empty.",
                 nameof(id));
 
-        return new Document(id);
+        return new Document(id, ProjectId.New());
     }
 
     public void AddPage(PageId pageId)
@@ -130,6 +170,4 @@ public sealed partial class Document : Entity<DocumentId>
 
 
 }
-
-
 

@@ -24,4 +24,14 @@ public abstract class Entity<TId>
     {
         return EqualityComparer<TId>.Default.GetHashCode(Id!);
     }
+
+    public static bool operator ==(Entity<TId>? left, Entity<TId>? right)
+    {
+        return EqualityComparer<Entity<TId>?>.Default.Equals(left, right);
+    }
+
+    public static bool operator !=(Entity<TId>? left, Entity<TId>? right)
+    {
+        return !(left == right);
+    }
 }

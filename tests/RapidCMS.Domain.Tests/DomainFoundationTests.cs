@@ -81,4 +81,18 @@ public class DomainFoundationTests
         Assert.Throws<InvalidOperationException>(
             () => child.AddChild(parent));
     }
+
+    [Fact]
+    public void Node_Cannot_Create_Indirect_Cycle()
+    {
+        var first = Node.Create("First");
+        var second = Node.Create("Second");
+        var third = Node.Create("Third");
+
+        first.AddChild(second);
+        second.AddChild(third);
+
+        Assert.Throws<InvalidOperationException>(
+            () => third.AddChild(first));
+    }
 }

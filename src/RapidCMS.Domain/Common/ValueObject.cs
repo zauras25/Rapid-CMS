@@ -6,6 +6,9 @@ public abstract class ValueObject
 
     public override bool Equals(object? obj)
     {
+        if (ReferenceEquals(this, obj))
+            return true;
+
         if (obj is not ValueObject other)
             return false;
 
@@ -20,5 +23,15 @@ public abstract class ValueObject
                 0,
                 (current, component) =>
                     HashCode.Combine(current, component));
+    }
+
+    public static bool operator ==(ValueObject? left, ValueObject? right)
+    {
+        return EqualityComparer<ValueObject?>.Default.Equals(left, right);
+    }
+
+    public static bool operator !=(ValueObject? left, ValueObject? right)
+    {
+        return !(left == right);
     }
 }

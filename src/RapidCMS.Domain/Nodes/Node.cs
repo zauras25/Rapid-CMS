@@ -8,10 +8,11 @@ namespace RapidCMS.Domain.Nodes;
 public sealed class Node : Entity<NodeId>
 {
     private readonly List<NodeId> _children = new();
+    private Node? _parent;
 
     public string Name { get; private set; }
 
-    public NodeId? ParentId { get; private set; }
+    public NodeId? ParentId => _parent?.Id;
 
     public Component? Component { get; private set; }
 
@@ -97,19 +98,30 @@ public sealed class Node : Entity<NodeId>
             throw new InvalidOperationException(
                 $"Node '{child.Id}' is already a child.");
 
-        if (ParentId == child.Id)
+        if (child._parent is not null)
             throw new InvalidOperationException(
-                "Adding this child would create a cycle.");
+                "Node already has another parent.");
+
+        var current = this;
+
+        while (current._parent is not null)
+        {
+            if (current._parent.Id == child.Id)
+                throw new InvalidOperationException(
+                    "Adding this child would create a cycle.");
+
+            current = current._parent;
+        }
 
         _children.Add(child.Id);
-        child.ParentId = Id;
+        child._parent = this;
     }
 
     public void RemoveChild(Node child)
     {
         ArgumentNullException.ThrowIfNull(child);
 
-        if (_children.Remove(child.Id))
-            child.ParentId = null;
+        if (_children.Remove(child.Id) && child._parent == this)
+            child._parent = null;
     }
 }

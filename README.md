@@ -1,671 +1,341 @@
 ﻿Rapid-CMS
-Figma-First Visual Development Platform
 
-Rapid-CMS is an Engine-First Native Design Development Platform.
+Rapid-CMS is a Figma-first, engine-first visual web development platform built around a Native Design Model.
 
-The core product is not the visual editor.
+The core architectural principle is:
 
-The core product is the Native Design Model and the engines that operate on it.
+The Native Design Model is the source of truth. Generated code, rendered output, editor state, and deployment artifacts are derived outputs.
 
-The Editor, Tools, Rendering, Code Generation, SEO, Deployment, and AI layers are consumers of the platform.
+Rapid-CMS is being developed as a deterministic design-to-production system rather than as a UI editor built first and connected to a backend later.
 
-Figma Semantics
-      ↓
-Native Design Model
-      ↓
-Core Engines
-      ↓
-Resolved / Semantic State
-      ↓
-Rendering / SEO / Code Generation / Deployment
-      ↓
-Editor & Tools
+Project Status
+Governance Status
 
-Architecture Principles
-
-Rapid-CMS follows these architectural principles:
-
-The Native Design Model is the primary source of truth.
-
-The Editor is a consumer, not the architectural foundation.
-
-The Core Domain remains independent of UI, Figma, storage, renderer, and target frameworks.
-
-Engines must operate independently of the UI.
-
-Major state changes use controlled commands.
-
-Deterministic engine behavior is preferred over AI-driven behavior.
-
-Generated code is an output, not the source document.
-
-Cache is never the source of truth.
-
-Project boundaries and ownership remain explicit.
-
-Circular dependencies are prohibited.
-
-Figma compatibility is represented through native semantics rather than leaking Figma-specific concepts into the core.
-
-Architecture must remain explicit, testable, deterministic, and evolvable.
-
-Development Governance
-
-Development follows a strict sequential, acceptance-gated, freeze-based milestone model.
-
-Discovery
-   ↓
-Requirements
-   ↓
-Architecture
-   ↓
-Implementation
-   ↓
-Tests
-   ↓
-Validation
-   ↓
-Acceptance
-   ↓
-FREEZE
-   ↓
-Next Milestone
-
-One Active Milestone
-
-Only one implementation milestone may be active at a time.
-
-No next-milestone implementation may be formally started before the current milestone is Accepted and Frozen.
-
-Existing code does not automatically mean that its related milestone is complete.
-
-Code Exists ≠ Milestone Accepted
-
-A milestone is considered complete only when its requirements, implementation, tests, validation, acceptance criteria, and freeze requirements have been satisfied.
-
-Current Repository Status
-M0 — Product & Architecture Rules
-
-M0 is complete, Accepted, and Frozen.
-
-M0 established the project's initial product, architectural, development-governance, and milestone-control baseline.
-
-The M0 baseline has been validated through:
-
-Solution/project structure validation
-
-Project-reference validation
-
-Architecture governance tests
-
-Full solution build
-
-Full automated test execution
-
-Acceptance documentation
-
-Freeze documentation
-
-M0 Verification
-Verification	Result
-Build	✅ Passed
-Tests	✅ 248 passed
-Failed tests	0
-Skipped tests	0
-Governance tests	✅ Passed
-Project references	✅ Validated
-Solution structure	✅ Validated
-Architecture governance	✅ Validated
-Acceptance record	✅ Present
-Freeze record	✅ Present
-Working tree	✅ Clean
-M0 baseline commit	cf0371f
-Branch	main
-
-The M0 governance records are maintained under:
-
-docs/governance/milestones/M0/
-
-
-including:
-
-M0-Acceptance-Matrix.md
-M0-Acceptance-Record.md
-M0-Freeze-Record.md
-
-
-M0 is now the project's frozen governance baseline.
-
-Status Legend
-
-The repository distinguishes implementation maturity from formal governance state.
-
-Symbol	Meaning
-🟢	Implemented / substantially complete
-🟡	Partially implemented
-🔴	Not implemented
-✅	Formally Accepted
-❄️	Formally Frozen
-—	No formal acceptance/freeze established
-
-Important:
-
-🟢 Implementation maturity does not automatically mean Accepted.
-
-Accepted does not automatically mean Frozen.
-
-A milestone becomes a stable baseline only after formal acceptance followed by a recorded freeze.
-
-Implementation
-      ↓
-Validation
-      ↓
-Acceptance
-      ↓
-FREEZE
-
-Milestone Status
-Milestone	Implementation	Acceptance	Freeze
-M0 — Product & Architecture Rules	🟢	✅	❄️
-M1 — Figma Compatibility Strategy	🟡	—	—
-M2 — Core Domain Model	🟢	—	—
-M3 — Core Engines & Production Architecture	🟡	—	—
-M4 — Visual Studio Implementation Architecture	🟢	—	—
-M5 — Solution Bootstrap	🟢	—	—
-M6 — Document & Node Engine	🟢	—	—
-M7 — Command / State / Transaction	🟡	—	—
-M8 — History & Undo/Redo	🔴	—	—
-M9 — Layout & Responsive	🔴	—	—
-M10 — Style & Variable Engine	🟡	—	—
-M11 — Asset Engine	🟡	—	—
-M12 — Component / Instance Engine	🟡	—	—
-M13 — Prototype Engine	🟡	—	—
-M14 — Persistence & Package Storage	🟡	—	—
-M15 — Figma Compatibility Implementation	🔴	—	—
-M16 — Rendering Engine	🔴	—	—
-M17 — Semantic / Web Understanding	🔴	—	—
-M18 — SEO Engine	🔴	—	—
-M19 — Code Generation Engine	🔴	—	—
-M20 — Next.js Generator	🔴	—	—
-M21 — Code Quality & Production Validation	🟡	—	—
-M22 — Build / Preview Engine	🔴	—	—
-M23 — Editor Application	🔴	—	—
-M24 — Tool System	🔴	—	—
-M25 — Project Application Layer	🟡	—	—
-M26 — Deployment Engine	🔴	—	—
-M27 — Performance & Scalability	🔴	—	—
-M28 — Security	🔴	—	—
-M29 — Complete Test & Certification	🟡	—	—
-M30 — AI Layer	🔴	—	—
-M31 — Advanced Figma Compatibility	🔴	—	—
-
-A — in the Acceptance or Freeze column means that no formal acceptance or freeze has been established for that milestone.
-
-This table is intentionally conservative.
-
-Existing implementation is not treated as evidence of milestone completion.
-
-Governance Interpretation
-
-A milestone may have substantial existing code and still require:
-
-Requirements audit
-
-Missing implementation
-
-Unit tests
-
-Integration tests
-
-Edge-case validation
-
-Documentation
-
-Acceptance review
-
-Formal Freeze
-
-Therefore:
-
-🟢 Implementation
-      ≠
-Accepted
-      ≠
-Frozen
-
-
-This distinction is mandatory throughout the project.
-
-Architecture Roadmap
-M0  Product & Architecture Rules
- ↓
-M1  Figma Compatibility Strategy
- ↓
-M2  Core Domain Model & Figma-Native Behavior
- ↓
-M3  Core Engines & Design-to-Production Architecture
- ↓
-M4  Visual Studio Implementation Architecture
- ↓
-M5+ Engineering Implementation
-
-
-The roadmap defines the intended architectural progression.
-
-Milestone acceptance determines when each stage becomes an approved project baseline.
-
-Implementation Roadmap
-M5   Solution Bootstrap
-M6   Document / Node Engine
-M7   Command / State / Transaction
-M8   History / Undo / Redo
-M9   Layout / Responsive
-M10  Style / Variable Engine
-M11  Asset Engine
-M12  Component / Instance Engine
-M13  Prototype Engine
-M14  Persistence / Package Storage
-M15  Figma Compatibility
-M16  Rendering
-M17  Semantic / Web Understanding
-M18  SEO
-M19  Code Generation
-M20  Next.js Generator
-M21  Production Validation
-M22  Build / Preview
-M23  Editor
-M24  Tools
-M25  Project Application Layer
-M26  Deployment
-M27  Performance / Scalability
-M28  Security
-M29  Testing / Certification
-M30  AI Layer
-M31  Advanced Figma Compatibility
-
-
-Milestones are developed sequentially.
-
-Existing partial or pre-built foundations do not bypass the milestone order.
-
-Current Development Rule
+M0 — Product & Architecture Rules: ACCEPTED + FROZEN ❄️
 
 M0 is the current frozen governance baseline.
 
-The next active milestone must be determined through a formal milestone acceptance audit rather than simply by selecting the highest-numbered code already present in the repository.
+The M0 acceptance audit passed all mandatory acceptance criteria, including:
 
-The process is:
+product boundary and scope
 
-Existing Implementation
-        ↓
-Milestone Requirements Audit
-        ↓
-Gap Analysis
-        ↓
-Implementation
-        ↓
-Testing
-        ↓
-Validation
-        ↓
-Acceptance
-        ↓
-FREEZE
-        ↓
-Next Milestone
+engine-first architecture
 
+Native Design Model as the source of truth
 
-Future milestone code that already exists is treated as pre-existing foundation, not as automatic milestone completion.
+milestone ordering and dependency rules
 
-No milestone may be declared Accepted or Frozen solely because related implementation exists.
+single active milestone governance
 
-Core Domain
+acceptance-before-next-milestone
 
-The platform already contains a substantial native domain foundation covering concepts such as:
+freeze-before-next-milestone
 
-Projects
+future-milestone code does not constitute completion
 
-Documents
+UI/business-logic separation
 
-Pages
+engine/UI independence
 
-Nodes
+command-based state mutation
 
-Components
+independently testable engines
 
-Styles
+dependency-direction rules
 
-Variables
+formal acceptance and freeze records
 
-Assets
+The frozen M0 baseline is the architectural and governance contract for all subsequent milestones.
 
-Prototypes
+Important Status Rule
 
-References
+Implementation status and milestone acceptance status are separate.
 
-Runtime representations
+A milestone may have source code, tests, types, handlers, or partial infrastructure already present without being formally accepted or frozen.
 
-Domain/application commands and handlers
+Therefore:
 
-The long-term domain direction includes:
+Code exists ≠ milestone accepted.
 
-Stable native IDs
+A milestone becomes complete only after its requirements have been audited, implemented, tested, validated, formally accepted, and frozen according to the M0 governance rules.
 
-Explicit ownership
+Milestone Roadmap
 
-Referential integrity
+The roadmap is maintained as a governed sequence of milestones.
 
-Semantic geometry
+Milestone	Area	Implementation	Formal Status
+M0	Product & Architecture Rules	🟢	✅ ACCEPTED / ❄️ FROZEN
+M1	Figma Compatibility Strategy	🟡	Not yet accepted
+M2	Core Domain Model & Figma-Native Behavior	🟢	Not yet accepted
+M3	Core Engines & Design-to-Production Architecture	🟡	Not yet accepted
+M4	Visual Studio Implementation Architecture	🟢	Not yet accepted
+M5	Solution Bootstrap	🟢	Not yet accepted
+M6	Document & Node Engine	🟢	Not yet accepted
+M7	Command / State / Transaction	🟡	Not yet accepted
+M8	History / Undo / Redo	🔴	Not yet accepted
+M9	Layout / Responsive	🔴	Not yet accepted
+M10	Style / Variable Engine	🟡	Not yet accepted
+M11	Asset Engine	🟡	Not yet accepted
+M12	Component / Instance Engine	🟡	Not yet accepted
+M13	Prototype Engine	🟡	Not yet accepted
+M14	Persistence / Package Storage	🟡	Not yet accepted
+M15	Figma Compatibility	🔴	Not yet accepted
+M16	Rendering Engine	🔴	Not yet accepted
+M17	Semantic / Web Understanding	🔴	Not yet accepted
+M18	SEO Engine	🔴	Not yet accepted
+M19	Code Generation	🔴	Not yet accepted
+M20	Next.js Generator	🔴	Not yet accepted
+M21	Production Validation	🟡	Not yet accepted
+M22	Build / Preview	🔴	Not yet accepted
+M23	Editor	🔴	Not yet accepted
+M24	Editor Tools	🔴	Not yet accepted
+M25	Project Application Layer	🟡	Not yet accepted
+M26	Deployment	🔴	Not yet accepted
+M27	Performance / Scalability	🔴	Not yet accepted
+M28	Security	🔴	Not yet accepted
+M29	Testing / Certification	🟡	Not yet accepted
+M30	AI	🔴	Not yet accepted
+M31	Advanced Figma Compatibility	🔴	Not yet accepted
+Status Legend
 
-Semantic layout
+🟢 — substantial implementation exists
 
-Responsive behavior
+🟡 — partial implementation / foundation exists
 
-Components and instances
+🔴 — implementation not yet substantially available
 
-Variants and overrides
+✅ — milestone formally accepted
 
-Styles and variables
+❄️ — milestone formally frozen
 
-Assets and vectors
+The implementation indicator must never be interpreted as formal milestone completion.
 
-Typography
+Current Governance Position
 
-Prototype semantics
+M0 is frozen.
 
-Serialization
+The next milestone to be governed is M1 — Figma Compatibility Strategy.
 
-Deterministic behavior
+M1 must be evaluated against its own requirements before later implementation is treated as milestone progress.
 
-Project isolation
-
-Comprehensive testing
-
-The Core Domain remains independent of the Editor and other presentation-layer concerns.
-
-Testing
-
-The repository contains dedicated test projects for:
-
-Domain
-
-Application
-
-Engine
-
-Governance
-
-The current verified baseline contains:
-
-248 tests
-248 passed
-0 failed
-0 skipped
-
-
-The existing test suite provides a substantial engineering foundation.
-
-However, test presence alone does not constitute final platform certification.
-
-Future milestones must add the required validation appropriate to their scope, including:
-
-Unit tests
-
-Integration tests
-
-Persistence tests
-
-API tests
-
-Edge-case validation
-
-Recovery tests
-
-Performance validation
-
-Certification evidence
-
-The M0 governance tests specifically protect the architectural and project-structure rules established by the M0 baseline.
-
-Project Structure
-
-The repository is organized around explicit architectural boundaries.
-
-Rapid-CMS/
-│
-├── src/
-│   ├── Api/
-│   ├── App/
-│   ├── Contracts/
-│   ├── Domain/
-│   ├── Engine/
-│   └── Infra/
-│
-├── tests/
-│   ├── App.Tests/
-│   ├── Domain.Tests/
-│   ├── Engine.Tests/
-│   └── RapidCMS.Governance.Tests/
-│
-├── docs/
-│   └── governance/
-│       └── milestones/
-│           └── M0/
-│
-├── Rapid-CMS.slnx
-└── README.md
-
-
-The exact implementation structure may evolve as milestones progress, but project ownership and dependency direction must remain explicit.
-
-Circular dependencies are prohibited.
-
-Master Principle
-
-Build the machine first. Build the interface second.
-
-DOMAIN
-  ↓
-ENGINES
-  ↓
-PLATFORM FOUNDATION
-  ↓
-EDITOR
-  ↓
-TOOLS
-  ↓
-PRODUCTION OUTPUT
-
-
-The interface is not the architecture.
-
-The interface uses the architecture.
-
-Source of Truth
-
-The Native Design Model is the runtime and architectural source of truth for design state.
-
-Generated code is not the source document.
-
-Caches are not the source of truth.
-
-The detailed milestone requirements, architecture decisions, acceptance criteria, and development governance are maintained in the project's Master Roadmap / Living Specification and associated governance records.
-
-When implementation and approved requirements disagree:
-
-Approved Requirement
-        ↑
-    Actual Code
-
-
-The code must be corrected to satisfy the approved architectural and milestone requirements.
-
-Governance records provide the evidence for milestone acceptance and freeze decisions.
-
-Figma Compatibility
-
-Figma compatibility is treated as a platform capability rather than as the foundation of the Core Domain.
-
-The architecture therefore follows:
-
-Figma Semantics
-      ↓
-Native Design Semantics
-      ↓
-Native Design Model
-
-
-Figma-specific concepts must not leak unnecessarily into the core domain.
-
-The platform should represent compatible behavior through stable native semantics that can support:
-
-Design import
-
-Semantic mapping
-
-Native representation
-
-Editing
-
-Rendering
-
-Code generation
-
-Round-trip compatibility where supported
-
-Figma compatibility is therefore an adapter/capability concern around the native platform model, not the definition of the platform itself.
-
-Determinism
-
-Rapid-CMS prioritizes deterministic platform behavior.
-
-The system should prefer:
-
-Explicit commands
-
-Explicit state transitions
-
-Stable identifiers
-
-Deterministic resolution
-
-Predictable serialization
-
-Reproducible builds
-
-Testable engine behavior
-
-AI may assist future workflows, but AI output must not replace the deterministic platform model or become the authoritative source of design state.
-
-Future Platform Layers
-
-The long-term platform is expected to evolve through the following major layers:
-
-Native Design Model
-        ↓
-Core Engines
-        ↓
-Resolved / Semantic State
-        ↓
-Rendering
-        ↓
-SEO
-        ↓
-Code Generation
-        ↓
-Deployment
-        ↓
-Editor / Tools
-        ↓
-AI Assistance
-
-
-Each layer should consume stable platform abstractions rather than bypassing the Core Domain.
-
-Development Discipline
-
-All milestone development must preserve the following rules:
-
-One active milestone at a time.
-
-Requirements are established before implementation is considered complete.
-
-Existing code does not automatically satisfy milestone requirements.
-
-Tests are part of milestone completion.
-
-Validation is required before acceptance.
-
-Acceptance must be explicit.
-
-Frozen milestones establish stable baselines.
-
-Later work must not silently invalidate a frozen baseline.
-
-Architectural drift must be surfaced and resolved explicitly.
-
-No milestone may be silently declared complete.
-
-M0 Frozen Baseline
-
-M0 establishes the initial governance baseline for Rapid-CMS.
-
-The M0 baseline establishes that:
-
-Project boundaries are explicit.
-
-Dependency direction is governed.
-
-Circular dependencies are prohibited.
-
-The solution structure is validated.
-
-Governance tests exist.
-
-Acceptance evidence is recorded.
-
-Freeze evidence is recorded.
-
-The repository can build successfully.
-
-The existing automated test suite passes.
-
-Future milestone work must follow the sequential acceptance/freeze process.
-
-M0 is therefore not merely a documentation milestone.
-
-It is the governance foundation for all subsequent engineering milestones.
-
-Final Rule
-No Skip.
-No Parallel Milestone Implementation.
-No Silent Completion.
-No Silent Architectural Drift.
-
+Existing code belonging conceptually to later milestones may remain in the repository as foundation, experimentation, or forward implementation, but it does not bypass the milestone sequence or grant acceptance credit.
 
 The governing sequence is:
 
-One Milestone
-     ↓
+Requirements
+    ↓
+Architecture / Design
+    ↓
 Implementation
-     ↓
-Testing
-     ↓
+    ↓
+Tests
+    ↓
 Validation
-     ↓
+    ↓
 Acceptance
-     ↓
-FREEZE
-     ↓
+    ↓
+Freeze
+    ↓
 Next Milestone
 
+Architecture Principle
 
-M0 is the current frozen baseline.
+Rapid-CMS is built around a Native Design Model rather than around generated web code.
 
-Implementation status tells us what exists.
+The intended flow is:
 
-Acceptance status tells us what has been formally approved.
+Figma / Design Input
+        ↓
+Figma Semantics
+        ↓
+Native Design Semantics
+        ↓
+Native Design Model
+        ↓
+Runtime / Engines
+        ↓
+Rendering / Code Generation
+        ↓
+Production Web Application
+        ↓
+Build / Preview / Deployment
 
-Freeze status tells us what is now an established stable baseline.
 
-That distinction is fundamental to the Rapid-CMS development process.
+The editor is a client of the platform, not the source of truth.
+
+Similarly, generated React/Next.js/HTML/CSS output is a derived artifact, not the canonical representation of the project.
+
+Engine-First Architecture
+
+The platform is intended to separate the core design system from presentation and application surfaces.
+
+Conceptually:
+
+                Native Design Model
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+   Domain Model      Runtime Model     References
+        │                │                │
+        └────────────────┼────────────────┘
+                         │
+                     Engines
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+      Layout           Style          Components
+        │                │                │
+     Assets         Prototype        Rendering
+        │                │                │
+        └────────────────┼────────────────┘
+                         │
+                  Production Layer
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+       Codegen        Preview       Deployment
+          │
+       Next.js
+
+
+The visual editor and its tools consume these capabilities rather than defining them.
+
+Milestone Governance Rules
+
+The following rules are inherited from the frozen M0 baseline.
+
+1. One Active Milestone
+
+Only one milestone may be considered the active governed milestone at a time.
+
+2. Acceptance Before Advancement
+
+A milestone must satisfy its acceptance criteria before the next milestone becomes formally active.
+
+3. Freeze Before Advancement
+
+Accepted milestones must be frozen before the project advances to the next governed milestone.
+
+4. Future Code Does Not Bypass Governance
+
+Code for future milestones may exist in the repository, but:
+
+Pre-existing implementation does not constitute milestone acceptance.
+
+5. Source of Truth
+
+The Native Design Model remains the source of truth.
+
+Generated output must not become the canonical project representation.
+
+6. Engine Independence
+
+Core engines must remain independently testable and must not depend on the visual editor.
+
+7. UI Separation
+
+The editor must consume application/engine capabilities rather than embedding domain business logic inside UI components.
+
+8. Command-Based Mutation
+
+State-changing operations must use the defined command/state architecture rather than arbitrary direct mutation.
+
+What Rapid-CMS Is Building
+
+Rapid-CMS is not simply a CMS and is not merely a visual page editor.
+
+The long-term objective is a system in which a design can move through a deterministic pipeline:
+
+Design
+  ↓
+Native Design Model
+  ↓
+Semantic Understanding
+  ↓
+Layout / Style / Component Resolution
+  ↓
+Rendering
+  ↓
+Web Semantics
+  ↓
+SEO
+  ↓
+Code Generation
+  ↓
+Next.js Application
+  ↓
+Build / Preview
+  ↓
+Deployment
+
+
+AI is intended to operate on top of this deterministic foundation rather than replace the underlying domain model and engines.
+
+Current Focus
+
+With M0 frozen, the immediate governed focus is:
+
+M1 — Figma Compatibility Strategy
+
+M1 defines how Figma concepts and semantics are interpreted and mapped into the Native Design Model without making Figma's data format the internal source of truth.
+
+The purpose of M1 is therefore not merely to implement an importer.
+
+It establishes the compatibility strategy that later milestones will rely upon.
+
+Development Philosophy
+
+Rapid-CMS follows the principle:
+
+Build the machine first. Build the interface second.
+
+The platform is therefore being developed from the domain and engine layers upward.
+
+The intended order is:
+
+Domain
+  ↓
+Runtime
+  ↓
+Engines
+  ↓
+Application Layer
+  ↓
+Editor
+  ↓
+Tools
+  ↓
+Production
+  ↓
+Deployment
+
+
+This allows the same underlying design model to power:
+
+visual editing
+
+rendering
+
+previews
+
+code generation
+
+Next.js generation
+
+SEO
+
+deployment
+
+automated workflows
+
+future AI capabilities
+
+without making the editor itself the architectural center of the system.
+
+Important Note
+
+The roadmap describes the intended development sequence.
+
+The repository may contain implementation ahead of the currently accepted milestone. Such implementation is treated as available foundation or forward work until the corresponding milestone passes its formal acceptance and freeze process.
+
+Formal milestone status is determined by acceptance evidence, not by the number of files, classes, tests, or features currently present in the repository.

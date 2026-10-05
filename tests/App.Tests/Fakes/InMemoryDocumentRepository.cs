@@ -1,5 +1,3 @@
-dotnet build
-
 using RapidCMS.Application.Abstractions;
 using RapidCMS.Domain.Documents;
 using RapidCMS.Domain.Identity;

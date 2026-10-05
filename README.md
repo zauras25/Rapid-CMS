@@ -1,344 +1,10 @@
-﻿Milestone Status
+﻿Rapid-CMS
+Figma-First Visual Development Platform
+Rapid-CMS is an Engine-First Native Design Development Platform.
 
-Rapid-CMS development is tracked through milestones.
-Each milestone records its intended scope, completion status, verification state, and the next development target.
+The core product is not the visual editor. The core product is the Native Design Model and the engines that operate on it.
 
-M0 — Project Foundation
-
-Status: ✅ COMPLETE
-
-M0 established the initial Rapid-CMS repository and development foundation.
-
-M0 Completed
-
-✅ Repository initialized
-
-✅ Solution structure established
-
-✅ Core .NET projects created
-
-✅ Domain project established
-
-✅ Application project established
-
-✅ Contracts project established
-
-✅ Engine project established
-
-✅ Infrastructure project established
-
-✅ API project established
-
-✅ Test projects established
-
-✅ Solution/project references established
-
-✅ Initial documentation established
-
-✅ Git-based development workflow established
-
-M0 provided the structural foundation required for further development.
-
-M0: DONE ✅
-
-M1 — Architecture & Domain Direction
-
-Status: ✅ COMPLETE
-
-M1 established the architectural direction of Rapid-CMS and defined the Domain-first approach used by subsequent milestones.
-
-M1 Completed
-
-✅ Engine-first architecture established
-
-✅ Native Design Model identified as the core source of truth
-
-✅ Domain layer separated from Application, Infrastructure and API concerns
-
-✅ Strongly typed identity model introduced
-
-✅ Entity and Value Object foundations established
-
-✅ Initial Project / Document / Page / Node boundaries established
-
-✅ Core domain ownership direction established
-
-✅ Component, Style, Variable and Reference concepts introduced
-
-✅ Prototype concept introduced
-
-✅ Domain invariants made explicit
-
-✅ Automated Domain testing established
-
-✅ Architecture direction documented in README
-
-M1 Architectural Principle
-
-Engine First → Interface Second
-
-The visual editor is a consumer of the platform rather than the foundation of the platform.
-
-M1: DONE ✅
-
-M2 — Native Domain Foundation
-
-Status: ✅ COMPLETE
-
-M2 implemented and verified the first stable Native Design Model foundation.
-
-M2 Completed
-
-✅ Project aggregate and document ownership
-
-✅ Stable strongly-typed domain IDs
-
-✅ Project → Document boundary
-
-✅ Document → Page ownership
-
-✅ Page root-node ownership
-
-✅ Node hierarchy
-
-✅ Parent/child relationships
-
-✅ Duplicate-child protection
-
-✅ Multiple-parent protection
-
-✅ Direct cycle protection
-
-✅ Indirect cycle protection
-
-✅ Node component ownership
-
-✅ Node style ownership
-
-✅ Style properties
-
-✅ Style property replacement/update
-
-✅ Variables and variable mutation
-
-✅ Document references
-
-✅ Node references
-
-✅ Prototype links
-
-✅ Domain validation and invariants
-
-✅ Value-object equality
-
-✅ Entity identity boundaries
-
-✅ Empty/invalid identity protection
-
-✅ Domain-focused automated tests
-
-M2 Verification
-
-The complete solution was restored, built and tested successfully.
-
-.NET SDK: 10.0.401
-
-Projects:
-- RapidCMS.Api
-- RapidCMS.Application
-- RapidCMS.Contracts
-- RapidCMS.Domain
-- RapidCMS.Engine
-- RapidCMS.Infrastructure
-- RapidCMS.Application.Tests
-- RapidCMS.Domain.Tests
-- RapidCMS.Engine.Tests
-
-Test Result:
-234 total
-234 passed
-0 failed
-0 skipped
-
-
-Latest verification:
-
-Build succeeded
-Test summary: total: 234, failed: 0, succeeded: 234, skipped: 0
-
-
-git diff --check also completed without reported whitespace errors.
-
-M2 Definition of Done
-
-M2 is considered complete because:
-
-The Domain project builds successfully.
-
-Domain invariants are explicitly enforced.
-
-Core identities reject empty values.
-
-Project/document/page/node ownership boundaries are represented.
-
-Node hierarchy prevents invalid parent relationships and cycles.
-
-Components and styles cannot be attached to the wrong node.
-
-References and prototype links enforce their basic invariants.
-
-Domain behavior is covered by automated tests.
-
-The complete solution passes the automated test suite.
-
-M2: DONE ✅
-
-Roadmap
-M3 — Expanded Native Design Model
-
-Status: ⏳ NEXT
-
-Planned areas:
-
-Component Sets
-
-Component Variants
-
-Instances
-
-Component Properties
-
-Assets
-
-Text and typography model
-
-Frames
-
-Sections
-
-Groups
-
-Shapes
-
-Vectors
-
-Additional design-semantic primitives
-
-Richer document structure
-
-M4 — Layout & Responsive Engine
-
-Status: ⏳ PLANNED
-
-Planned areas:
-
-Layout constraints
-
-Auto-layout semantics
-
-Sizing modes
-
-Spacing
-
-Alignment
-
-Responsive behavior
-
-Breakpoints
-
-Resolved layout state
-
-M5 — Design State & Rendering Foundation
-
-Status: ⏳ PLANNED
-
-Planned areas:
-
-Resolved design state
-
-Rendering model
-
-Design-to-render transformation
-
-Semantic representation
-
-Deterministic output
-
-M6 — Code Generation & Production Output
-
-Status: ⏳ PLANNED
-
-Planned areas:
-
-Component generation
-
-Next.js output
-
-CSS generation
-
-Design-token generation
-
-Production build pipeline
-
-Preview system
-
-M7 — Visual Editor
-
-Status: ⏳ PLANNED
-
-Planned areas:
-
-Canvas
-
-Selection
-
-Inspector
-
-Component editing
-
-Layout editing
-
-Style editing
-
-Prototype editing
-
-M8 — Advanced Platform Capabilities
-
-Status: ⏳ PLANNED
-
-Planned areas:
-
-SEO
-
-Deployment
-
-AI-assisted workflows
-
-Advanced Figma compatibility
-
-Production automation
-
-Current Milestone Position
-M0  Project Foundation             ✅ COMPLETE
-M1  Architecture & Domain Direction ✅ COMPLETE
-M2  Native Domain Foundation       ✅ COMPLETE
-M3  Expanded Native Design Model   ⏳ NEXT
-M4  Layout & Responsive Engine     ⏳
-M5  Design State & Rendering       ⏳
-M6  Code Generation & Production   ⏳
-M7  Visual Editor                  ⏳
-M8  Advanced Platform Capabilities ⏳
-
-
-Current development target: M3 — Expanded Native Design Model
-
-Development Principle
-
-Engine First → Interface Second
-
-The editor is a consumer of the platform, not the foundation.
-
-The authoritative architecture is:
+The Editor, Tools, Rendering, Code Generation, SEO, Deployment, and AI layers are consumers of the platform.
 
 Figma Semantics
       ↓
@@ -346,13 +12,123 @@ Native Design Model
       ↓
 Core Engines
       ↓
-Resolved Design State
+Resolved / Semantic State
       ↓
-Semantic / Responsive / SEO / Transformation
+Rendering / SEO / Code Generation / Deployment
       ↓
-Production Outputs
-      ↓
-Editor / Renderer / Code Generation / Deployment / AI
+Editor & Tools
+Architecture Principles
+Native Design Model is the primary source of truth.
+The Editor is a consumer, not the architectural foundation.
+Core Domain must remain independent of UI, Figma, storage, renderer, and target frameworks.
+Engines must work without the UI.
+Major state changes use controlled commands rather than uncontrolled mutation.
+Deterministic engine behavior is preferred over AI-driven behavior.
+Generated code is an output, not the source document.
+Cache is never the source of truth.
+Project boundaries and ownership must remain explicit.
+Circular dependencies are prohibited.
+Figma compatibility is represented through native semantics rather than leaking Figma-specific concepts throughout the core.
+Development Model
+Development follows a strict sequential, acceptance-gated, freeze-based milestone model.
 
+Discovery
+   ↓
+Requirements
+   ↓
+Architecture
+   ↓
+Implementation
+   ↓
+Tests
+   ↓
+Validation
+   ↓
+Acceptance
+   ↓
+FREEZE
+   ↓
+Next Milestone
+One Active Milestone
+Only one implementation milestone may be active at a time.
 
-The Native Design Model remains the authoritative source of truth for the platform.
+No next milestone implementation before the current milestone is Accepted and Frozen.
+Existing code does not automatically mean that its related milestone is complete.
+
+Code Exists ≠ Milestone Complete
+A milestone is complete only when its requirements, implementation, tests, validation, acceptance criteria, and freeze requirements have all been satisfied.
+
+Architecture Roadmap
+M0  Product & Architecture Rules
+ ↓
+M1  Figma Compatibility Strategy
+ ↓
+M2  Core Domain Model & Figma-Native Behavior
+ ↓
+M3  Core Engines & Design-to-Production Architecture
+ ↓
+M4  Visual Studio Implementation Architecture
+ ↓
+M5+ Engineering Implementation
+Implementation Roadmap
+M5   Solution Bootstrap
+M6   Document / Node Engine
+M7   Command / State / Transaction
+M8   History / Undo / Redo
+M9   Layout / Responsive
+M10  Style / Variable Engine
+M11  Asset Engine
+M12  Component / Instance Engine
+M13  Prototype Engine
+M14  Persistence / Package Storage
+M15  Figma Compatibility
+M16  Rendering
+M17  Semantic / Web Understanding
+M18  SEO
+M19  Code Generation
+M20  Next.js Generator
+M21  Production Validation
+M22  Build / Preview
+M23  Editor
+M24  Tools
+M25  Project Application Layer
+M26  Deployment
+M27  Performance / Scalability
+M28  Security
+M29  Testing / Certification
+M30  AI Layer
+M31  Advanced Figma Compatibility
+Current Status
+Active Milestone: M2 — Core Domain Model & Figma-Native Behavior
+
+M2 establishes the native semantic foundation for:
+
+Projects and Documents
+Pages and Nodes
+Frames, Groups, Shapes and Vectors
+Text and Typography
+Components, Instances and Variants
+Styles, Variables and Tokens
+Assets and Images
+Prototype and Interaction data
+References and metadata
+Semantic geometry and layout
+Responsive behavior
+Referential integrity
+Serialization and deterministic state
+M2 must be Accepted and Frozen before M3 implementation begins.
+
+Master Rule
+Build the machine first. Build the interface second.
+DOMAIN
+  ↓
+ENGINES
+  ↓
+PLATFORM FOUNDATION
+  ↓
+EDITOR
+  ↓
+TOOLS
+  ↓
+PRODUCTION OUTPUT
+The detailed development governance, acceptance criteria, architecture decisions, and milestone specifications are maintained separately as the project's Master Roadmap / Source of Truth. :::

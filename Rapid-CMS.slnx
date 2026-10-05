@@ -1,16 +1,19 @@
-﻿<Solution>
+<Solution>
   <Folder Name="/src/">
     <Project Path="src\Api\Api.csproj" />
-    <Project Path="src\App\App.csproj" />
-    <Project Path="src\Contracts\Contracts.csproj" />
-    <Project Path="src\Domain\Domain.csproj" />
+    <Project Path="src\App\RapidCMS.Application.csproj" />
+    <Project Path="src\Contracts\RapidCMS.Contracts.csproj" />
+    <Project Path="src\Domain\RapidCMS.Domain.csproj" />
     <Project Path="src\Engine\Engine.csproj" />
-    <Project Path="src\Infra\Infra.csproj" />
+    <Project Path="src\Infra\RapidCMS.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/RapidCMS.Governance.Tests/RapidCMS.Governance.Tests.csproj" />
     <Project Path="tests\App.Tests\App.Tests.csproj" />
     <Project Path="tests\Domain.Tests\Domain.Tests.csproj" />
     <Project Path="tests\Engine.Tests\Engine.Tests.csproj" />
   </Folder>
 </Solution>
+
+
 

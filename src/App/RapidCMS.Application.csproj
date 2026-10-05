@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\RapidCMS.Domain\RapidCMS.Domain.csproj" />
-    <ProjectReference Include="..\RapidCMS.Contracts\RapidCMS.Contracts.csproj" />
+    <ProjectReference Include="..\Domain\RapidCMS.Domain.csproj" />
+    <ProjectReference Include="..\Contracts\RapidCMS.Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -12,4 +12,6 @@
   </PropertyGroup>
 
 </Project>
+
+
 

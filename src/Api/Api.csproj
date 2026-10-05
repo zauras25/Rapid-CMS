@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -11,10 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RapidCMS.Application\RapidCMS.Application.csproj" />
-    <ProjectReference Include="..\RapidCMS.Contracts\RapidCMS.Contracts.csproj" />
-    <ProjectReference Include="..\RapidCMS.Infrastructure\RapidCMS.Infrastructure.csproj" />
+    <ProjectReference Include="..\App\RapidCMS.Application.csproj" />
+    <ProjectReference Include="..\Contracts\RapidCMS.Contracts.csproj" />
+    <ProjectReference Include="..\Infra\RapidCMS.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
+
+
 

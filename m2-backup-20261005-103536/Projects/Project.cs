@@ -1,4 +1,4 @@
-﻿using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Common;
 using RapidCMS.Domain.Identity;
 
 namespace RapidCMS.Domain.Projects;
@@ -7,8 +7,7 @@ public sealed class Project : Entity<ProjectId>
 {
     private readonly List<DocumentId> _documentIds = new();
 
-    public IReadOnlyList<DocumentId> DocumentIds =>
-        _documentIds;
+    public IReadOnlyList<DocumentId> DocumentIds => _documentIds;
 
     private Project(ProjectId id)
         : base(id)
@@ -47,10 +46,5 @@ public sealed class Project : Entity<ProjectId>
     public void RemoveDocument(DocumentId documentId)
     {
         _documentIds.Remove(documentId);
-    }
-
-    public bool ContainsDocument(DocumentId documentId)
-    {
-        return _documentIds.Contains(documentId);
     }
 }

@@ -1,14 +1,39 @@
-namespace RapidCMS.Domain.Identity;
+﻿namespace RapidCMS.Domain.Identity;
 
-public readonly record struct StyleId(Guid Value)
+public readonly struct StyleId : IEquatable<StyleId>
 {
-    public static StyleId New()
+    public Guid Value { get; }
+
+    public StyleId(Guid value)
     {
-        return new StyleId(Guid.NewGuid());
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "StyleId cannot be empty.",
+                nameof(value));
+
+        Value = value;
     }
 
-    public override string ToString()
-    {
-        return Value.ToString();
-    }
+    public static StyleId New() => new(Guid.NewGuid());
+
+    public bool Equals(StyleId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is StyleId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        StyleId left,
+        StyleId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        StyleId left,
+        StyleId right) =>
+        !left.Equals(right);
 }

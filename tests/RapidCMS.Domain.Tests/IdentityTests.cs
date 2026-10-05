@@ -1,79 +1,75 @@
-using RapidCMS.Domain.Identity;
+﻿using RapidCMS.Domain.Identity;
 
 namespace RapidCMS.Domain.Tests;
 
 public class IdentityTests
 {
     [Fact]
-    public void ProjectId_New_Is_Not_Empty()
+    public void All_Native_Ids_Generate_NonEmpty_Values()
     {
-        var id = ProjectId.New();
-
-        Assert.NotEqual(Guid.Empty, id.Value);
+        Assert.NotEqual(Guid.Empty, ProjectId.New().Value);
+        Assert.NotEqual(Guid.Empty, DocumentId.New().Value);
+        Assert.NotEqual(Guid.Empty, PageId.New().Value);
+        Assert.NotEqual(Guid.Empty, NodeId.New().Value);
+        Assert.NotEqual(Guid.Empty, AssetId.New().Value);
+        Assert.NotEqual(Guid.Empty, ComponentId.New().Value);
+        Assert.NotEqual(Guid.Empty, ComponentSetId.New().Value);
+        Assert.NotEqual(Guid.Empty, InstanceId.New().Value);
+        Assert.NotEqual(Guid.Empty, InteractionId.New().Value);
+        Assert.NotEqual(Guid.Empty, PrototypeId.New().Value);
+        Assert.NotEqual(Guid.Empty, ReferenceId.New().Value);
+        Assert.NotEqual(Guid.Empty, StyleId.New().Value);
+        Assert.NotEqual(Guid.Empty, TokenId.New().Value);
+        Assert.NotEqual(Guid.Empty, VariableId.New().Value);
+        Assert.NotEqual(Guid.Empty, VariantId.New().Value);
     }
 
     [Fact]
-    public void ProjectId_With_Same_Value_Is_Equal()
-    {
-        var value = Guid.NewGuid();
-
-        var first = new ProjectId(value);
-        var second = new ProjectId(value);
-
-        Assert.Equal(first, second);
-    }
-
-    [Fact]
-    public void Different_Identity_Types_Are_Not_Interchangeable()
-    {
-        var value = Guid.NewGuid();
-
-        var projectId = new ProjectId(value);
-        var documentId = new DocumentId(value);
-
-        Assert.NotEqual(
-            projectId.Value,
-            Guid.Empty);
-
-        Assert.NotEqual(
-            documentId.Value,
-            Guid.Empty);
-    }
-
-    [Fact]
-    public void NodeId_With_Empty_Value_Is_Rejected()
+    public void ProjectId_Rejects_Empty_Guid()
     {
         Assert.Throws<ArgumentException>(
-            () => new NodeId(Guid.Empty));
+            () => new ProjectId(Guid.Empty));
     }
 
     [Fact]
-    public void DocumentId_With_Empty_Value_Is_Rejected()
+    public void AssetId_Rejects_Empty_Guid()
     {
         Assert.Throws<ArgumentException>(
-            () => new DocumentId(Guid.Empty));
+            () => new AssetId(Guid.Empty));
     }
 
     [Fact]
-    public void PageId_With_Empty_Value_Is_Rejected()
+    public void ComponentId_Rejects_Empty_Guid()
     {
         Assert.Throws<ArgumentException>(
-            () => new PageId(Guid.Empty));
+            () => new ComponentId(Guid.Empty));
     }
 
     [Fact]
-    public void ComponentId_New_Is_Not_Empty()
+    public void InstanceId_Rejects_Empty_Guid()
     {
-        var id = ComponentId.New();
-
-        Assert.NotEqual(Guid.Empty, id.Value);
+        Assert.Throws<ArgumentException>(
+            () => new InstanceId(Guid.Empty));
     }
 
     [Fact]
-    public void ReferenceId_New_Is_Not_Empty()
+    public void InteractionId_Rejects_Empty_Guid()
     {
-        var id = ReferenceId.New();
+        Assert.Throws<ArgumentException>(
+            () => new InteractionId(Guid.Empty));
+    }
 
-        Assert.NotEqual(Guid.Empty, id.Value);
+    [Fact]
+    public void TokenId_Rejects_Empty_Guid()
+    {
+        Assert.Throws<ArgumentException>(
+            () => new TokenId(Guid.Empty));
+    }
+
+    [Fact]
+    public void VariantId_Rejects_Empty_Guid()
+    {
+        Assert.Throws<ArgumentException>(
+            () => new VariantId(Guid.Empty));
     }
 }

@@ -49,3 +49,4 @@ public sealed class CreateDocumentHandler
         return CommandResult<Document>.Success(document);
     }
 }
+

@@ -26,11 +26,6 @@ public sealed partial class Document : Entity<DocumentId>
         ProjectId projectId)
         : base(id)
     {
-        if (id.Value == Guid.Empty)
-            throw new ArgumentException(
-                "Document ID cannot be empty.",
-                nameof(id));
-
         if (projectId.Value == Guid.Empty)
             throw new ArgumentException(
                 "Project ID cannot be empty.",
@@ -45,15 +40,7 @@ public sealed partial class Document : Entity<DocumentId>
             DocumentId.New(),
             ProjectId.New());
     }
-    public static Document Create(DocumentId id)
-    {
-        if (id.Value == Guid.Empty)
-            throw new ArgumentException(
-                "Document ID cannot be empty.",
-                nameof(id));
 
-        return new Document(id, ProjectId.New());
-    }
     public static Document Create(ProjectId projectId)
     {
         if (projectId.Value == Guid.Empty)
@@ -66,19 +53,36 @@ public sealed partial class Document : Entity<DocumentId>
             projectId);
     }
 
-    public static Document Create(
-        DocumentId id,
-        ProjectId projectId)
+    public static Document Create(DocumentId id, ProjectId projectId)
     {
+        if (id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Document ID cannot be empty.",
+                nameof(id));
+
+        if (projectId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Project ID cannot be empty.",
+                nameof(projectId));
+
         return new Document(id, projectId);
+    }
+
+
+    public static Document Create(DocumentId id)
+    {
+        if (id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Document ID cannot be empty.",
+                nameof(id));
+
+        return new Document(id, ProjectId.New());
     }
 
     public void AddPage(PageId pageId)
     {
         if (pageId.Value == Guid.Empty)
-            throw new ArgumentException(
-                "Page ID cannot be empty.",
-                nameof(pageId));
+            throw new ArgumentException("Page ID cannot be empty.", nameof(pageId));
 
         if (_pageIds.Contains(pageId))
             throw new InvalidOperationException(
@@ -95,9 +99,7 @@ public sealed partial class Document : Entity<DocumentId>
     public void AddAsset(AssetId assetId)
     {
         if (assetId.Value == Guid.Empty)
-            throw new ArgumentException(
-                "Asset ID cannot be empty.",
-                nameof(assetId));
+            throw new ArgumentException("Asset ID cannot be empty.", nameof(assetId));
 
         if (_assetIds.Contains(assetId))
             throw new InvalidOperationException(
@@ -114,9 +116,7 @@ public sealed partial class Document : Entity<DocumentId>
     public void AddVariable(VariableId variableId)
     {
         if (variableId.Value == Guid.Empty)
-            throw new ArgumentException(
-                "Variable ID cannot be empty.",
-                nameof(variableId));
+            throw new ArgumentException("Variable ID cannot be empty.", nameof(variableId));
 
         if (_variableIds.Contains(variableId))
             throw new InvalidOperationException(
@@ -169,23 +169,5 @@ public sealed partial class Document : Entity<DocumentId>
     }
 
 
-    public bool ContainsPage(PageId pageId) =>
-        _pageIds.Contains(pageId);
-
-    public bool ContainsAsset(AssetId assetId) =>
-        _assetIds.Contains(assetId);
-
-    public bool ContainsVariable(VariableId variableId) =>
-        _variableIds.Contains(variableId);
-
-    public bool ContainsPrototype(PrototypeId prototypeId) =>
-        _prototypeIds.Contains(prototypeId);
-
-    public bool ContainsReference(ReferenceId referenceId) =>
-        _referenceIds.Contains(referenceId);
-
-    public bool ContainsComponent(ComponentId componentId) =>
-        _componentIds.Contains(componentId);
 }
-
 

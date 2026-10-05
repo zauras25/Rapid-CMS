@@ -1,4 +1,4 @@
-using RapidCMS.Domain.Common;
+﻿using RapidCMS.Domain.Common;
 using RapidCMS.Domain.Identity;
 
 namespace RapidCMS.Domain.Documents;
@@ -39,21 +39,6 @@ public sealed partial class Document : Entity<DocumentId>
         ProjectId = projectId;
     }
 
-    public static Document Create()
-    {
-        return new Document(
-            DocumentId.New(),
-            ProjectId.New());
-    }
-    public static Document Create(DocumentId id)
-    {
-        if (id.Value == Guid.Empty)
-            throw new ArgumentException(
-                "Document ID cannot be empty.",
-                nameof(id));
-
-        return new Document(id, ProjectId.New());
-    }
     public static Document Create(ProjectId projectId)
     {
         if (projectId.Value == Guid.Empty)
@@ -168,6 +153,24 @@ public sealed partial class Document : Entity<DocumentId>
         _referenceIds.Remove(referenceId);
     }
 
+    public void AddComponent(ComponentId componentId)
+    {
+        if (componentId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Component ID cannot be empty.",
+                nameof(componentId));
+
+        if (_componentIds.Contains(componentId))
+            throw new InvalidOperationException(
+                $"Component '{componentId}' is already part of the document.");
+
+        _componentIds.Add(componentId);
+    }
+
+    public void RemoveComponent(ComponentId componentId)
+    {
+        _componentIds.Remove(componentId);
+    }
 
     public bool ContainsPage(PageId pageId) =>
         _pageIds.Contains(pageId);
@@ -187,5 +190,3 @@ public sealed partial class Document : Entity<DocumentId>
     public bool ContainsComponent(ComponentId componentId) =>
         _componentIds.Contains(componentId);
 }
-
-

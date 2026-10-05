@@ -1,14 +1,39 @@
-namespace RapidCMS.Domain.Identity;
+﻿namespace RapidCMS.Domain.Identity;
 
-public readonly record struct VariantId(Guid Value)
+public readonly struct VariantId : IEquatable<VariantId>
 {
-    public static VariantId New()
+    public Guid Value { get; }
+
+    public VariantId(Guid value)
     {
-        return new VariantId(Guid.NewGuid());
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "VariantId cannot be empty.",
+                nameof(value));
+
+        Value = value;
     }
 
-    public override string ToString()
-    {
-        return Value.ToString();
-    }
+    public static VariantId New() => new(Guid.NewGuid());
+
+    public bool Equals(VariantId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is VariantId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        VariantId left,
+        VariantId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        VariantId left,
+        VariantId right) =>
+        !left.Equals(right);
 }

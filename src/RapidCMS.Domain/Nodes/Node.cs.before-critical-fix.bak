@@ -50,6 +50,11 @@ public sealed class Node : Entity<NodeId>
     {
         ArgumentNullException.ThrowIfNull(component);
 
+        if (component.Id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Component ID cannot be empty.",
+                nameof(component));
+
         if (component.Id != Id)
             throw new InvalidOperationException(
                 "Component must belong to this node.");
@@ -69,6 +74,11 @@ public sealed class Node : Entity<NodeId>
     public void AttachStyle(Style style)
     {
         ArgumentNullException.ThrowIfNull(style);
+
+        if (style.Id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Style node ID cannot be empty.",
+                nameof(style));
 
         if (style.Id != Id)
             throw new InvalidOperationException(
@@ -90,6 +100,11 @@ public sealed class Node : Entity<NodeId>
     {
         ArgumentNullException.ThrowIfNull(child);
 
+        if (child.Id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Child node ID cannot be empty.",
+                nameof(child));
+
         if (child.Id == Id)
             throw new InvalidOperationException(
                 "A node cannot be its own child.");
@@ -100,11 +115,11 @@ public sealed class Node : Entity<NodeId>
 
         if (child._parent is not null)
             throw new InvalidOperationException(
-                "Node already has another parent.");
+                $"Node '{child.Id}' already has parent '{child._parent.Id}'.");
 
-        // The child cannot be an ancestor of this node.
-        // Otherwise attaching it would create a cycle.
-        if (IsAncestorOf(child))
+        // If this node is already somewhere below child,
+        // attaching child here would create a cycle.
+        if (IsDescendantOf(child))
             throw new InvalidOperationException(
                 "Adding this child would create a cycle.");
 
@@ -112,26 +127,29 @@ public sealed class Node : Entity<NodeId>
         child._parent = this;
     }
 
+    private bool IsDescendantOf(Node potentialAncestor)
+    {
+        var current = this;
+
+        while (current._parent is not null)
+        {
+            current = current._parent;
+
+            if (current.Id == potentialAncestor.Id)
+                return true;
+        }
+
+        return false;
+    }
+
     public void RemoveChild(Node child)
     {
         ArgumentNullException.ThrowIfNull(child);
 
-        if (_children.Remove(child.Id) && child._parent == this)
+        if (!_children.Remove(child.Id))
+            return;
+
+        if (child._parent == this)
             child._parent = null;
-    }
-
-    private bool IsAncestorOf(Node candidate)
-    {
-        var current = _parent;
-
-        while (current is not null)
-        {
-            if (current.Id == candidate.Id)
-                return true;
-
-            current = current._parent;
-        }
-
-        return false;
     }
 }

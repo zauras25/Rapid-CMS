@@ -72,3 +72,4 @@ public sealed class AddPageToDocumentHandler
         return CommandResult.Success();
     }
 }
+

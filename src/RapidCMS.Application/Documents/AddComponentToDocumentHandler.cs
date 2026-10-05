@@ -62,3 +62,4 @@ public sealed class AddComponentToDocumentHandler
         return CommandResult.Success();
     }
 }
+

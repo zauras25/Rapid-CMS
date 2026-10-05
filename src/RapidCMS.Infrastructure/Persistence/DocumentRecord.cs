@@ -4,6 +4,8 @@ public sealed class DocumentRecord
 {
     public Guid Id { get; set; }
 
+    public Guid ProjectId { get; set; }
+
     public ICollection<DocumentPageRecord> Pages { get; set; }
         = new List<DocumentPageRecord>();
 

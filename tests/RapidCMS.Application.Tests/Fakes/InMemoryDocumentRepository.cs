@@ -14,7 +14,9 @@ public sealed class InMemoryDocumentRepository : IDocumentRepository
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        _documents[document.Id.Value] = document;
+        _documents.Add(
+            document.Id.Value,
+            document);
 
         return Task.CompletedTask;
     }
@@ -37,10 +39,27 @@ public sealed class InMemoryDocumentRepository : IDocumentRepository
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        IReadOnlyList<Document> documents =
+        IReadOnlyList<Document> result =
             _documents.Values.ToArray();
 
-        return Task.FromResult(documents);
+        return Task.FromResult(result);
+    }
+
+    public Task UpdateAsync(
+        Document document,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (!_documents.ContainsKey(document.Id.Value))
+        {
+            throw new InvalidOperationException(
+                $"Document '{document.Id.Value}' was not found.");
+        }
+
+        _documents[document.Id.Value] = document;
+
+        return Task.CompletedTask;
     }
 
     public Task<bool> DeleteAsync(
@@ -49,7 +68,8 @@ public sealed class InMemoryDocumentRepository : IDocumentRepository
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        return Task.FromResult(
-            _documents.Remove(documentId.Value));
+        var removed = _documents.Remove(documentId.Value);
+
+        return Task.FromResult(removed);
     }
 }

@@ -1,0 +1,4456 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using RapidCMS.Application.Documents;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Contracts.Queries;
+
+namespace RapidCMS.Api.Controllers;
+
+[ApiController]
+[Route("api/documents")]
+public sealed class DocumentsController : ControllerBase
+{
+    private readonly CreateDocumentHandler _createHandler;
+    private readonly DeleteDocumentHandler _deleteHandler;
+    private readonly GetDocumentByIdHandler _getByIdHandler;
+    private readonly GetDocumentsHandler _getAllHandler;
+
+    private readonly AddPageToDocumentHandler _addPageHandler;
+    private readonly RemovePageFromDocumentHandler _removePageHandler;
+
+    private readonly AddAssetToDocumentHandler _addAssetHandler;
+    private readonly RemoveAssetFromDocumentHandler _removeAssetHandler;
+
+    private readonly AddVariableToDocumentHandler _addVariableHandler;
+    private readonly RemoveVariableFromDocumentHandler _removeVariableHandler;
+
+    private readonly AddPrototypeToDocumentHandler _addPrototypeHandler;
+    private readonly RemovePrototypeFromDocumentHandler _removePrototypeHandler;
+
+    private readonly AddComponentToDocumentHandler _addComponentHandler;
+    private readonly RemoveComponentFromDocumentHandler _removeComponentHandler;
+
+    public DocumentsController(
+        CreateDocumentHandler createHandler,
+        DeleteDocumentHandler deleteHandler,
+        GetDocumentByIdHandler getByIdHandler,
+        GetDocumentsHandler getAllHandler,
+        AddPageToDocumentHandler addPageHandler,
+        RemovePageFromDocumentHandler removePageHandler,
+        AddAssetToDocumentHandler addAssetHandler,
+        RemoveAssetFromDocumentHandler removeAssetHandler,
+        AddVariableToDocumentHandler addVariableHandler,
+        RemoveVariableFromDocumentHandler removeVariableHandler,
+        AddPrototypeToDocumentHandler addPrototypeHandler,
+        RemovePrototypeFromDocumentHandler removePrototypeHandler,
+        AddComponentToDocumentHandler addComponentHandler,
+        RemoveComponentFromDocumentHandler removeComponentHandler)
+    {
+        _createHandler = createHandler;
+        _deleteHandler = deleteHandler;
+        _getByIdHandler = getByIdHandler;
+        _getAllHandler = getAllHandler;
+
+        _addPageHandler = addPageHandler;
+        _removePageHandler = removePageHandler;
+
+        _addAssetHandler = addAssetHandler;
+        _removeAssetHandler = removeAssetHandler;
+
+        _addVariableHandler = addVariableHandler;
+        _removeVariableHandler = removeVariableHandler;
+
+        _addPrototypeHandler = addPrototypeHandler;
+        _removePrototypeHandler = removePrototypeHandler;
+
+        _addComponentHandler = addComponentHandler;
+        _removeComponentHandler = removeComponentHandler;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll(
+        CancellationToken cancellationToken)
+    {
+        var result = await _getAllHandler.HandleAsync(
+            new GetDocumentsQuery(),
+            cancellationToken);
+
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        return Ok(result.Data);
+    }
+
+    [HttpGet("{documentId:guid}")]
+    public async Task<IActionResult> GetById(
+        Guid documentId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _getByIdHandler.HandleAsync(
+            new GetDocumentByIdQuery(documentId),
+            cancellationToken);
+
+        if (!result.Succeeded)
+        {
+            if (result.Errors.Any(x =>
+                    x.Contains("was not found", StringComparison.OrdinalIgnoreCase)))
+            {
+                return NotFound(result.Errors);
+            }
+
+            return BadRequest(result.Errors);
+        }
+
+        return Ok(result.Data);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(
+        [FromBody] CreateDocumentCommand command,
+        CancellationToken cancellationToken)
+    {
+        var result = await _createHandler.HandleAsync(
+            command,
+            cancellationToken);
+
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { documentId = command.DocumentId },
+            result.Data);
+    }
+
+    [HttpDelete("{documentId:guid}")]
+    public async Task<IActionResult> Delete(
+        Guid documentId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _deleteHandler.HandleAsync(
+            new DeleteDocumentCommand(documentId),
+            cancellationToken);
+
+        if (!result.Succeeded)
+        {
+            if (result.Errors.Any(x =>
+                    x.Contains("was not found", StringComparison.OrdinalIgnoreCase)))
+            {
+                return NotFound(result.Errors);
+            }
+
+            return BadRequest(result.Errors);
+        }
+
+        return NoContent();
+    }
+
+    [HttpPost("{documentId:guid}/pages/{pageId:guid}")]
+    public async Task<IActionResult> AddPage(
+        Guid documentId,
+        Guid pageId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _addPageHandler.HandleAsync(
+            new AddPageToDocumentCommand(documentId, pageId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    [HttpDelete("{documentId:guid}/pages/{pageId:guid}")]
+    public async Task<IActionResult> RemovePage(
+        Guid documentId,
+        Guid pageId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _removePageHandler.HandleAsync(
+            new RemovePageFromDocumentCommand(documentId, pageId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    [HttpPost("{documentId:guid}/assets/{assetId:guid}")]
+    public async Task<IActionResult> AddAsset(
+        Guid documentId,
+        Guid assetId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _addAssetHandler.HandleAsync(
+            new AddAssetToDocumentCommand(documentId, assetId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    [HttpDelete("{documentId:guid}/assets/{assetId:guid}")]
+    public async Task<IActionResult> RemoveAsset(
+        Guid documentId,
+        Guid assetId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _removeAssetHandler.HandleAsync(
+            new RemoveAssetFromDocumentCommand(documentId, assetId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    [HttpPost("{documentId:guid}/variables/{variableId:guid}")]
+    public async Task<IActionResult> AddVariable(
+        Guid documentId,
+        Guid variableId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _addVariableHandler.HandleAsync(
+            new AddVariableToDocumentCommand(documentId, variableId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    [HttpDelete("{documentId:guid}/variables/{variableId:guid}")]
+    public async Task<IActionResult> RemoveVariable(
+        Guid documentId,
+        Guid variableId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _removeVariableHandler.HandleAsync(
+            new RemoveVariableFromDocumentCommand(documentId, variableId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    [HttpPost("{documentId:guid}/prototypes/{prototypeId:guid}")]
+    public async Task<IActionResult> AddPrototype(
+        Guid documentId,
+        Guid prototypeId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _addPrototypeHandler.HandleAsync(
+            new AddPrototypeToDocumentCommand(documentId, prototypeId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    [HttpDelete("{documentId:guid}/prototypes/{prototypeId:guid}")]
+    public async Task<IActionResult> RemovePrototype(
+        Guid documentId,
+        Guid prototypeId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _removePrototypeHandler.HandleAsync(
+            new RemovePrototypeFromDocumentCommand(documentId, prototypeId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    [HttpPost("{documentId:guid}/components/{componentId:guid}")]
+    public async Task<IActionResult> AddComponent(
+        Guid documentId,
+        Guid componentId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _addComponentHandler.HandleAsync(
+            new AddComponentToDocumentCommand(documentId, componentId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    [HttpDelete("{documentId:guid}/components/{componentId:guid}")]
+    public async Task<IActionResult> RemoveComponent(
+        Guid documentId,
+        Guid componentId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _removeComponentHandler.HandleAsync(
+            new RemoveComponentFromDocumentCommand(documentId, componentId),
+            cancellationToken);
+
+        return ToActionResult(result);
+    }
+
+    private IActionResult ToActionResult(CommandResult result)
+    {
+        if (result.Succeeded)
+            return NoContent();
+
+        if (result.Errors.Any(x =>
+                x.Contains("was not found", StringComparison.OrdinalIgnoreCase)))
+        {
+            return NotFound(result.Errors);
+        }
+
+        return BadRequest(result.Errors);
+    }
+}
+
+using Microsoft.AspNetCore.Mvc;
+using RapidCMS.Contracts.Nodes;
+
+namespace RapidCMS.Api.Controllers;
+
+[ApiController]
+[Route("api/documents/{documentId:guid}/pages/{pageId:guid}/nodes")]
+public sealed class NodesController : ControllerBase
+{
+    /*
+     * Page Builder node endpoints.
+     *
+     * Application handlers should be injected here once the
+     * corresponding application commands/queries exist.
+     *
+     * The controller intentionally does not contain domain logic.
+     */
+
+    [HttpGet]
+    public IActionResult GetTree(
+        Guid documentId,
+        Guid pageId)
+    {
+        return Ok(new
+        {
+            documentId,
+            pageId,
+            nodes = Array.Empty<NodeDto>()
+        });
+    }
+
+    [HttpGet("{nodeId:guid}")]
+    public IActionResult GetNode(
+        Guid documentId,
+        Guid pageId,
+        Guid nodeId)
+    {
+        return Ok(new
+        {
+            documentId,
+            pageId,
+            nodeId
+        });
+    }
+
+    [HttpPost]
+    public IActionResult CreateNode(
+        Guid documentId,
+        Guid pageId,
+        [FromBody] CreateNodeRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Name))
+            return BadRequest("Node name cannot be empty.");
+
+        return StatusCode(
+            StatusCodes.Status501NotImplemented,
+            new
+            {
+                message =
+                    "Node creation handler is not wired yet."
+            });
+    }
+
+    [HttpPut("{nodeId:guid}")]
+    public IActionResult UpdateNode(
+        Guid documentId,
+        Guid pageId,
+        Guid nodeId,
+        [FromBody] UpdateNodeRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Name))
+            return BadRequest("Node name cannot be empty.");
+
+        return StatusCode(
+            StatusCodes.Status501NotImplemented,
+            new
+            {
+                message =
+                    "Node update handler is not wired yet."
+            });
+    }
+
+    [HttpPost("{nodeId:guid}/move")]
+    public IActionResult MoveNode(
+        Guid documentId,
+        Guid pageId,
+        Guid nodeId,
+        [FromBody] MoveNodeRequest request)
+    {
+        return StatusCode(
+            StatusCodes.Status501NotImplemented,
+            new
+            {
+                message =
+                    "Node move handler is not wired yet."
+            });
+    }
+
+    [HttpDelete("{nodeId:guid}")]
+    public IActionResult DeleteNode(
+        Guid documentId,
+        Guid pageId,
+        Guid nodeId)
+    {
+        return StatusCode(
+            StatusCodes.Status501NotImplemented,
+            new
+            {
+                message =
+                    "Node deletion handler is not wired yet."
+            });
+    }
+}
+
+/*
+    Actual production code goes here.
+*/
+
+// <autogenerated />
+using System;
+using System.Reflection;
+[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
+
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+
+[assembly: System.Reflection.AssemblyCompanyAttribute("RapidCMS.Api")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16199c838c8140ae8cc86d75f3b55f79e2348088")]
+[assembly: System.Reflection.AssemblyProductAttribute("RapidCMS.Api")]
+[assembly: System.Reflection.AssemblyTitleAttribute("RapidCMS.Api")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+
+// Generated by the MSBuild WriteCodeFragment class.
+
+
+// <auto-generated/>
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Routing;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging;
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Net.Http;
+global using System.Net.Http.Json;
+global using System.Threading;
+global using System.Threading.Tasks;
+
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+
+[assembly: Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartAttribute("Microsoft.AspNetCore.OpenApi")]
+
+// Generated by the MSBuild WriteCodeFragment class.
+
+
+using Microsoft.EntityFrameworkCore;
+using RapidCMS.Api.Controllers;
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Application.Documents;
+using RapidCMS.Infrastructure.Persistence;
+using RapidCMS.Infrastructure.Repositories;
+
+var builder = WebApplication.CreateBuilder(args);
+
+var connectionString =
+    builder.Configuration.GetConnectionString("RapidCms")
+    ?? throw new InvalidOperationException(
+        "Connection string 'RapidCms' was not configured.");
+
+builder.Services.AddDbContext<RapidCmsDbContext>(options =>
+    options.UseSqlite(connectionString));
+
+builder.Services.AddScoped<IDocumentRepository, EfDocumentRepository>();
+
+builder.Services.AddScoped<CreateDocumentHandler>();
+builder.Services.AddScoped<DeleteDocumentHandler>();
+builder.Services.AddScoped<GetDocumentByIdHandler>();
+builder.Services.AddScoped<GetDocumentsHandler>();
+
+builder.Services.AddScoped<AddPageToDocumentHandler>();
+builder.Services.AddScoped<RemovePageFromDocumentHandler>();
+
+builder.Services.AddScoped<AddAssetToDocumentHandler>();
+builder.Services.AddScoped<RemoveAssetFromDocumentHandler>();
+
+builder.Services.AddScoped<AddVariableToDocumentHandler>();
+builder.Services.AddScoped<RemoveVariableFromDocumentHandler>();
+
+builder.Services.AddScoped<AddPrototypeToDocumentHandler>();
+builder.Services.AddScoped<RemovePrototypeFromDocumentHandler>();
+
+builder.Services.AddScoped<AddComponentToDocumentHandler>();
+builder.Services.AddScoped<RemoveComponentFromDocumentHandler>();
+
+builder.Services.AddControllers();
+
+builder.Services.AddOpenApi();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Abstractions;
+
+public interface IAssetRepository
+{
+    Task<bool> ExistsAsync(
+        AssetId assetId,
+        CancellationToken cancellationToken = default);
+}
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Application.Abstractions;
+
+public interface ICommandHandler<in TCommand>
+    where TCommand : ICommand
+{
+    Task<CommandResult> HandleAsync(
+        TCommand command,
+        CancellationToken cancellationToken = default);
+}
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Application.Abstractions;
+
+public interface ICommandHandler<in TCommand, TResult>
+    where TCommand : ICommand
+{
+    Task<CommandResult<TResult>> HandleAsync(
+        TCommand command,
+        CancellationToken cancellationToken = default);
+}
+
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Abstractions;
+
+public interface IComponentRepository
+{
+    Task<bool> ExistsAsync(
+        ComponentId componentId,
+        CancellationToken cancellationToken = default);
+}
+
+using RapidCMS.Domain.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Abstractions;
+
+public interface IDocumentRepository
+{
+    Task AddAsync(
+        Document document,
+        CancellationToken cancellationToken = default);
+
+    Task<Document?> GetByIdAsync(
+        DocumentId documentId,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<Document>> GetAllAsync(
+        CancellationToken cancellationToken = default);
+
+    Task<bool> DeleteAsync(
+        DocumentId documentId,
+        CancellationToken cancellationToken = default);
+}
+
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.Pages;
+
+namespace RapidCMS.Application.Abstractions;
+
+public interface IPageRepository
+{
+    Task<Page?> GetByIdAsync(
+        PageId pageId,
+        CancellationToken cancellationToken = default);
+}
+
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Abstractions;
+
+public interface IPrototypeRepository
+{
+    Task<bool> ExistsAsync(
+        PrototypeId prototypeId,
+        CancellationToken cancellationToken = default);
+}
+
+using RapidCMS.Contracts.Queries;
+
+namespace RapidCMS.Application.Abstractions;
+
+public interface IQueryHandler<in TQuery, TResult>
+    where TQuery : IQuery<TResult>
+{
+    Task<QueryResult<TResult>> HandleAsync(
+        TQuery query,
+        CancellationToken cancellationToken = default);
+}
+
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Abstractions;
+
+public interface IVariableRepository
+{
+    Task<bool> ExistsAsync(
+        VariableId variableId,
+        CancellationToken cancellationToken = default);
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class AddAssetToDocumentHandler
+    : ICommandHandler<AddAssetToDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+    private readonly IAssetRepository _assetRepository;
+
+    public AddAssetToDocumentHandler(
+        IDocumentRepository documentRepository,
+        IAssetRepository assetRepository)
+    {
+        _documentRepository = documentRepository;
+        _assetRepository = assetRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        AddAssetToDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+            return CommandResult.Failure("Document ID cannot be empty.");
+
+        if (command.AssetId == Guid.Empty)
+            return CommandResult.Failure("Asset ID cannot be empty.");
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+
+        var assetExists = await _assetRepository.ExistsAsync(
+            new AssetId(command.AssetId),
+            cancellationToken);
+
+        if (!assetExists)
+            return CommandResult.Failure(
+                $"Asset '{command.AssetId}' was not found.");
+
+        try
+        {
+            document.AddAsset(new AssetId(command.AssetId));
+        }
+        catch (InvalidOperationException exception)
+        {
+            return CommandResult.Failure(exception.Message);
+        }
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class AddComponentToDocumentHandler
+    : ICommandHandler<AddComponentToDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+    private readonly IComponentRepository _componentRepository;
+
+    public AddComponentToDocumentHandler(
+        IDocumentRepository documentRepository,
+        IComponentRepository componentRepository)
+    {
+        _documentRepository = documentRepository;
+        _componentRepository = componentRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        AddComponentToDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+            return CommandResult.Failure(
+                "Document ID cannot be empty.");
+
+        if (command.ComponentId == Guid.Empty)
+            return CommandResult.Failure(
+                "Component ID cannot be empty.");
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+
+        var componentExists = await _componentRepository.ExistsAsync(
+            new ComponentId(command.ComponentId),
+            cancellationToken);
+
+        if (!componentExists)
+            return CommandResult.Failure(
+                $"Component '{command.ComponentId}' was not found.");
+
+        try
+        {
+            document.AddComponent(
+                new ComponentId(command.ComponentId));
+        }
+        catch (InvalidOperationException exception)
+        {
+            return CommandResult.Failure(exception.Message);
+        }
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class AddPageToDocumentHandler
+    : ICommandHandler<AddPageToDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+    private readonly IPageRepository _pageRepository;
+
+    public AddPageToDocumentHandler(
+        IDocumentRepository documentRepository,
+        IPageRepository pageRepository)
+    {
+        _documentRepository = documentRepository;
+        _pageRepository = pageRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        AddPageToDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+        {
+            return CommandResult.Failure(
+                "Document ID cannot be empty.");
+        }
+
+        if (command.PageId == Guid.Empty)
+        {
+            return CommandResult.Failure(
+                "Page ID cannot be empty.");
+        }
+
+        var documentId = new DocumentId(command.DocumentId);
+        var pageId = new PageId(command.PageId);
+
+        var document = await _documentRepository.GetByIdAsync(
+            documentId,
+            cancellationToken);
+
+        if (document is null)
+        {
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+        }
+
+        var page = await _pageRepository.GetByIdAsync(
+            pageId,
+            cancellationToken);
+
+        if (page is null)
+        {
+            return CommandResult.Failure(
+                $"Page '{command.PageId}' was not found.");
+        }
+
+        try
+        {
+            document.AddPage(page.Id);
+        }
+        catch (InvalidOperationException exception)
+        {
+            return CommandResult.Failure(exception.Message);
+        }
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class AddPrototypeToDocumentHandler
+    : ICommandHandler<AddPrototypeToDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+    private readonly IPrototypeRepository _prototypeRepository;
+
+    public AddPrototypeToDocumentHandler(
+        IDocumentRepository documentRepository,
+        IPrototypeRepository prototypeRepository)
+    {
+        _documentRepository = documentRepository;
+        _prototypeRepository = prototypeRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        AddPrototypeToDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+            return CommandResult.Failure("Document ID cannot be empty.");
+
+        if (command.PrototypeId == Guid.Empty)
+            return CommandResult.Failure("Prototype ID cannot be empty.");
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+
+        var prototypeExists = await _prototypeRepository.ExistsAsync(
+            new PrototypeId(command.PrototypeId),
+            cancellationToken);
+
+        if (!prototypeExists)
+            return CommandResult.Failure(
+                $"Prototype '{command.PrototypeId}' was not found.");
+
+        try
+        {
+            document.AddPrototype(
+                new PrototypeId(command.PrototypeId));
+        }
+        catch (InvalidOperationException exception)
+        {
+            return CommandResult.Failure(exception.Message);
+        }
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class AddVariableToDocumentHandler
+    : ICommandHandler<AddVariableToDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+    private readonly IVariableRepository _variableRepository;
+
+    public AddVariableToDocumentHandler(
+        IDocumentRepository documentRepository,
+        IVariableRepository variableRepository)
+    {
+        _documentRepository = documentRepository;
+        _variableRepository = variableRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        AddVariableToDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+            return CommandResult.Failure("Document ID cannot be empty.");
+
+        if (command.VariableId == Guid.Empty)
+            return CommandResult.Failure("Variable ID cannot be empty.");
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+
+        var variableExists = await _variableRepository.ExistsAsync(
+            new VariableId(command.VariableId),
+            cancellationToken);
+
+        if (!variableExists)
+            return CommandResult.Failure(
+                $"Variable '{command.VariableId}' was not found.");
+
+        try
+        {
+            document.AddVariable(new VariableId(command.VariableId));
+        }
+        catch (InvalidOperationException exception)
+        {
+            return CommandResult.Failure(exception.Message);
+        }
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class CreateDocumentHandler
+    : ICommandHandler<CreateDocumentCommand, Document>
+{
+    private readonly IDocumentRepository _repository;
+
+    public CreateDocumentHandler(IDocumentRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task<CommandResult<Document>> HandleAsync(
+        CreateDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+        {
+            return CommandResult<Document>.Failure(
+                "Document ID cannot be empty.");
+        }
+
+        var requestedId = new DocumentId(command.DocumentId);
+
+        var existingDocument = await _repository.GetByIdAsync(
+            requestedId,
+            cancellationToken);
+
+        if (existingDocument is not null)
+        {
+            return CommandResult<Document>.Failure(
+                $"Document '{command.DocumentId}' already exists.");
+        }
+
+        var document = Document.Create(requestedId);
+
+        await _repository.AddAsync(
+            document,
+            cancellationToken);
+
+        return CommandResult<Document>.Success(document);
+    }
+}
+
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class DeleteDocumentHandler
+    : ICommandHandler<DeleteDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+
+    public DeleteDocumentHandler(
+        IDocumentRepository documentRepository)
+    {
+        _documentRepository = documentRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        DeleteDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+        {
+            return CommandResult.Failure(
+                "Document ID cannot be empty.");
+        }
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+        {
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+        }
+
+        var deleted = await _documentRepository.DeleteAsync(
+            document.Id,
+            cancellationToken);
+
+        if (!deleted)
+        {
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' could not be deleted.");
+        }
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Contracts.Queries;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class GetDocumentByIdHandler
+    : IQueryHandler<GetDocumentByIdQuery, DocumentDto>
+{
+    private readonly IDocumentRepository _documentRepository;
+
+    public GetDocumentByIdHandler(
+        IDocumentRepository documentRepository)
+    {
+        _documentRepository = documentRepository;
+    }
+
+    public async Task<QueryResult<DocumentDto>> HandleAsync(
+        GetDocumentByIdQuery query,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (query.DocumentId == Guid.Empty)
+        {
+            return QueryResult<DocumentDto>.Failure(
+                "Document ID cannot be empty.");
+        }
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(query.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+        {
+            return QueryResult<DocumentDto>.Failure(
+                $"Document '{query.DocumentId}' was not found.");
+        }
+
+        var result = new DocumentDto(
+            document.Id.Value,
+            document.PageIds.Select(x => x.Value).ToArray(),
+            document.AssetIds.Select(x => x.Value).ToArray(),
+            document.VariableIds.Select(x => x.Value).ToArray(),
+            document.PrototypeIds.Select(x => x.Value).ToArray(),
+            document.ReferenceIds.Select(x => x.Value).ToArray(),
+            document.ComponentIds.Select(x => x.Value).ToArray());
+
+        return QueryResult<DocumentDto>.Success(result);
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Contracts.Queries;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class GetDocumentsHandler
+    : IQueryHandler<GetDocumentsQuery, IReadOnlyList<DocumentDto>>
+{
+    private readonly IDocumentRepository _documentRepository;
+
+    public GetDocumentsHandler(
+        IDocumentRepository documentRepository)
+    {
+        _documentRepository = documentRepository;
+    }
+
+    public async Task<QueryResult<IReadOnlyList<DocumentDto>>> HandleAsync(
+        GetDocumentsQuery query,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var documents = await _documentRepository.GetAllAsync(
+            cancellationToken);
+
+        var result = documents
+            .Select(document => new DocumentDto(
+                document.Id.Value,
+                document.PageIds.Select(x => x.Value).ToArray(),
+                document.AssetIds.Select(x => x.Value).ToArray(),
+                document.VariableIds.Select(x => x.Value).ToArray(),
+                document.PrototypeIds.Select(x => x.Value).ToArray(),
+                document.ReferenceIds.Select(x => x.Value).ToArray(),
+                document.ComponentIds.Select(x => x.Value).ToArray()))
+            .ToArray();
+
+        return QueryResult<IReadOnlyList<DocumentDto>>.Success(result);
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class RemoveAssetFromDocumentHandler
+    : ICommandHandler<RemoveAssetFromDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+    private readonly IAssetRepository _assetRepository;
+
+    public RemoveAssetFromDocumentHandler(
+        IDocumentRepository documentRepository,
+        IAssetRepository assetRepository)
+    {
+        _documentRepository = documentRepository;
+        _assetRepository = assetRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        RemoveAssetFromDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+            return CommandResult.Failure(
+                "Document ID cannot be empty.");
+
+        if (command.AssetId == Guid.Empty)
+            return CommandResult.Failure(
+                "Asset ID cannot be empty.");
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+
+        var assetExists = await _assetRepository.ExistsAsync(
+            new AssetId(command.AssetId),
+            cancellationToken);
+
+        if (!assetExists)
+            return CommandResult.Failure(
+                $"Asset '{command.AssetId}' was not found.");
+
+        try
+        {
+            document.RemoveAsset(new AssetId(command.AssetId));
+        }
+        catch (InvalidOperationException exception)
+        {
+            return CommandResult.Failure(exception.Message);
+        }
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class RemoveComponentFromDocumentHandler
+    : ICommandHandler<RemoveComponentFromDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+
+    public RemoveComponentFromDocumentHandler(
+        IDocumentRepository documentRepository)
+    {
+        _documentRepository = documentRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        RemoveComponentFromDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+            return CommandResult.Failure(
+                "Document ID cannot be empty.");
+
+        if (command.ComponentId == Guid.Empty)
+            return CommandResult.Failure(
+                "Component ID cannot be empty.");
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+
+        document.RemoveComponent(
+            new ComponentId(command.ComponentId));
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class RemovePageFromDocumentHandler
+    : ICommandHandler<RemovePageFromDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+
+    public RemovePageFromDocumentHandler(
+        IDocumentRepository documentRepository)
+    {
+        _documentRepository = documentRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        RemovePageFromDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+            return CommandResult.Failure(
+                "Document ID cannot be empty.");
+
+        if (command.PageId == Guid.Empty)
+            return CommandResult.Failure(
+                "Page ID cannot be empty.");
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+
+        document.RemovePage(new PageId(command.PageId));
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class RemovePrototypeFromDocumentHandler
+    : ICommandHandler<RemovePrototypeFromDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+
+    public RemovePrototypeFromDocumentHandler(
+        IDocumentRepository documentRepository)
+    {
+        _documentRepository = documentRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        RemovePrototypeFromDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+            return CommandResult.Failure("Document ID cannot be empty.");
+
+        if (command.PrototypeId == Guid.Empty)
+            return CommandResult.Failure("Prototype ID cannot be empty.");
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+
+        document.RemovePrototype(
+            new PrototypeId(command.PrototypeId));
+
+        return CommandResult.Success();
+    }
+}
+
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Contracts.Commands;
+using RapidCMS.Contracts.Documents;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Application.Documents;
+
+public sealed class RemoveVariableFromDocumentHandler
+    : ICommandHandler<RemoveVariableFromDocumentCommand>
+{
+    private readonly IDocumentRepository _documentRepository;
+
+    public RemoveVariableFromDocumentHandler(
+        IDocumentRepository documentRepository)
+    {
+        _documentRepository = documentRepository;
+    }
+
+    public async Task<CommandResult> HandleAsync(
+        RemoveVariableFromDocumentCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (command.DocumentId == Guid.Empty)
+            return CommandResult.Failure("Document ID cannot be empty.");
+
+        if (command.VariableId == Guid.Empty)
+            return CommandResult.Failure("Variable ID cannot be empty.");
+
+        var document = await _documentRepository.GetByIdAsync(
+            new DocumentId(command.DocumentId),
+            cancellationToken);
+
+        if (document is null)
+            return CommandResult.Failure(
+                $"Document '{command.DocumentId}' was not found.");
+
+        document.RemoveVariable(new VariableId(command.VariableId));
+
+        return CommandResult.Success();
+    }
+}
+
+// <autogenerated />
+using System;
+using System.Reflection;
+[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
+
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+
+[assembly: System.Reflection.AssemblyCompanyAttribute("RapidCMS.Application")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16199c838c8140ae8cc86d75f3b55f79e2348088")]
+[assembly: System.Reflection.AssemblyProductAttribute("RapidCMS.Application")]
+[assembly: System.Reflection.AssemblyTitleAttribute("RapidCMS.Application")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+
+// Generated by the MSBuild WriteCodeFragment class.
+
+
+// <auto-generated/>
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Net.Http;
+global using System.Threading;
+global using System.Threading.Tasks;
+
+namespace RapidCMS.Contracts.Commands;
+
+public sealed record CommandResult(
+    bool Succeeded,
+    IReadOnlyList<string> Errors)
+{
+    public static CommandResult Success() =>
+        new(true, Array.Empty<string>());
+
+    public static CommandResult Failure(params string[] errors) =>
+        new(false, errors);
+}
+
+namespace RapidCMS.Contracts.Commands;
+
+public sealed record CommandResult<TResult>(
+    bool Succeeded,
+    TResult? Data,
+    IReadOnlyList<string> Errors)
+{
+    public static CommandResult<TResult> Success(TResult data) =>
+        new(true, data, Array.Empty<string>());
+
+    public static CommandResult<TResult> Failure(params string[] errors) =>
+        new(false, default, errors);
+}
+
+namespace RapidCMS.Contracts.Commands;
+
+public interface ICommand
+{
+}
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record AddAssetToDocumentCommand(
+    Guid DocumentId,
+    Guid AssetId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record AddComponentToDocumentCommand(
+    Guid DocumentId,
+    Guid ComponentId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record AddPageToDocumentCommand(
+    Guid DocumentId,
+    Guid PageId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record AddPrototypeToDocumentCommand(
+    Guid DocumentId,
+    Guid PrototypeId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record AddVariableToDocumentCommand(
+    Guid DocumentId,
+    Guid VariableId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record CreateDocumentCommand(
+    Guid DocumentId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record DeleteDocumentCommand(
+    Guid DocumentId) : ICommand;
+
+using RapidCMS.Contracts.Queries;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record DocumentDto(
+    Guid Id,
+    IReadOnlyList<Guid> PageIds,
+    IReadOnlyList<Guid> AssetIds,
+    IReadOnlyList<Guid> VariableIds,
+    IReadOnlyList<Guid> PrototypeIds,
+    IReadOnlyList<Guid> ReferenceIds,
+    IReadOnlyList<Guid> ComponentIds);
+
+public sealed record GetDocumentByIdQuery(
+    Guid DocumentId) : IQuery<DocumentDto>;
+
+using RapidCMS.Contracts.Queries;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record GetDocumentsQuery
+    : IQuery<IReadOnlyList<DocumentDto>>;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record RemoveAssetFromDocumentCommand(
+    Guid DocumentId,
+    Guid AssetId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record RemoveComponentFromDocumentCommand(
+    Guid DocumentId,
+    Guid ComponentId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record RemovePageFromDocumentCommand(
+    Guid DocumentId,
+    Guid PageId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record RemovePrototypeFromDocumentCommand(
+    Guid DocumentId,
+    Guid PrototypeId) : ICommand;
+
+using RapidCMS.Contracts.Commands;
+
+namespace RapidCMS.Contracts.Documents;
+
+public sealed record RemoveVariableFromDocumentCommand(
+    Guid DocumentId,
+    Guid VariableId) : ICommand;
+
+namespace RapidCMS.Contracts.Nodes;
+
+public sealed record CreateNodeRequest(
+    string Name,
+    Guid? ParentId);
+
+namespace RapidCMS.Contracts.Nodes;
+
+public sealed record MoveNodeRequest(
+    Guid? NewParentId,
+    int? Index);
+
+namespace RapidCMS.Contracts.Nodes;
+
+public sealed record NodeDto(
+    Guid Id,
+    string Name,
+    Guid? ParentId,
+    Guid? ComponentId,
+    Guid? StyleId,
+    IReadOnlyList<Guid> Children);
+
+namespace RapidCMS.Contracts.Nodes;
+
+public sealed record UpdateNodeRequest(
+    string Name);
+
+// <autogenerated />
+using System;
+using System.Reflection;
+[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
+
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+
+[assembly: System.Reflection.AssemblyCompanyAttribute("RapidCMS.Contracts")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16199c838c8140ae8cc86d75f3b55f79e2348088")]
+[assembly: System.Reflection.AssemblyProductAttribute("RapidCMS.Contracts")]
+[assembly: System.Reflection.AssemblyTitleAttribute("RapidCMS.Contracts")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+
+// Generated by the MSBuild WriteCodeFragment class.
+
+
+// <auto-generated/>
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Net.Http;
+global using System.Threading;
+global using System.Threading.Tasks;
+
+namespace RapidCMS.Contracts.Queries;
+
+public interface IQuery<TResult>
+{
+}
+
+namespace RapidCMS.Contracts.Queries;
+
+public sealed record QueryResult<TResult>(
+    bool Succeeded,
+    TResult? Data,
+    IReadOnlyList<string> Errors)
+{
+    public static QueryResult<TResult> Success(TResult data) =>
+        new(true, data, Array.Empty<string>());
+
+    public static QueryResult<TResult> Failure(params string[] errors) =>
+        new(false, default, errors);
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Assets;
+
+public sealed class Asset : Entity<AssetId>
+{
+    public string Name { get; private set; }
+
+    public string Source { get; private set; }
+
+    private Asset(
+        AssetId id,
+        string name,
+        string source)
+        : base(id)
+    {
+        Name = name;
+        Source = source;
+    }
+
+    public static Asset Create(
+        string name,
+        string source)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Asset name cannot be empty.",
+                nameof(name));
+
+        if (string.IsNullOrWhiteSpace(source))
+            throw new ArgumentException(
+                "Asset source cannot be empty.",
+                nameof(source));
+
+        return new Asset(
+            AssetId.New(),
+            name.Trim(),
+            source.Trim());
+    }
+
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Asset name cannot be empty.",
+                nameof(name));
+
+        Name = name.Trim();
+    }
+
+    public void ChangeSource(string source)
+    {
+        if (string.IsNullOrWhiteSpace(source))
+            throw new ArgumentException(
+                "Asset source cannot be empty.",
+                nameof(source));
+
+        Source = source.Trim();
+    }
+}
+
+namespace RapidCMS.Domain.Common;
+
+public class DomainException : Exception
+{
+    public DomainException(string message)
+        : base(message)
+    {
+    }
+
+    public DomainException(string message, Exception innerException)
+        : base(message, innerException)
+    {
+    }
+}
+
+namespace RapidCMS.Domain.Common;
+
+public abstract class Entity<TId>
+{
+    public TId Id { get; }
+
+    protected Entity(TId id)
+    {
+        Id = id;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(this, obj))
+            return true;
+
+        if (obj is not Entity<TId> other)
+            return false;
+
+        return EqualityComparer<TId>.Default.Equals(Id, other.Id);
+    }
+
+    public override int GetHashCode()
+    {
+        return EqualityComparer<TId>.Default.GetHashCode(Id!);
+    }
+
+    public static bool operator ==(Entity<TId>? left, Entity<TId>? right)
+    {
+        return EqualityComparer<Entity<TId>?>.Default.Equals(left, right);
+    }
+
+    public static bool operator !=(Entity<TId>? left, Entity<TId>? right)
+    {
+        return !(left == right);
+    }
+}
+
+namespace RapidCMS.Domain.Common;
+
+public abstract class ValueObject
+{
+    protected abstract IEnumerable<object?> GetEqualityComponents();
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(this, obj))
+            return true;
+
+        if (obj is not ValueObject other)
+            return false;
+
+        return GetEqualityComponents()
+            .SequenceEqual(other.GetEqualityComponents());
+    }
+
+    public override int GetHashCode()
+    {
+        return GetEqualityComponents()
+            .Aggregate(
+                0,
+                (current, component) =>
+                    HashCode.Combine(current, component));
+    }
+
+    public static bool operator ==(ValueObject? left, ValueObject? right)
+    {
+        return EqualityComparer<ValueObject?>.Default.Equals(left, right);
+    }
+
+    public static bool operator !=(ValueObject? left, ValueObject? right)
+    {
+        return !(left == right);
+    }
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.References;
+
+namespace RapidCMS.Domain.Components;
+
+public sealed class Component : Entity<NodeId>
+{
+    private readonly List<ComponentProperty> _properties = new();
+    private readonly List<ComponentBehavior> _behaviors = new();
+    private readonly List<NodeReference> _references = new();
+
+    public ComponentType Type { get; private set; }
+
+    public IReadOnlyList<ComponentProperty> Properties => _properties;
+
+    public IReadOnlyList<ComponentBehavior> Behaviors => _behaviors;
+
+    public IReadOnlyList<NodeReference> References => _references;
+
+    private Component(NodeId nodeId, ComponentType type)
+        : base(nodeId)
+    {
+        Type = type;
+    }
+
+    public static Component Create(NodeId nodeId, ComponentType type)
+    {
+        if (nodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Node ID cannot be empty.",
+                nameof(nodeId));
+
+        return new Component(nodeId, type);
+    }
+
+    public void ChangeType(ComponentType type)
+    {
+        Type = type;
+    }
+
+    public void SetProperty(ComponentProperty property)
+    {
+        ArgumentNullException.ThrowIfNull(property);
+
+        var existingIndex = _properties.FindIndex(
+            p => p.Name == property.Name);
+
+        if (existingIndex >= 0)
+            _properties[existingIndex] = property;
+        else
+            _properties.Add(property);
+    }
+
+    public void RemoveProperty(string name)
+    {
+        _properties.RemoveAll(p => p.Name == name);
+    }
+
+    public void AddBehavior(ComponentBehavior behavior)
+    {
+        if (_behaviors.Contains(behavior))
+            return;
+
+        _behaviors.Add(behavior);
+    }
+
+    public void RemoveBehavior(ComponentBehavior behavior)
+    {
+        _behaviors.Remove(behavior);
+    }
+
+    public void AddReference(NodeReference reference)
+    {
+        ArgumentNullException.ThrowIfNull(reference);
+
+        if (_references.Contains(reference))
+            return;
+
+        _references.Add(reference);
+    }
+
+    public void RemoveReference(NodeReference reference)
+    {
+        _references.Remove(reference);
+    }
+}
+
+namespace RapidCMS.Domain.Components;
+
+public readonly record struct ComponentBehavior(string Name)
+{
+    public static ComponentBehavior Create(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Behavior name cannot be empty.",
+                nameof(name));
+
+        return new ComponentBehavior(name.Trim());
+    }
+
+    public override string ToString() => Name;
+}
+
+using RapidCMS.Domain.Common;
+
+namespace RapidCMS.Domain.Components;
+
+public sealed class ComponentProperty : ValueObject
+{
+    public string Name { get; }
+    public string Value { get; }
+
+    private ComponentProperty(string name, string value)
+    {
+        Name = name;
+        Value = value;
+    }
+
+    public static ComponentProperty Create(string name, string value)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Property name cannot be empty.",
+                nameof(name));
+
+        return new ComponentProperty(name.Trim(), value ?? string.Empty);
+    }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return Name;
+        yield return Value;
+    }
+}
+
+namespace RapidCMS.Domain.Components;
+
+public readonly record struct ComponentType(string Value)
+{
+    public static ComponentType Create(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException(
+                "Component type cannot be empty.",
+                nameof(value));
+
+        return new ComponentType(value.Trim());
+    }
+
+    public override string ToString() => Value;
+}
+
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Documents;
+
+public sealed partial class Document
+{
+    public void AddComponent(ComponentId componentId)
+    {
+        if (componentId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Component ID cannot be empty.",
+                nameof(componentId));
+
+        if (ComponentIds.Contains(componentId))
+            throw new InvalidOperationException(
+                $"Component '{componentId.Value}' is already attached to this document.");
+
+        _componentIds.Add(componentId);
+    }
+
+    public void RemoveComponent(ComponentId componentId)
+    {
+        _componentIds.Remove(componentId);
+    }
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Documents;
+
+public sealed partial class Document : Entity<DocumentId>
+{
+    private readonly List<PageId> _pageIds = new();
+    private readonly List<AssetId> _assetIds = new();
+    private readonly List<VariableId> _variableIds = new();
+    private readonly List<PrototypeId> _prototypeIds = new();
+    private readonly List<ReferenceId> _referenceIds = new();
+    private readonly List<ComponentId> _componentIds = new();
+
+    public ProjectId ProjectId { get; }
+
+    public IReadOnlyList<PageId> PageIds => _pageIds;
+    public IReadOnlyList<AssetId> AssetIds => _assetIds;
+    public IReadOnlyList<VariableId> VariableIds => _variableIds;
+    public IReadOnlyList<PrototypeId> PrototypeIds => _prototypeIds;
+    public IReadOnlyList<ReferenceId> ReferenceIds => _referenceIds;
+    public IReadOnlyList<ComponentId> ComponentIds => _componentIds;
+
+    private Document(
+        DocumentId id,
+        ProjectId projectId)
+        : base(id)
+    {
+        if (id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Document ID cannot be empty.",
+                nameof(id));
+
+        if (projectId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Project ID cannot be empty.",
+                nameof(projectId));
+
+        ProjectId = projectId;
+    }
+
+    public static Document Create()
+    {
+        return new Document(
+            DocumentId.New(),
+            ProjectId.New());
+    }
+    public static Document Create(DocumentId id)
+    {
+        if (id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Document ID cannot be empty.",
+                nameof(id));
+
+        return new Document(id, ProjectId.New());
+    }
+    public static Document Create(ProjectId projectId)
+    {
+        if (projectId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Project ID cannot be empty.",
+                nameof(projectId));
+
+        return new Document(
+            DocumentId.New(),
+            projectId);
+    }
+
+    public static Document Create(
+        DocumentId id,
+        ProjectId projectId)
+    {
+        return new Document(id, projectId);
+    }
+
+    public void AddPage(PageId pageId)
+    {
+        if (pageId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Page ID cannot be empty.",
+                nameof(pageId));
+
+        if (_pageIds.Contains(pageId))
+            throw new InvalidOperationException(
+                $"Page '{pageId}' is already part of the document.");
+
+        _pageIds.Add(pageId);
+    }
+
+    public void RemovePage(PageId pageId)
+    {
+        _pageIds.Remove(pageId);
+    }
+
+    public void AddAsset(AssetId assetId)
+    {
+        if (assetId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Asset ID cannot be empty.",
+                nameof(assetId));
+
+        if (_assetIds.Contains(assetId))
+            throw new InvalidOperationException(
+                $"Asset '{assetId}' is already part of the document.");
+
+        _assetIds.Add(assetId);
+    }
+
+    public void RemoveAsset(AssetId assetId)
+    {
+        _assetIds.Remove(assetId);
+    }
+
+    public void AddVariable(VariableId variableId)
+    {
+        if (variableId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Variable ID cannot be empty.",
+                nameof(variableId));
+
+        if (_variableIds.Contains(variableId))
+            throw new InvalidOperationException(
+                $"Variable '{variableId}' is already part of the document.");
+
+        _variableIds.Add(variableId);
+    }
+
+    public void RemoveVariable(VariableId variableId)
+    {
+        _variableIds.Remove(variableId);
+    }
+
+    public void AddPrototype(PrototypeId prototypeId)
+    {
+        if (prototypeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Prototype ID cannot be empty.",
+                nameof(prototypeId));
+
+        if (_prototypeIds.Contains(prototypeId))
+            throw new InvalidOperationException(
+                $"Prototype '{prototypeId}' is already part of the document.");
+
+        _prototypeIds.Add(prototypeId);
+    }
+
+    public void RemovePrototype(PrototypeId prototypeId)
+    {
+        _prototypeIds.Remove(prototypeId);
+    }
+
+    public void AddReference(ReferenceId referenceId)
+    {
+        if (referenceId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Reference ID cannot be empty.",
+                nameof(referenceId));
+
+        if (_referenceIds.Contains(referenceId))
+            throw new InvalidOperationException(
+                $"Reference '{referenceId}' is already part of the document.");
+
+        _referenceIds.Add(referenceId);
+    }
+
+    public void RemoveReference(ReferenceId referenceId)
+    {
+        _referenceIds.Remove(referenceId);
+    }
+
+
+    public bool ContainsPage(PageId pageId) =>
+        _pageIds.Contains(pageId);
+
+    public bool ContainsAsset(AssetId assetId) =>
+        _assetIds.Contains(assetId);
+
+    public bool ContainsVariable(VariableId variableId) =>
+        _variableIds.Contains(variableId);
+
+    public bool ContainsPrototype(PrototypeId prototypeId) =>
+        _prototypeIds.Contains(prototypeId);
+
+    public bool ContainsReference(ReferenceId referenceId) =>
+        _referenceIds.Contains(referenceId);
+
+    public bool ContainsComponent(ComponentId componentId) =>
+        _componentIds.Contains(componentId);
+}
+
+
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct AssetId : IEquatable<AssetId>
+{
+    public Guid Value { get; }
+
+    public AssetId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "AssetId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static AssetId New() => new(Guid.NewGuid());
+
+    public bool Equals(AssetId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is AssetId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        AssetId left,
+        AssetId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        AssetId left,
+        AssetId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct ComponentId : IEquatable<ComponentId>
+{
+    public Guid Value { get; }
+
+    public ComponentId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "ComponentId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static ComponentId New() => new(Guid.NewGuid());
+
+    public bool Equals(ComponentId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is ComponentId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        ComponentId left,
+        ComponentId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        ComponentId left,
+        ComponentId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct ComponentSetId : IEquatable<ComponentSetId>
+{
+    public Guid Value { get; }
+
+    public ComponentSetId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "ComponentSetId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static ComponentSetId New() => new(Guid.NewGuid());
+
+    public bool Equals(ComponentSetId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is ComponentSetId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        ComponentSetId left,
+        ComponentSetId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        ComponentSetId left,
+        ComponentSetId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct DocumentId : IEquatable<DocumentId>
+{
+    public Guid Value { get; }
+
+    public DocumentId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException("Document ID cannot be empty.", nameof(value));
+
+        Value = value;
+    }
+
+    public static DocumentId New() => new(Guid.NewGuid());
+
+    public bool Equals(DocumentId other) => Value == other.Value;
+    public override bool Equals(object? obj) => obj is DocumentId other && Equals(other);
+    public override int GetHashCode() => Value.GetHashCode();
+    public override string ToString() => Value.ToString();
+    public static bool operator ==(DocumentId left, DocumentId right) => left.Equals(right);
+    public static bool operator !=(DocumentId left, DocumentId right) => !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct InstanceId : IEquatable<InstanceId>
+{
+    public Guid Value { get; }
+
+    public InstanceId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "InstanceId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static InstanceId New() => new(Guid.NewGuid());
+
+    public bool Equals(InstanceId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is InstanceId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        InstanceId left,
+        InstanceId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        InstanceId left,
+        InstanceId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct InteractionId : IEquatable<InteractionId>
+{
+    public Guid Value { get; }
+
+    public InteractionId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "InteractionId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static InteractionId New() => new(Guid.NewGuid());
+
+    public bool Equals(InteractionId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is InteractionId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        InteractionId left,
+        InteractionId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        InteractionId left,
+        InteractionId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct NodeId : IEquatable<NodeId>
+{
+    public Guid Value { get; }
+
+    public NodeId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException("Node ID cannot be empty.", nameof(value));
+
+        Value = value;
+    }
+
+    public static NodeId New() => new(Guid.NewGuid());
+
+    public bool Equals(NodeId other) => Value == other.Value;
+    public override bool Equals(object? obj) => obj is NodeId other && Equals(other);
+    public override int GetHashCode() => Value.GetHashCode();
+    public override string ToString() => Value.ToString();
+    public static bool operator ==(NodeId left, NodeId right) => left.Equals(right);
+    public static bool operator !=(NodeId left, NodeId right) => !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct PageId : IEquatable<PageId>
+{
+    public Guid Value { get; }
+
+    public PageId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException("Page ID cannot be empty.", nameof(value));
+
+        Value = value;
+    }
+
+    public static PageId New() => new(Guid.NewGuid());
+
+    public bool Equals(PageId other) => Value == other.Value;
+    public override bool Equals(object? obj) => obj is PageId other && Equals(other);
+    public override int GetHashCode() => Value.GetHashCode();
+    public override string ToString() => Value.ToString();
+    public static bool operator ==(PageId left, PageId right) => left.Equals(right);
+    public static bool operator !=(PageId left, PageId right) => !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct ProjectId : IEquatable<ProjectId>
+{
+    public Guid Value { get; }
+
+    public ProjectId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "ProjectId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static ProjectId New() => new(Guid.NewGuid());
+
+    public bool Equals(ProjectId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is ProjectId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        ProjectId left,
+        ProjectId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        ProjectId left,
+        ProjectId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct PrototypeId : IEquatable<PrototypeId>
+{
+    public Guid Value { get; }
+
+    public PrototypeId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "PrototypeId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static PrototypeId New() => new(Guid.NewGuid());
+
+    public bool Equals(PrototypeId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is PrototypeId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        PrototypeId left,
+        PrototypeId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        PrototypeId left,
+        PrototypeId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct ReferenceId : IEquatable<ReferenceId>
+{
+    public Guid Value { get; }
+
+    public ReferenceId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "ReferenceId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static ReferenceId New() => new(Guid.NewGuid());
+
+    public bool Equals(ReferenceId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is ReferenceId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        ReferenceId left,
+        ReferenceId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        ReferenceId left,
+        ReferenceId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct StyleId : IEquatable<StyleId>
+{
+    public Guid Value { get; }
+
+    public StyleId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "StyleId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static StyleId New() => new(Guid.NewGuid());
+
+    public bool Equals(StyleId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is StyleId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        StyleId left,
+        StyleId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        StyleId left,
+        StyleId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct TokenId : IEquatable<TokenId>
+{
+    public Guid Value { get; }
+
+    public TokenId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "TokenId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static TokenId New() => new(Guid.NewGuid());
+
+    public bool Equals(TokenId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is TokenId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        TokenId left,
+        TokenId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        TokenId left,
+        TokenId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct VariableId : IEquatable<VariableId>
+{
+    public Guid Value { get; }
+
+    public VariableId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "VariableId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static VariableId New() => new(Guid.NewGuid());
+
+    public bool Equals(VariableId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is VariableId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        VariableId left,
+        VariableId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        VariableId left,
+        VariableId right) =>
+        !left.Equals(right);
+}
+
+namespace RapidCMS.Domain.Identity;
+
+public readonly struct VariantId : IEquatable<VariantId>
+{
+    public Guid Value { get; }
+
+    public VariantId(Guid value)
+    {
+        if (value == Guid.Empty)
+            throw new ArgumentException(
+                "VariantId cannot be empty.",
+                nameof(value));
+
+        Value = value;
+    }
+
+    public static VariantId New() => new(Guid.NewGuid());
+
+    public bool Equals(VariantId other) => Value == other.Value;
+
+    public override bool Equals(object? obj) =>
+        obj is VariantId other && Equals(other);
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public override string ToString() =>
+        Value.ToString();
+
+    public static bool operator ==(
+        VariantId left,
+        VariantId right) =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        VariantId left,
+        VariantId right) =>
+        !left.Equals(right);
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Components;
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.Styles;
+
+namespace RapidCMS.Domain.Nodes;
+
+public sealed class Node : Entity<NodeId>
+{
+    private readonly List<NodeId> _children = new();
+    private Node? _parent;
+
+    public string Name { get; private set; }
+
+    public NodeId? ParentId => _parent?.Id;
+
+    public Component? Component { get; private set; }
+
+    public Style? Style { get; private set; }
+
+    public IReadOnlyList<NodeId> Children => _children;
+
+    private Node(NodeId id, string name)
+        : base(id)
+    {
+        Name = name;
+    }
+
+    public static Node Create(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Node name cannot be empty.",
+                nameof(name));
+
+        return new Node(NodeId.New(), name);
+    }
+
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Node name cannot be empty.",
+                nameof(name));
+
+        Name = name;
+    }
+
+    public void AttachComponent(Component component)
+    {
+        ArgumentNullException.ThrowIfNull(component);
+
+        if (component.Id != Id)
+            throw new InvalidOperationException(
+                "Component must belong to this node.");
+
+        if (Component is not null)
+            throw new InvalidOperationException(
+                "Node already has a component.");
+
+        Component = component;
+    }
+
+    public void RemoveComponent()
+    {
+        Component = null;
+    }
+
+    public void AttachStyle(Style style)
+    {
+        ArgumentNullException.ThrowIfNull(style);
+
+        if (style.Id != Id)
+            throw new InvalidOperationException(
+                "Style must belong to this node.");
+
+        if (Style is not null)
+            throw new InvalidOperationException(
+                "Node already has a style.");
+
+        Style = style;
+    }
+
+    public void RemoveStyle()
+    {
+        Style = null;
+    }
+
+    public void AddChild(Node child)
+    {
+        ArgumentNullException.ThrowIfNull(child);
+
+        if (child.Id == Id)
+            throw new InvalidOperationException(
+                "A node cannot be its own child.");
+
+        if (_children.Contains(child.Id))
+            throw new InvalidOperationException(
+                $"Node '{child.Id}' is already a child.");
+
+        if (child._parent is not null)
+            throw new InvalidOperationException(
+                "Node already has another parent.");
+
+        var current = this;
+
+        while (current._parent is not null)
+        {
+            if (current._parent.Id == child.Id)
+                throw new InvalidOperationException(
+                    "Adding this child would create a cycle.");
+
+            current = current._parent;
+        }
+
+        _children.Add(child.Id);
+        child._parent = this;
+    }
+
+    public void RemoveChild(Node child)
+    {
+        ArgumentNullException.ThrowIfNull(child);
+
+        if (_children.Remove(child.Id) && child._parent == this)
+            child._parent = null;
+    }
+}
+
+// <autogenerated />
+using System;
+using System.Reflection;
+[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
+
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+
+[assembly: System.Reflection.AssemblyCompanyAttribute("RapidCMS.Domain")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16199c838c8140ae8cc86d75f3b55f79e2348088")]
+[assembly: System.Reflection.AssemblyProductAttribute("RapidCMS.Domain")]
+[assembly: System.Reflection.AssemblyTitleAttribute("RapidCMS.Domain")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+
+// Generated by the MSBuild WriteCodeFragment class.
+
+
+// <auto-generated/>
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Net.Http;
+global using System.Threading;
+global using System.Threading.Tasks;
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Pages;
+
+public sealed class Page : Entity<PageId>
+{
+    public DocumentId DocumentId { get; }
+
+    public string Name { get; private set; }
+
+    public NodeId? RootNodeId { get; private set; }
+
+    private Page(
+        PageId id,
+        DocumentId documentId,
+        string name)
+        : base(id)
+    {
+        if (documentId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Document ID cannot be empty.",
+                nameof(documentId));
+
+        DocumentId = documentId;
+        Name = name;
+    }
+
+    public static Page Create(
+        DocumentId documentId,
+        string name)
+    {
+        if (documentId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Document ID cannot be empty.",
+                nameof(documentId));
+
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Page name cannot be empty.",
+                nameof(name));
+
+        return new Page(
+            PageId.New(),
+            documentId,
+            name);
+    }
+
+    public static Page Create(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Page name cannot be empty.",
+                nameof(name));
+
+        return new Page(
+            PageId.New(),
+            DocumentId.New(),
+            name);
+    }
+
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Page name cannot be empty.",
+                nameof(name));
+
+        Name = name;
+    }
+
+    public void SetRootNode(NodeId rootNodeId)
+    {
+        if (rootNodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Root node ID cannot be empty.",
+                nameof(rootNodeId));
+
+        if (RootNodeId.HasValue)
+            throw new InvalidOperationException(
+                "Page already has a root node.");
+
+        RootNodeId = rootNodeId;
+    }
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Projects;
+
+public sealed class Project : Entity<ProjectId>
+{
+    private readonly List<DocumentId> _documentIds = new();
+
+    public IReadOnlyList<DocumentId> DocumentIds =>
+        _documentIds;
+
+    private Project(ProjectId id)
+        : base(id)
+    {
+    }
+
+    public static Project Create()
+    {
+        return new Project(ProjectId.New());
+    }
+
+    public static Project Create(ProjectId id)
+    {
+        if (id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Project ID cannot be empty.",
+                nameof(id));
+
+        return new Project(id);
+    }
+
+    public void AddDocument(DocumentId documentId)
+    {
+        if (documentId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Document ID cannot be empty.",
+                nameof(documentId));
+
+        if (_documentIds.Contains(documentId))
+            throw new InvalidOperationException(
+                $"Document '{documentId}' is already part of the project.");
+
+        _documentIds.Add(documentId);
+    }
+
+    public void RemoveDocument(DocumentId documentId)
+    {
+        _documentIds.Remove(documentId);
+    }
+
+    public bool ContainsDocument(DocumentId documentId)
+    {
+        return _documentIds.Contains(documentId);
+    }
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Prototypes;
+
+public sealed class PrototypeLink : Entity<PrototypeId>
+{
+    public NodeId SourceNodeId { get; }
+
+    public NodeId TargetNodeId { get; }
+
+    public string Action { get; private set; }
+
+    private PrototypeLink(
+        PrototypeId id,
+        NodeId sourceNodeId,
+        NodeId targetNodeId,
+        string action)
+        : base(id)
+    {
+        SourceNodeId = sourceNodeId;
+        TargetNodeId = targetNodeId;
+        Action = action;
+    }
+
+    public static PrototypeLink Create(
+        NodeId sourceNodeId,
+        NodeId targetNodeId,
+        string action)
+    {
+        if (sourceNodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Source node ID cannot be empty.",
+                nameof(sourceNodeId));
+
+        if (targetNodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Target node ID cannot be empty.",
+                nameof(targetNodeId));
+
+        if (sourceNodeId == targetNodeId)
+            throw new InvalidOperationException(
+                "A prototype link cannot target its source node.");
+
+        if (string.IsNullOrWhiteSpace(action))
+            throw new ArgumentException(
+                "Prototype action cannot be empty.",
+                nameof(action));
+
+        return new PrototypeLink(
+            PrototypeId.New(),
+            sourceNodeId,
+            targetNodeId,
+            action.Trim());
+    }
+
+    public void ChangeAction(string action)
+    {
+        if (string.IsNullOrWhiteSpace(action))
+            throw new ArgumentException(
+                "Prototype action cannot be empty.",
+                nameof(action));
+
+        Action = action.Trim();
+    }
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.References;
+
+public sealed class DocumentReference : Entity<ReferenceId>
+{
+    public string SourceType { get; }
+
+    public Guid SourceId { get; }
+
+    public string TargetType { get; }
+
+    public Guid TargetId { get; }
+
+    public string Relation { get; private set; }
+
+    private DocumentReference(
+        ReferenceId id,
+        string sourceType,
+        Guid sourceId,
+        string targetType,
+        Guid targetId,
+        string relation)
+        : base(id)
+    {
+        SourceType = sourceType;
+        SourceId = sourceId;
+        TargetType = targetType;
+        TargetId = targetId;
+        Relation = relation;
+    }
+
+    public static DocumentReference Create(
+        string sourceType,
+        Guid sourceId,
+        string targetType,
+        Guid targetId,
+        string relation)
+    {
+        if (string.IsNullOrWhiteSpace(sourceType))
+            throw new ArgumentException(
+                "Source type cannot be empty.",
+                nameof(sourceType));
+
+        if (sourceId == Guid.Empty)
+            throw new ArgumentException(
+                "Source ID cannot be empty.",
+                nameof(sourceId));
+
+        if (string.IsNullOrWhiteSpace(targetType))
+            throw new ArgumentException(
+                "Target type cannot be empty.",
+                nameof(targetType));
+
+        if (targetId == Guid.Empty)
+            throw new ArgumentException(
+                "Target ID cannot be empty.",
+                nameof(targetId));
+
+        if (sourceId == targetId)
+            throw new InvalidOperationException(
+                "A reference cannot target itself.");
+
+        if (string.IsNullOrWhiteSpace(relation))
+            throw new ArgumentException(
+                "Relation cannot be empty.",
+                nameof(relation));
+
+        return new DocumentReference(
+            ReferenceId.New(),
+            sourceType.Trim(),
+            sourceId,
+            targetType.Trim(),
+            targetId,
+            relation.Trim());
+    }
+
+    public void ChangeRelation(string relation)
+    {
+        if (string.IsNullOrWhiteSpace(relation))
+            throw new ArgumentException(
+                "Relation cannot be empty.",
+                nameof(relation));
+
+        Relation = relation.Trim();
+    }
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.References;
+
+public sealed class NodeReference : ValueObject
+{
+    public NodeId TargetNodeId { get; }
+
+    private NodeReference(NodeId targetNodeId)
+    {
+        TargetNodeId = targetNodeId;
+    }
+
+    public static NodeReference Create(NodeId targetNodeId)
+    {
+        if (targetNodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Target node ID cannot be empty.",
+                nameof(targetNodeId));
+
+        return new NodeReference(targetNodeId);
+    }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return TargetNodeId;
+    }
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Styles;
+
+public sealed class Style : Entity<NodeId>
+{
+    private readonly List<StyleProperty> _properties = new();
+
+    public IReadOnlyList<StyleProperty> Properties => _properties;
+
+    private Style(NodeId nodeId)
+        : base(nodeId)
+    {
+    }
+
+    public static Style Create(NodeId nodeId)
+    {
+        if (nodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Node ID cannot be empty.",
+                nameof(nodeId));
+
+        return new Style(nodeId);
+    }
+
+    public void SetProperty(StyleProperty property)
+    {
+        ArgumentNullException.ThrowIfNull(property);
+
+        var existingIndex = _properties.FindIndex(
+            p => p.Name == property.Name);
+
+        if (existingIndex >= 0)
+            _properties[existingIndex] = property;
+        else
+            _properties.Add(property);
+    }
+
+    public void RemoveProperty(string name)
+    {
+        _properties.RemoveAll(
+            p => p.Name == name);
+    }
+}
+
+using RapidCMS.Domain.Common;
+
+namespace RapidCMS.Domain.Styles;
+
+public sealed class StyleProperty : ValueObject
+{
+    public string Name { get; }
+
+    public string Value { get; }
+
+    private StyleProperty(
+        string name,
+        string value)
+    {
+        Name = name;
+        Value = value;
+    }
+
+    public static StyleProperty Create(
+        string name,
+        string value)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Style property name cannot be empty.",
+                nameof(name));
+
+        return new StyleProperty(
+            name.Trim(),
+            value ?? string.Empty);
+    }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return Name;
+        yield return Value;
+    }
+}
+
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Variables;
+
+public sealed class Variable : Entity<VariableId>
+{
+    public string Name { get; private set; }
+
+    public string Value { get; private set; }
+
+    private Variable(
+        VariableId id,
+        string name,
+        string value)
+        : base(id)
+    {
+        Name = name;
+        Value = value;
+    }
+
+    public static Variable Create(
+        string name,
+        string value)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Variable name cannot be empty.",
+                nameof(name));
+
+        return new Variable(
+            VariableId.New(),
+            name.Trim(),
+            value ?? string.Empty);
+    }
+
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Variable name cannot be empty.",
+                nameof(name));
+
+        Name = name.Trim();
+    }
+
+    public void SetValue(string value)
+    {
+        Value = value ?? string.Empty;
+    }
+}
+
+using RapidCMS.Engine.Runtime;
+
+namespace RapidCMS.Engine.Behaviors;
+
+public interface IRuntimeBehavior
+{
+    string Name { get; }
+
+    void Execute(
+        RuntimeNode node,
+        RuntimeBehaviorContext context);
+}
+
+namespace RapidCMS.Engine.Behaviors;
+
+public sealed class RuntimeBehaviorContext
+{
+    private readonly Dictionary<string, object?> _values = new();
+
+    public IReadOnlyDictionary<string, object?> Values => _values;
+
+    public void Set(string key, object? value)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException(
+                "Context key cannot be empty.",
+                nameof(key));
+
+        _values[key.Trim()] = value;
+    }
+
+    public bool TryGet(
+        string key,
+        out object? value)
+    {
+        return _values.TryGetValue(key, out value);
+    }
+}
+
+using RapidCMS.Engine.Runtime;
+
+namespace RapidCMS.Engine.Behaviors;
+
+public sealed class RuntimeBehaviorExecutor
+{
+    private readonly RuntimeBehaviorRegistry _registry;
+
+    public RuntimeBehaviorExecutor(RuntimeBehaviorRegistry registry)
+    {
+        _registry = registry
+            ?? throw new ArgumentNullException(nameof(registry));
+    }
+
+    public void Execute(
+        RuntimeNode node,
+        RuntimeBehaviorContext context)
+    {
+        ArgumentNullException.ThrowIfNull(node);
+        ArgumentNullException.ThrowIfNull(context);
+
+        if (node.Component is null)
+            return;
+
+        foreach (var behavior in node.Component.Behaviors)
+        {
+            var runtimeBehavior = _registry.Resolve(behavior.Name);
+
+            runtimeBehavior.Execute(
+                node,
+                context);
+        }
+    }
+}
+
+namespace RapidCMS.Engine.Behaviors;
+
+public sealed class RuntimeBehaviorRegistry
+{
+    private readonly Dictionary<string, IRuntimeBehavior> _behaviors =
+        new(StringComparer.OrdinalIgnoreCase);
+
+    public void Register(IRuntimeBehavior behavior)
+    {
+        ArgumentNullException.ThrowIfNull(behavior);
+
+        if (string.IsNullOrWhiteSpace(behavior.Name))
+            throw new ArgumentException(
+                "Behavior name cannot be empty.",
+                nameof(behavior));
+
+        if (!_behaviors.TryAdd(behavior.Name, behavior))
+        {
+            throw new InvalidOperationException(
+                $"Behavior '{behavior.Name}' is already registered.");
+        }
+    }
+
+    public bool TryResolve(
+        string name,
+        out IRuntimeBehavior? behavior)
+    {
+        return _behaviors.TryGetValue(name, out behavior);
+    }
+
+    public IRuntimeBehavior Resolve(string name)
+    {
+        if (!_behaviors.TryGetValue(name, out var behavior))
+        {
+            throw new InvalidOperationException(
+                $"Runtime behavior '{name}' is not registered.");
+        }
+
+        return behavior;
+    }
+}
+
+namespace RapidCMS.Engine.Behaviors;
+
+using RapidCMS.Engine.Runtime;
+
+public sealed class RuntimeTreeBehaviorExecutor
+{
+    private readonly RuntimeBehaviorExecutor _executor;
+
+    public RuntimeTreeBehaviorExecutor(
+        RuntimeBehaviorExecutor executor)
+    {
+        _executor = executor
+            ?? throw new ArgumentNullException(nameof(executor));
+    }
+
+    public void Execute(
+        RuntimeTree tree,
+        RuntimeBehaviorContext context)
+    {
+        ArgumentNullException.ThrowIfNull(tree);
+        ArgumentNullException.ThrowIfNull(context);
+
+        Visit(tree.Root, context);
+    }
+
+    private void Visit(
+        RuntimeNode node,
+        RuntimeBehaviorContext context)
+    {
+        _executor.Execute(node, context);
+
+        foreach (var child in node.Children)
+            Visit(child, context);
+    }
+}
+
+// <autogenerated />
+using System;
+using System.Reflection;
+[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
+
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+
+[assembly: System.Reflection.AssemblyCompanyAttribute("RapidCMS.Engine")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16199c838c8140ae8cc86d75f3b55f79e2348088")]
+[assembly: System.Reflection.AssemblyProductAttribute("RapidCMS.Engine")]
+[assembly: System.Reflection.AssemblyTitleAttribute("RapidCMS.Engine")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+
+// Generated by the MSBuild WriteCodeFragment class.
+
+
+// <auto-generated/>
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Net.Http;
+global using System.Threading;
+global using System.Threading.Tasks;
+
+using RapidCMS.Domain.Components;
+using RapidCMS.Domain.References;
+
+namespace RapidCMS.Engine.Runtime;
+
+public sealed class RuntimeComponent
+{
+    private readonly Dictionary<string, string?> _properties = new();
+    private readonly List<ComponentBehavior> _behaviors = new();
+    private readonly List<NodeReference> _references = new();
+
+    public string Type { get; }
+
+    public IReadOnlyDictionary<string, string?> Properties => _properties;
+
+    public IReadOnlyList<ComponentBehavior> Behaviors => _behaviors;
+
+    public IReadOnlyList<NodeReference> References => _references;
+
+    private RuntimeComponent(string type)
+    {
+        Type = type;
+    }
+
+    public static RuntimeComponent From(Component component)
+    {
+        ArgumentNullException.ThrowIfNull(component);
+
+        var runtime = new RuntimeComponent(
+            component.Type.ToString());
+
+        foreach (var property in component.Properties)
+            runtime._properties[property.Name] = property.Value;
+
+        foreach (var behavior in component.Behaviors)
+            runtime._behaviors.Add(behavior);
+
+        foreach (var reference in component.References)
+            runtime._references.Add(reference);
+
+        return runtime;
+    }
+}
+
+using RapidCMS.Domain.References;
+
+namespace RapidCMS.Engine.Runtime;
+
+public sealed class RuntimeComponentReferenceResolver
+{
+    private readonly RuntimeReferenceResolver _resolver;
+
+    public RuntimeComponentReferenceResolver(RuntimeTree tree)
+    {
+        ArgumentNullException.ThrowIfNull(tree);
+
+        _resolver = new RuntimeReferenceResolver(tree);
+    }
+
+    public IReadOnlyList<RuntimeNode> Resolve(RuntimeComponent component)
+    {
+        ArgumentNullException.ThrowIfNull(component);
+
+        var result = new List<RuntimeNode>();
+
+        foreach (var reference in component.References)
+        {
+            result.Add(
+                _resolver.Resolve(reference.TargetNodeId));
+        }
+
+        return result;
+    }
+}
+
+using RapidCMS.Domain.Documents;
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.Pages;
+
+namespace RapidCMS.Engine.Runtime;
+
+public sealed class RuntimeDocument
+{
+    public DocumentId Id { get; }
+
+    public IReadOnlyList<RuntimePage> Pages { get; }
+
+    private RuntimeDocument(
+        DocumentId id,
+        IReadOnlyList<RuntimePage> pages)
+    {
+        Id = id;
+        Pages = pages;
+    }
+
+    public static RuntimeDocument From(
+        Document document,
+        IReadOnlyDictionary<PageId, RuntimePage> pages)
+    {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(pages);
+
+        var runtimePages = new List<RuntimePage>();
+
+        foreach (var pageId in document.PageIds)
+        {
+            if (!pages.TryGetValue(pageId, out var page))
+            {
+                throw new InvalidOperationException(
+                    $"Runtime page '{pageId}' was not found.");
+            }
+
+            runtimePages.Add(page);
+        }
+
+        return new RuntimeDocument(
+            document.Id,
+            runtimePages);
+    }
+
+    public static RuntimeDocument From(
+        Document document,
+        IReadOnlyDictionary<Guid, RuntimePage> pages)
+    {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(pages);
+
+        var converted = new Dictionary<PageId, RuntimePage>();
+
+        foreach (var pair in pages)
+            converted[new PageId(pair.Key)] = pair.Value;
+
+        return From(document, converted);
+    }
+}
+
+using RapidCMS.Domain.Documents;
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.Nodes;
+using RapidCMS.Domain.Pages;
+
+namespace RapidCMS.Engine.Runtime;
+
+public static class RuntimeDocumentBuilder
+{
+    public static RuntimeDocument Build(
+        Document document,
+        IReadOnlyDictionary<PageId, Page> pages,
+        IReadOnlyDictionary<NodeId, Node> nodes)
+    {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(pages);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        var runtimePages = new Dictionary<PageId, RuntimePage>();
+
+        foreach (var pageId in document.PageIds)
+        {
+            if (!pages.TryGetValue(pageId, out var page))
+            {
+                throw new InvalidOperationException(
+                    $"Page '{pageId}' referenced by document '{document.Id}' was not found.");
+            }
+
+            runtimePages[pageId] = RuntimePage.From(
+                page,
+                nodes);
+        }
+
+        return RuntimeDocument.From(
+            document,
+            runtimePages);
+    }
+
+    public static RuntimeDocument Build(
+        Document document,
+        IReadOnlyDictionary<Guid, Page> pages,
+        IReadOnlyDictionary<Guid, Node> nodes)
+    {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(pages);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        var pageMap = new Dictionary<PageId, Page>();
+
+        foreach (var pair in pages)
+        {
+            pageMap[new PageId(pair.Key)] = pair.Value;
+        }
+
+        var nodeMap = new Dictionary<NodeId, Node>();
+
+        foreach (var pair in nodes)
+        {
+            nodeMap[new NodeId(pair.Key)] = pair.Value;
+        }
+
+        return Build(
+            document,
+            pageMap,
+            nodeMap);
+    }
+}
+
+using RapidCMS.Domain.Components;
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.Nodes;
+
+namespace RapidCMS.Engine.Runtime;
+
+public sealed class RuntimeNode
+{
+    private readonly List<RuntimeNode> _children = new();
+
+    public NodeId Id { get; }
+    public string Name { get; }
+    public RuntimeComponent? Component { get; }
+    public RuntimeStyle? Style { get; }
+
+    public IReadOnlyList<RuntimeNode> Children => _children;
+
+    private RuntimeNode(
+        NodeId id,
+        string name,
+        RuntimeComponent? component,
+        RuntimeStyle? style)
+    {
+        Id = id;
+        Name = name;
+        Component = component;
+        Style = style;
+    }
+
+    public static RuntimeNode From(Node node)
+    {
+        ArgumentNullException.ThrowIfNull(node);
+
+        var runtime = new RuntimeNode(
+            node.Id,
+            node.Name,
+            node.Component is null
+                ? null
+                : RuntimeComponent.From(node.Component),
+            node.Style is null
+                ? null
+                : RuntimeStyle.From(node.Style));
+
+        return runtime;
+    }
+
+    internal void AddChild(RuntimeNode child)
+    {
+        ArgumentNullException.ThrowIfNull(child);
+
+        if (_children.Any(x => x.Id == child.Id))
+            return;
+
+        _children.Add(child);
+    }
+}
+
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.Nodes;
+using RapidCMS.Domain.Pages;
+
+namespace RapidCMS.Engine.Runtime;
+
+public sealed class RuntimePage
+{
+    public PageId Id { get; }
+
+    public string Name { get; }
+
+    public NodeId? RootNodeId { get; }
+
+    public RuntimeNode? RootNode { get; }
+
+    private RuntimePage(
+        PageId id,
+        string name,
+        NodeId? rootNodeId,
+        RuntimeNode? rootNode)
+    {
+        Id = id;
+        Name = name;
+        RootNodeId = rootNodeId;
+        RootNode = rootNode;
+    }
+
+    public static RuntimePage From(
+        Page page,
+        IReadOnlyDictionary<NodeId, Node> nodes)
+    {
+        ArgumentNullException.ThrowIfNull(page);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        if (page.RootNodeId is not NodeId rootNodeId)
+        {
+            return new RuntimePage(
+                page.Id,
+                page.Name,
+                null,
+                null);
+        }
+
+        if (!nodes.TryGetValue(rootNodeId, out var rootNode))
+        {
+            throw new InvalidOperationException(
+                $"Root node '{rootNodeId}' for page '{page.Id}' was not found.");
+        }
+
+        var runtimeTree = RuntimeTree.From(
+            rootNode,
+            nodes);
+
+        return new RuntimePage(
+            page.Id,
+            page.Name,
+            rootNodeId,
+            runtimeTree.Root);
+    }
+}
+
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Engine.Runtime;
+
+public sealed class RuntimeReferenceResolver
+{
+    private readonly IReadOnlyDictionary<NodeId, RuntimeNode> _nodes;
+
+    public RuntimeReferenceResolver(RuntimeTree tree)
+    {
+        ArgumentNullException.ThrowIfNull(tree);
+
+        _nodes = Index(tree.Root);
+    }
+
+    public bool TryResolve(
+        NodeId targetNodeId,
+        out RuntimeNode? node)
+    {
+        return _nodes.TryGetValue(targetNodeId, out node);
+    }
+
+    public RuntimeNode Resolve(NodeId targetNodeId)
+    {
+        if (!_nodes.TryGetValue(targetNodeId, out var node))
+        {
+            throw new InvalidOperationException(
+                $"Runtime node '{targetNodeId}' was not found.");
+        }
+
+        return node;
+    }
+
+    private static Dictionary<NodeId, RuntimeNode> Index(
+        RuntimeNode root)
+    {
+        var result = new Dictionary<NodeId, RuntimeNode>();
+
+        Visit(root, result);
+
+        return result;
+    }
+
+    private static void Visit(
+        RuntimeNode node,
+        Dictionary<NodeId, RuntimeNode> result)
+    {
+        if (!result.TryAdd(node.Id, node))
+        {
+            throw new InvalidOperationException(
+                $"Duplicate runtime node '{node.Id}' was found.");
+        }
+
+        foreach (var child in node.Children)
+            Visit(child, result);
+    }
+}
+
+using RapidCMS.Domain.Styles;
+
+namespace RapidCMS.Engine.Runtime;
+
+public sealed class RuntimeStyle
+{
+    private readonly Dictionary<string, string?> _properties = new();
+
+    public IReadOnlyDictionary<string, string?> Properties => _properties;
+
+    private RuntimeStyle()
+    {
+    }
+
+    public static RuntimeStyle From(Style style)
+    {
+        ArgumentNullException.ThrowIfNull(style);
+
+        var runtime = new RuntimeStyle();
+
+        foreach (var property in style.Properties)
+            runtime._properties[property.Name] = property.Value;
+
+        return runtime;
+    }
+}
+
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.Nodes;
+
+namespace RapidCMS.Engine.Runtime;
+
+public sealed class RuntimeTree
+{
+    public RuntimeNode Root { get; }
+
+    private RuntimeTree(RuntimeNode root)
+    {
+        Root = root ?? throw new ArgumentNullException(nameof(root));
+    }
+
+    public static RuntimeTree From(
+        Node root,
+        IReadOnlyDictionary<NodeId, Node> nodes)
+    {
+        ArgumentNullException.ThrowIfNull(root);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        var runtimeRoot = BuildNode(root, nodes);
+        return new RuntimeTree(runtimeRoot);
+    }
+
+    private static RuntimeNode BuildNode(
+        Node node,
+        IReadOnlyDictionary<NodeId, Node> nodes)
+    {
+        var runtimeNode = RuntimeNode.From(node);
+
+        foreach (var childId in node.Children)
+        {
+            if (!nodes.TryGetValue(childId, out var child))
+            {
+                throw new InvalidOperationException(
+                    $"Child node '{childId}' referenced by node '{node.Id}' was not found.");
+            }
+
+            runtimeNode.AddChild(BuildNode(child, nodes));
+        }
+
+        return runtimeNode;
+    }
+}
+
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.Nodes;
+
+namespace RapidCMS.Engine.Runtime;
+
+public sealed class RuntimeTreeBuilder
+{
+    private readonly IReadOnlyDictionary<NodeId, Node> _nodes;
+
+    public RuntimeTreeBuilder(IReadOnlyDictionary<NodeId, Node> nodes)
+    {
+        _nodes = nodes ?? throw new ArgumentNullException(nameof(nodes));
+    }
+
+    public RuntimeTree Build(NodeId rootNodeId)
+    {
+        if (!_nodes.TryGetValue(rootNodeId, out var root))
+        {
+            throw new InvalidOperationException(
+                $"Root node '{rootNodeId}' was not found.");
+        }
+
+        return RuntimeTree.From(root, _nodes);
+    }
+}
+
+// <autogenerated />
+using System;
+using System.Reflection;
+[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
+
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+
+[assembly: System.Reflection.AssemblyCompanyAttribute("RapidCMS.Infrastructure")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16199c838c8140ae8cc86d75f3b55f79e2348088")]
+[assembly: System.Reflection.AssemblyProductAttribute("RapidCMS.Infrastructure")]
+[assembly: System.Reflection.AssemblyTitleAttribute("RapidCMS.Infrastructure")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+
+// Generated by the MSBuild WriteCodeFragment class.
+
+
+// <auto-generated/>
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Net.Http;
+global using System.Threading;
+global using System.Threading.Tasks;
+
+namespace RapidCMS.Infrastructure.Persistence;
+
+public sealed class DocumentRecord
+{
+    public Guid Id { get; set; }
+
+    public ICollection<DocumentPageRecord> Pages { get; set; }
+        = new List<DocumentPageRecord>();
+
+    public ICollection<DocumentAssetRecord> Assets { get; set; }
+        = new List<DocumentAssetRecord>();
+
+    public ICollection<DocumentVariableRecord> Variables { get; set; }
+        = new List<DocumentVariableRecord>();
+
+    public ICollection<DocumentPrototypeRecord> Prototypes { get; set; }
+        = new List<DocumentPrototypeRecord>();
+
+    public ICollection<DocumentReferenceRecord> References { get; set; }
+        = new List<DocumentReferenceRecord>();
+
+    public ICollection<DocumentComponentRecord> Components { get; set; }
+        = new List<DocumentComponentRecord>();
+}
+
+public sealed class DocumentPageRecord
+{
+    public Guid DocumentId { get; set; }
+    public Guid PageId { get; set; }
+}
+
+public sealed class DocumentAssetRecord
+{
+    public Guid DocumentId { get; set; }
+    public Guid AssetId { get; set; }
+}
+
+public sealed class DocumentVariableRecord
+{
+    public Guid DocumentId { get; set; }
+    public Guid VariableId { get; set; }
+}
+
+public sealed class DocumentPrototypeRecord
+{
+    public Guid DocumentId { get; set; }
+    public Guid PrototypeId { get; set; }
+}
+
+public sealed class DocumentReferenceRecord
+{
+    public Guid DocumentId { get; set; }
+    public Guid ReferenceId { get; set; }
+}
+
+public sealed class DocumentComponentRecord
+{
+    public Guid DocumentId { get; set; }
+    public Guid ComponentId { get; set; }
+}
+
+using Microsoft.EntityFrameworkCore;
+
+namespace RapidCMS.Infrastructure.Persistence;
+
+public sealed class RapidCmsDbContext : DbContext
+{
+    public RapidCmsDbContext(
+        DbContextOptions<RapidCmsDbContext> options)
+        : base(options)
+    {
+    }
+
+    public DbSet<DocumentRecord> Documents => Set<DocumentRecord>();
+    public DbSet<DocumentPageRecord> DocumentPages => Set<DocumentPageRecord>();
+    public DbSet<DocumentAssetRecord> DocumentAssets => Set<DocumentAssetRecord>();
+    public DbSet<DocumentVariableRecord> DocumentVariables => Set<DocumentVariableRecord>();
+    public DbSet<DocumentPrototypeRecord> DocumentPrototypes => Set<DocumentPrototypeRecord>();
+    public DbSet<DocumentReferenceRecord> DocumentReferences => Set<DocumentReferenceRecord>();
+    public DbSet<DocumentComponentRecord> DocumentComponents => Set<DocumentComponentRecord>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<DocumentRecord>(entity =>
+        {
+            entity.ToTable("Documents");
+
+            entity.HasKey(x => x.Id);
+
+            entity.HasMany(x => x.Pages)
+                .WithOne()
+                .HasForeignKey(x => x.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(x => x.Assets)
+                .WithOne()
+                .HasForeignKey(x => x.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(x => x.Variables)
+                .WithOne()
+                .HasForeignKey(x => x.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(x => x.Prototypes)
+                .WithOne()
+                .HasForeignKey(x => x.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(x => x.References)
+                .WithOne()
+                .HasForeignKey(x => x.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(x => x.Components)
+                .WithOne()
+                .HasForeignKey(x => x.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<DocumentPageRecord>(entity =>
+        {
+            entity.ToTable("DocumentPages");
+            entity.HasKey(x => new { x.DocumentId, x.PageId });
+            entity.HasIndex(x => x.PageId);
+        });
+
+        modelBuilder.Entity<DocumentAssetRecord>(entity =>
+        {
+            entity.ToTable("DocumentAssets");
+            entity.HasKey(x => new { x.DocumentId, x.AssetId });
+            entity.HasIndex(x => x.AssetId);
+        });
+
+        modelBuilder.Entity<DocumentVariableRecord>(entity =>
+        {
+            entity.ToTable("DocumentVariables");
+            entity.HasKey(x => new { x.DocumentId, x.VariableId });
+            entity.HasIndex(x => x.VariableId);
+        });
+
+        modelBuilder.Entity<DocumentPrototypeRecord>(entity =>
+        {
+            entity.ToTable("DocumentPrototypes");
+            entity.HasKey(x => new { x.DocumentId, x.PrototypeId });
+            entity.HasIndex(x => x.PrototypeId);
+        });
+
+        modelBuilder.Entity<DocumentReferenceRecord>(entity =>
+        {
+            entity.ToTable("DocumentReferences");
+            entity.HasKey(x => new { x.DocumentId, x.ReferenceId });
+            entity.HasIndex(x => x.ReferenceId);
+        });
+
+        modelBuilder.Entity<DocumentComponentRecord>(entity =>
+        {
+            entity.ToTable("DocumentComponents");
+            entity.HasKey(x => new { x.DocumentId, x.ComponentId });
+            entity.HasIndex(x => x.ComponentId);
+        });
+    }
+}
+
+using Microsoft.EntityFrameworkCore;
+using RapidCMS.Application.Abstractions;
+using RapidCMS.Domain.Documents;
+using RapidCMS.Domain.Identity;
+using RapidCMS.Infrastructure.Persistence;
+
+namespace RapidCMS.Infrastructure.Repositories;
+
+public sealed class EfDocumentRepository : IDocumentRepository
+{
+    private readonly RapidCmsDbContext _dbContext;
+
+    public EfDocumentRepository(RapidCmsDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public async Task AddAsync(
+        Document document,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var record = ToRecord(document);
+
+        await _dbContext.Documents.AddAsync(
+            record,
+            cancellationToken);
+
+        await _dbContext.SaveChangesAsync(
+            cancellationToken);
+    }
+
+    public async Task<Document?> GetByIdAsync(
+        DocumentId id,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var record = await _dbContext.Documents
+            .Include(x => x.Pages)
+            .Include(x => x.Assets)
+            .Include(x => x.Variables)
+            .Include(x => x.Prototypes)
+            .Include(x => x.References)
+            .Include(x => x.Components)
+            .SingleOrDefaultAsync(
+                x => x.Id == id.Value,
+                cancellationToken);
+
+        return record is null
+            ? null
+            : ToDomain(record);
+    }
+
+    public async Task<IReadOnlyList<Document>> GetAllAsync(
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var records = await _dbContext.Documents
+            .AsNoTracking()
+            .Include(x => x.Pages)
+            .Include(x => x.Assets)
+            .Include(x => x.Variables)
+            .Include(x => x.Prototypes)
+            .Include(x => x.References)
+            .Include(x => x.Components)
+            .ToListAsync(cancellationToken);
+
+        return records
+            .Select(ToDomain)
+            .ToArray();
+    }
+
+    public async Task<bool> DeleteAsync(
+        DocumentId documentId,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var record = await _dbContext.Documents
+            .SingleOrDefaultAsync(
+                x => x.Id == documentId.Value,
+                cancellationToken);
+
+        if (record is null)
+            return false;
+
+        _dbContext.Documents.Remove(record);
+
+        await _dbContext.SaveChangesAsync(
+            cancellationToken);
+
+        return true;
+    }
+
+    private static DocumentRecord ToRecord(Document document)
+    {
+        var documentId = document.Id.Value;
+
+        return new DocumentRecord
+        {
+            Id = documentId,
+
+            Pages = document.PageIds
+                .Select(pageId => new DocumentPageRecord
+                {
+                    DocumentId = documentId,
+                    PageId = pageId.Value
+                })
+                .ToList(),
+
+            Assets = document.AssetIds
+                .Select(assetId => new DocumentAssetRecord
+                {
+                    DocumentId = documentId,
+                    AssetId = assetId.Value
+                })
+                .ToList(),
+
+            Variables = document.VariableIds
+                .Select(variableId => new DocumentVariableRecord
+                {
+                    DocumentId = documentId,
+                    VariableId = variableId.Value
+                })
+                .ToList(),
+
+            Prototypes = document.PrototypeIds
+                .Select(prototypeId => new DocumentPrototypeRecord
+                {
+                    DocumentId = documentId,
+                    PrototypeId = prototypeId.Value
+                })
+                .ToList(),
+
+            References = document.ReferenceIds
+                .Select(referenceId => new DocumentReferenceRecord
+                {
+                    DocumentId = documentId,
+                    ReferenceId = referenceId.Value
+                })
+                .ToList(),
+
+            Components = document.ComponentIds
+                .Select(componentId => new DocumentComponentRecord
+                {
+                    DocumentId = documentId,
+                    ComponentId = componentId.Value
+                })
+                .ToList()
+        };
+    }
+
+    private static Document ToDomain(DocumentRecord record)
+    {
+        var document = Document.Create(
+            new DocumentId(record.Id));
+
+        foreach (var page in record.Pages)
+            document.AddPage(new PageId(page.PageId));
+
+        foreach (var asset in record.Assets)
+            document.AddAsset(new AssetId(asset.AssetId));
+
+        foreach (var variable in record.Variables)
+            document.AddVariable(new VariableId(variable.VariableId));
+
+        foreach (var prototype in record.Prototypes)
+            document.AddPrototype(new PrototypeId(prototype.PrototypeId));
+
+        foreach (var reference in record.References)
+            document.AddReference(new ReferenceId(reference.ReferenceId));
+
+        foreach (var component in record.Components)
+            document.AddComponent(new ComponentId(component.ComponentId));
+
+        return document;
+    }
+}
+
+
+

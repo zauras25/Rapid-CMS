@@ -18,14 +18,8 @@ public sealed partial class Document
         _componentIds.Add(componentId);
     }
 
-    public bool RemoveComponent(ComponentId componentId)
+    public void RemoveComponent(ComponentId componentId)
     {
-        if (componentId.Value == Guid.Empty)
-            throw new ArgumentException(
-                "Component ID cannot be empty.",
-                nameof(componentId));
-
-        return _componentIds.Remove(componentId);
+        _componentIds.Remove(componentId);
     }
 }
-

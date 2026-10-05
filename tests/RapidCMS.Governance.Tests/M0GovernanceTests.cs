@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 
 namespace RapidCMS.Governance.Tests;
 
@@ -37,79 +37,58 @@ public sealed class M0GovernanceTests
     [Fact]
     public void M0_Acceptance_Matrix_Must_Exist()
     {
-        var path = GovernancePath("M0-Acceptance-Matrix.md");
-
         Assert.True(
-            File.Exists(path),
-            $"M0 Acceptance Matrix is missing: {path}");
+            File.Exists(GovernancePath("M0-Acceptance-Matrix.md")));
     }
 
     [Fact]
     public void M0_Acceptance_Record_Must_Exist()
     {
-        var path = GovernancePath("M0-Acceptance-Record.md");
-
         Assert.True(
-            File.Exists(path),
-            $"M0 Acceptance Record is missing: {path}");
+            File.Exists(GovernancePath("M0-Acceptance-Record.md")));
     }
 
     [Fact]
     public void M0_Freeze_Record_Must_Exist()
     {
-        var path = GovernancePath("M0-Freeze-Record.md");
-
         Assert.True(
-            File.Exists(path),
-            $"M0 Freeze Record is missing: {path}");
+            File.Exists(GovernancePath("M0-Freeze-Record.md")));
     }
 
     [Fact]
-    public void M0_Cannot_Be_Accepted_While_Mandatory_Criteria_Are_Pending()
+    public void M0_Acceptance_Matrix_Must_Have_No_Pending_Criteria()
     {
         var matrix = File.ReadAllText(
             GovernancePath("M0-Acceptance-Matrix.md"));
 
-        var acceptanceRecord = File.ReadAllText(
-            GovernancePath("M0-Acceptance-Record.md"));
-
-        var hasPendingCriteria =
-            matrix.Contains(
-                "PENDING",
-                StringComparison.OrdinalIgnoreCase);
-
-        var isAccepted =
-            acceptanceRecord.Contains(
-                "Status: ACCEPTED",
-                StringComparison.OrdinalIgnoreCase);
-
-        Assert.False(
-            hasPendingCriteria && isAccepted,
-            "M0 cannot be ACCEPTED while mandatory acceptance criteria are PENDING.");
+        Assert.DoesNotContain(
+            "PENDING",
+            matrix,
+            StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
-    public void M0_Cannot_Be_Frozen_Without_Acceptance()
+    public void M0_Must_Be_Accepted()
     {
         var acceptanceRecord = File.ReadAllText(
             GovernancePath("M0-Acceptance-Record.md"));
 
+        Assert.Contains(
+            "Status: ACCEPTED",
+            acceptanceRecord,
+            StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void M0_Must_Be_Frozen()
+    {
         var freezeRecord = File.ReadAllText(
             GovernancePath("M0-Freeze-Record.md"));
 
-        var isAccepted =
-            acceptanceRecord.Contains(
-                "Status: ACCEPTED",
-                StringComparison.OrdinalIgnoreCase);
-
-        var isFrozen =
-            freezeRecord.Contains(
-                "Status: FROZEN",
-                StringComparison.OrdinalIgnoreCase);
-
-        Assert.False(
-            isFrozen && !isAccepted,
-            "M0 cannot be FROZEN unless M0 is ACCEPTED.");
+        Assert.Contains(
+            "Status: FROZEN",
+            freezeRecord,
+            StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -125,26 +104,22 @@ public sealed class M0GovernanceTests
     }
 
     [Fact]
-    public void M0_Must_Not_Be_Frozen_Currently()
-    {
-        var freezeRecord = File.ReadAllText(
-            GovernancePath("M0-Freeze-Record.md"));
-
-        Assert.Contains(
-            "Status: NOT FROZEN",
-            freezeRecord,
-            StringComparison.OrdinalIgnoreCase);
-    }
-
-    [Fact]
-    public void M0_Must_Not_Be_Accepted_Currently()
+    public void M0_Freeze_Must_Reference_Accepted_Baseline()
     {
         var acceptanceRecord = File.ReadAllText(
             GovernancePath("M0-Acceptance-Record.md"));
 
+        var freezeRecord = File.ReadAllText(
+            GovernancePath("M0-Freeze-Record.md"));
+
         Assert.Contains(
-            "Status: PENDING",
+            "Status: ACCEPTED",
             acceptanceRecord,
+            StringComparison.OrdinalIgnoreCase);
+
+        Assert.Contains(
+            "Status: FROZEN",
+            freezeRecord,
             StringComparison.OrdinalIgnoreCase);
     }
 }

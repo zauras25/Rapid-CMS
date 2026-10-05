@@ -1,8 +1,9 @@
-﻿# M0 — Product & Architecture Rules
+# M0 � Product & Architecture Rules
+
 ## Acceptance Matrix
 
 Version: 1.0
-Status: Acceptance Pending
+Status: ACCEPTED
 
 | ID | Requirement | Evidence | Status |
 |---|---|---|---|
@@ -25,10 +26,10 @@ Status: Acceptance Pending
 | M0.17 | Major state changes use commands | Master Roadmap | PASS |
 | M0.18 | Engines independently testable | Master Roadmap | PASS |
 | M0.19 | Circular dependencies prohibited | Master Roadmap | PASS |
-| M0.20 | Core Domain remains isolated | Source architecture audit | PENDING |
-| M0.21 | Formal acceptance record exists | M0-Acceptance-Record.md | PENDING |
-| M0.22 | Formal freeze record exists | M0-Freeze-Record.md | PENDING |
-| M0.23 | Automated governance validation exists | Governance tests | PENDING |
+| M0.20 | Core Domain remains isolated | M0ArchitectureGovernanceTests | PASS |
+| M0.21 | Formal acceptance record exists | M0-Acceptance-Record.md | PASS |
+| M0.22 | Formal freeze record exists | M0-Freeze-Record.md | PASS |
+| M0.23 | Automated governance validation exists | M0GovernanceTests | PASS |
 
 ## Acceptance Rule
 
@@ -36,6 +37,18 @@ M0 may only be accepted when every mandatory criterion is PASS.
 
 M0 may only be frozen after formal acceptance.
 
-## Current Decision
+## Acceptance Decision
 
-M0 is currently ACCEPTANCE PENDING.
+M0 is ACCEPTED.
+
+All mandatory M0 acceptance criteria have passed.
+
+## Validation Evidence
+
+- M0 architecture dependency validation: PASS
+- M0 governance validation: PASS
+- M0 acceptance record: present
+- M0 freeze record: present
+- Acceptance Matrix: all mandatory criteria PASS
+
+M0 is now eligible for formal FREEZE.

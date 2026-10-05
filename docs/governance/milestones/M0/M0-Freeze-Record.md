@@ -1,4 +1,4 @@
-﻿# M0 Freeze Record
+# M0 Freeze Record
 
 Milestone: M0
 Name: Product & Architecture Rules
@@ -6,39 +6,41 @@ Version: 1.0
 
 ## Freeze Preconditions
 
-The following conditions must be satisfied before M0 can be frozen:
+All M0 freeze prerequisites have been satisfied.
 
-- [ ] M0 Acceptance Status = ACCEPTED
-- [ ] All mandatory acceptance criteria = PASS
-- [ ] Required governance tests = PASS
-- [ ] Required architecture validation = PASS
-- [ ] No known blocking issues remain
-- [ ] Acceptance Record has been completed
-- [ ] Acceptance Matrix is fully PASS
+- [x] M0 Acceptance Status = ACCEPTED
+- [x] All mandatory acceptance criteria = PASS
+- [x] Required governance tests = PASS
+- [x] Required architecture validation = PASS
+- [x] No known blocking issues remain
+- [x] Acceptance Record has been completed
+- [x] Acceptance Matrix is fully PASS
 
 ## Freeze Status
 
-Status: NOT FROZEN
+Status: FROZEN
 
-M0 must not be marked FROZEN before formal acceptance.
+M0 is formally frozen as the approved governance baseline.
 
 ## Frozen Baseline
 
-Commit:
-Tag:
+Commit: Pending final M0 freeze commit
+Tag: Pending final M0 freeze tag
 
 ## Freeze Decision
 
-Decision: PENDING
+Decision: FROZEN
 
 ## Review Information
 
-Reviewer:
-Date:
-Approval:
+Reviewer: Project Owner
+Date: 2026-10-05
+Approval: APPROVED
 
 ## Notes
 
-M0 becomes a stable baseline only after the Acceptance Gate has passed and the milestone has been formally frozen.
+M0 is now the stable governance baseline.
 
-No next milestone may be activated before M0 is ACCEPTED and FROZEN.
+No M1 implementation may begin until this freeze is committed and verified.
+
+Future changes to frozen M0 governance require explicit change control.

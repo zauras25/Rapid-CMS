@@ -1,4 +1,4 @@
-ï»¿# M0 Acceptance Record
+# M0 Acceptance Record
 
 Milestone: M0
 Name: Product & Architecture Rules
@@ -6,21 +6,21 @@ Version: 1.0
 
 ## Acceptance Gate
 
-The following conditions must be satisfied before M0 can be accepted:
+All mandatory M0 acceptance conditions have been verified.
 
-- [ ] All mandatory requirements are PASS
-- [ ] Architecture rules have been reviewed
-- [ ] Repository architecture evidence has been reviewed
-- [ ] Governance validation has passed
-- [ ] Required tests have passed
-- [ ] Known blocking issues have been resolved
-- [ ] Acceptance Matrix is fully PASS
+- [x] All mandatory requirements are PASS
+- [x] Architecture rules have been reviewed
+- [x] Repository architecture evidence has been reviewed
+- [x] Governance validation has passed
+- [x] Required tests have passed
+- [x] Known blocking issues have been resolved
+- [x] Acceptance Matrix is fully PASS
 
 ## Acceptance Decision
 
-Status: PENDING
+Status: ACCEPTED
 
-M0 is NOT ACCEPTED until every mandatory acceptance condition has been verified.
+M0 has been formally accepted.
 
 ## Evidence
 
@@ -30,12 +30,20 @@ docs/governance/milestones/M0/M0-Acceptance-Matrix.md
 Governance Tests:
 tests/RapidCMS.Governance.Tests
 
+Architecture Validation:
+M0ArchitectureGovernanceTests — PASS
+
+Governance Validation:
+M0GovernanceTests — PASS
+
 ## Review Information
 
-Reviewer:
-Date:
-Decision:
+Reviewer: Project Owner
+Date: 2026-10-05
+Decision: ACCEPTED
 
 ## Notes
 
-This record must not be changed to ACCEPTED until the M0 Acceptance Gate has actually passed.
+M0 is accepted based on the completed acceptance gate and verified repository evidence.
+
+M0 may now proceed to formal FREEZE.

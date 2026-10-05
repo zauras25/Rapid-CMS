@@ -32,13 +32,12 @@ public sealed class EfDocumentRepository : IDocumentRepository
     }
 
     public async Task<Document?> GetByIdAsync(
-        DocumentId documentId,
+        DocumentId id,
         CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         var record = await _dbContext.Documents
-            .AsNoTracking()
             .Include(x => x.Pages)
             .Include(x => x.Assets)
             .Include(x => x.Variables)
@@ -46,7 +45,7 @@ public sealed class EfDocumentRepository : IDocumentRepository
             .Include(x => x.References)
             .Include(x => x.Components)
             .SingleOrDefaultAsync(
-                x => x.Id == documentId.Value,
+                x => x.Id == id.Value,
                 cancellationToken);
 
         return record is null
@@ -180,3 +179,5 @@ public sealed class EfDocumentRepository : IDocumentRepository
         return document;
     }
 }
+
+

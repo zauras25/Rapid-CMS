@@ -1,0 +1,468 @@
+===== PROJECT AUDIT =====
+Date: 10/05/2026 07:09:19
+Root: C:\Users\M.Zohaib\Rapid-CMS
+
+===== SOLUTION =====
+
+FullName                                  
+--------                                  
+C:\Users\M.Zohaib\Rapid-CMS\Rapid-CMS.slnx
+
+
+
+
+===== PROJECT FILES =====
+
+FullName                                                                                      
+--------                                                                                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\RapidCMS.Api.csproj                              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\RapidCMS.Application.csproj              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\RapidCMS.Contracts.csproj                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\RapidCMS.Domain.csproj                        
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\RapidCMS.Engine.csproj                        
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\RapidCMS.Infrastructure.csproj        
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\RapidCMS.Application.Tests.csproj
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Domain.Tests\RapidCMS.Domain.Tests.csproj          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RapidCMS.Engine.Tests.csproj          
+
+
+
+
+===== SOURCE FILE COUNT =====
+Total .cs files: 168
+
+===== PROJECT STRUCTURE =====
+
+FullName                                                             
+--------                                                             
+C:\Users\M.Zohaib\Rapid-CMS\src                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests                                    
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api                         
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts                   
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\bin                     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers             
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\obj                     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Properties              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions    
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\bin             
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents       
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\obj             
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\bin               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Commands          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents         
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\obj               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Queries           
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Assets               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\bin                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Common               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Components           
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Documents            
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Identity             
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Nodes                
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\obj                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Pages                
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Prototypes           
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\References           
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Styles               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Variables            
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Components\Behaviors 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Components\Properties
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Behaviors            
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\bin                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\obj                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\bin          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\obj          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\Persistence  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\Repositories 
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests         
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Domain.Tests              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\bin     
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\Fakes   
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\obj     
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Domain.Tests\bin          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Domain.Tests\obj          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\bin          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\obj          
+
+
+
+
+===== GIT STATUS =====
+
+
+===== GIT BRANCH =====
+
+
+===== RECENT COMMITS =====
+
+
+===== SOLUTION BUILD =====
+  RapidCMS.Contracts -> C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\bin\Debug\net10.0\RapidCMS.Contracts.dll
+  RapidCMS.Domain -> C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\bin\Debug\net10.0\RapidCMS.Domain.dll
+  RapidCMS.Domain.Tests -> C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Domain.Tests\bin\Debug\net10.0\RapidCMS.Domain.Tests.dll
+  RapidCMS.Engine -> C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\bin\Debug\net10.0\RapidCMS.Engine.dll
+  RapidCMS.Application -> C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\bin\Debug\net10.0\RapidCMS.Application.dll
+  RapidCMS.Infrastructure -> C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\bin\Debug\net10.0\RapidCMS.Infrastructure.dll
+  RapidCMS.Application.Tests -> C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\bin\Debug\net10.0\RapidCMS.Application.Tests.dll
+  RapidCMS.Engine.Tests -> C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\bin\Debug\net10.0\RapidCMS.Engine.Tests.dll
+  RapidCMS.Api -> C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\bin\Debug\net10.0\RapidCMS.Api.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.50
+
+
+===== TEST RESULTS =====
+Test run for C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\bin\Debug\net10.0\RapidCMS.Application.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Domain.Tests\bin\Debug\net10.0\RapidCMS.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\bin\Debug\net10.0\RapidCMS.Engine.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    48, Skipped:     0, Total:    48, Duration: 193 ms - RapidCMS.Engine.Tests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:    56, Skipped:     0, Total:    56, Duration: 155 ms - RapidCMS.Domain.Tests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:    78, Skipped:     0, Total:    78, Duration: 1 s - RapidCMS.Application.Tests.dll (net10.0)
+
+
+===== DOMAIN FILES =====
+
+
+===== APPLICATION FILES =====
+
+
+===== ENGINE FILES =====
+
+FullName                                                                                                                 
+--------                                                                                                                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Behaviors\IRuntimeBehavior.cs                                            
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Behaviors\RuntimeBehaviorContext.cs                                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Behaviors\RuntimeBehaviorExecutor.cs                                     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Behaviors\RuntimeBehaviorRegistry.cs                                     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Behaviors\RuntimeTreeBehaviorExecutor.cs                                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\obj\Debug\net10.0\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs        
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\obj\Debug\net10.0\RapidCMS.Engine.AssemblyInfo.cs                        
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\obj\Debug\net10.0\RapidCMS.Engine.GlobalUsings.g.cs                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimeComponent.cs                                              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimeComponentReferenceResolver.cs                             
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimeDocument.cs                                               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimeDocumentBuilder.cs                                        
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimeNode.cs                                                   
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimePage.cs                                                   
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimeReferenceResolver.cs                                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimeStyle.cs                                                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimeTree.cs                                                   
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\Runtime\RuntimeTreeBuilder.cs                                            
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeBehaviorExecutorTests.cs                                  
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeBehaviorRegistryTests.cs                                  
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeComponentReferenceResolverTests.cs                        
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeComponentTests.cs                                         
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeDocumentBuilderTests.cs                                   
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeDocumentTests.cs                                          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeNodeTests.cs                                              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimePageTests.cs                                              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeReferenceResolverTests.cs                                 
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeStyleTests.cs                                             
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeTreeBehaviorExecutorTests.cs                              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeTreeBuilderTests.cs                                       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RuntimeTreeTests.cs                                              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\obj\Debug\net10.0\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\obj\Debug\net10.0\RapidCMS.Engine.Tests.AssemblyInfo.cs          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\obj\Debug\net10.0\RapidCMS.Engine.Tests.GlobalUsings.g.cs        
+
+
+
+
+===== CONTRACTS =====
+
+FullName                                                                                                 
+--------                                                                                                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions\IAssetRepository.cs                    
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions\ICommandHandler.cs                     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions\ICommandHandlerOfT.cs                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions\IComponentRepository.cs                
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions\IDocumentRepository.cs                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions\IPageRepository.cs                     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions\IPrototypeRepository.cs                
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions\IQueryHandler.cs                       
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Abstractions\IVariableRepository.cs                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddAssetToDocumentHandler.cs              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddComponentToDocumentHandler.cs          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPageToDocumentHandler.cs               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPrototypeToDocumentHandler.cs          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddVariableToDocumentHandler.cs           
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\CreateDocumentHandler.cs                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\DeleteDocumentHandler.cs                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\GetDocumentByIdHandler.cs                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\GetDocumentsHandler.cs                    
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\RemoveAssetFromDocumentHandler.cs         
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\RemoveComponentFromDocumentHandler.cs     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\RemovePageFromDocumentHandler.cs          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\RemovePrototypeFromDocumentHandler.cs     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\RemoveVariableFromDocumentHandler.cs      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Commands\CommandResult.cs                             
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Commands\CommandResultOfT.cs                          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Commands\ICommand.cs                                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddAssetToDocumentCommand.cs                
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddComponentToDocumentCommand.cs            
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddPageToDocumentCommand.cs                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddPrototypeToDocumentCommand.cs            
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddVariableToDocumentCommand.cs             
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\CreateDocumentCommand.cs                    
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\DeleteDocumentCommand.cs                    
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\RemoveAssetFromDocumentCommand.cs           
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\RemoveComponentFromDocumentCommand.cs       
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\RemovePageFromDocumentCommand.cs            
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\RemovePrototypeFromDocumentCommand.cs       
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\RemoveVariableFromDocumentCommand.cs        
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\obj\Debug\net10.0\RapidCMS.Contracts.AssemblyInfo.cs  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\obj\Debug\net10.0\RapidCMS.Contracts.GlobalUsings.g.cs
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\Repositories\EfDocumentRepository.cs             
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs            
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs        
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\CreateDocumentHandlerTests.cs               
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\DeleteDocumentHandlerTests.cs               
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\EfDocumentRepositoryTests.cs                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\GetDocumentByIdHandlerTests.cs              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\GetDocumentsHandlerTests.cs                 
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\RemoveAssetFromDocumentHandlerTests.cs      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\RemoveComponentFromDocumentHandlerTests.cs  
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\RemovePageFromDocumentHandlerTests.cs       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\RemovePrototypeFromDocumentHandlerTests.cs  
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\RemoveVariableFromDocumentHandlerTests.cs   
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\Fakes\InMemoryAssetRepository.cs            
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\Fakes\InMemoryComponentRepository.cs        
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\Fakes\InMemoryDocumentRepository.cs         
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\Fakes\InMemoryPageRepository.cs             
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\Fakes\InMemoryPrototypeRepository.cs        
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\Fakes\InMemoryVariableRepository.cs         
+
+
+
+
+===== MILESTONE / TODO REFERENCES =====
+
+Path                                                                                               LineNumber Line                                                                                          
+----                                                                                               ---------- ----                                                                                          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            18     private readonly AddPageToDocumentHandler _addPageHandler;                                
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            21     private readonly AddAssetToDocumentHandler _addAssetHandler;                              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            24     private readonly AddVariableToDocumentHandler _addVariableHandler;                        
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            27     private readonly AddPrototypeToDocumentHandler _addPrototypeHandler;                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            30     private readonly AddComponentToDocumentHandler _addComponentHandler;                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            38         AddPageToDocumentHandler addPageHandler,                                              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            40         AddAssetToDocumentHandler addAssetHandler,                                            
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            42         AddVariableToDocumentHandler addVariableHandler,                                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            44         AddPrototypeToDocumentHandler addPrototypeHandler,                                    
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                            46         AddComponentToDocumentHandler addComponentHandler,                                    
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                           155             new AddPageToDocumentCommand(documentId, pageId),                                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                           181             new AddAssetToDocumentCommand(documentId, assetId),                               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                           207             new AddVariableToDocumentCommand(documentId, variableId),                         
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                           233             new AddPrototypeToDocumentCommand(documentId, prototypeId),                       
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Controllers\DocumentsController.cs                           259             new AddComponentToDocumentCommand(documentId, componentId),                       
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Program.cs                                                    25 builder.Services.AddScoped<AddPageToDocumentHandler>();                                       
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Program.cs                                                    28 builder.Services.AddScoped<AddAssetToDocumentHandler>();                                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Program.cs                                                    31 builder.Services.AddScoped<AddVariableToDocumentHandler>();                                   
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Program.cs                                                    34 builder.Services.AddScoped<AddPrototypeToDocumentHandler>();                                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\Program.cs                                                    37 builder.Services.AddScoped<AddComponentToDocumentHandler>();                                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddAssetToDocumentHandler.cs                 8 public sealed class AddAssetToDocumentHandler                                                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddAssetToDocumentHandler.cs                 9     : ICommandHandler<AddAssetToDocumentCommand>                                              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddAssetToDocumentHandler.cs                14     public AddAssetToDocumentHandler(                                                         
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddAssetToDocumentHandler.cs                23         AddAssetToDocumentCommand command,                                                    
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddComponentToDocumentHandler.cs             8 public sealed class AddComponentToDocumentHandler                                             
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddComponentToDocumentHandler.cs             9     : ICommandHandler<AddComponentToDocumentCommand>                                          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddComponentToDocumentHandler.cs            14     public AddComponentToDocumentHandler(                                                     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddComponentToDocumentHandler.cs            23         AddComponentToDocumentCommand command,                                                
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPageToDocumentHandler.cs                  8 public sealed class AddPageToDocumentHandler                                                  
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPageToDocumentHandler.cs                  9     : ICommandHandler<AddPageToDocumentCommand>                                               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPageToDocumentHandler.cs                 14     public AddPageToDocumentHandler(                                                          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPageToDocumentHandler.cs                 23         AddPageToDocumentCommand command,                                                     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPrototypeToDocumentHandler.cs             8 public sealed class AddPrototypeToDocumentHandler                                             
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPrototypeToDocumentHandler.cs             9     : ICommandHandler<AddPrototypeToDocumentCommand>                                          
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPrototypeToDocumentHandler.cs            14     public AddPrototypeToDocumentHandler(                                                     
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddPrototypeToDocumentHandler.cs            23         AddPrototypeToDocumentCommand command,                                                
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddVariableToDocumentHandler.cs              8 public sealed class AddVariableToDocumentHandler                                              
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddVariableToDocumentHandler.cs              9     : ICommandHandler<AddVariableToDocumentCommand>                                           
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddVariableToDocumentHandler.cs             14     public AddVariableToDocumentHandler(                                                      
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\Documents\AddVariableToDocumentHandler.cs             23         AddVariableToDocumentCommand command,                                                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddAssetToDocumentCommand.cs                   5 public sealed record AddAssetToDocumentCommand(                                               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddComponentToDocumentCommand.cs               5 public sealed record AddComponentToDocumentCommand(                                           
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddPageToDocumentCommand.cs                    5 public sealed record AddPageToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddPrototypeToDocumentCommand.cs               5 public sealed record AddPrototypeToDocumentCommand(                                           
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\Documents\AddVariableToDocumentCommand.cs                5 public sealed record AddVariableToDocumentCommand(                                            
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\Repositories\EfDocumentRepository.cs               54             : ToDomain(record);                                                               
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\Repositories\EfDocumentRepository.cs               73             .Select(ToDomain)                                                                 
+C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\Repositories\EfDocumentRepository.cs              157     private static Document ToDomain(DocumentRecord record)                                   
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs              9 public sealed class AddAssetToDocumentHandlerTests                                            
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             12     public async Task AddAssetToDocument_Adds_Existing_Asset_To_Document()                    
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             25         var handler = new AddAssetToDocumentHandler(                                          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             30             new AddAssetToDocumentCommand(                                                    
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             40     public async Task AddAssetToDocument_With_Missing_Document_Returns_Failure()              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             45         var handler = new AddAssetToDocumentHandler(                                          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             50             new AddAssetToDocumentCommand(                                                    
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             59     public async Task AddAssetToDocument_With_Missing_Asset_Returns_Failure()                 
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             69         var handler = new AddAssetToDocumentHandler(                                          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             76             new AddAssetToDocumentCommand(                                                    
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             88     public async Task AddAssetToDocument_With_Empty_Document_Id_Returns_Failure()             
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             93         var handler = new AddAssetToDocumentHandler(                                          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs             98             new AddAssetToDocumentCommand(                                                    
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs            107     public async Task AddAssetToDocument_With_Empty_Asset_Id_Returns_Failure()                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs            117         var handler = new AddAssetToDocumentHandler(                                          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs            122             new AddAssetToDocumentCommand(                                                    
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs            131     public async Task AddAssetToDocument_When_Cancellation_Is_Requested_Throws()              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs            136         var handler = new AddAssetToDocumentHandler(                                          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddAssetToDocumentHandlerTests.cs            145                 new AddAssetToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs          9 public sealed class AddComponentToDocumentHandlerTests                                        
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         12     public async Task AddComponentToDocument_Adds_Component_To_Document()                     
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         23         var handler = new AddComponentToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         28             new AddComponentToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         38     public async Task AddComponentToDocument_With_Missing_Document_Returns_Failure()          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         46         var handler = new AddComponentToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         51             new AddComponentToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         60     public async Task AddComponentToDocument_With_Missing_Component_Returns_Failure()         
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         68         var handler = new AddComponentToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         73             new AddComponentToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         82     public async Task AddComponentToDocument_With_Empty_Document_Id_Returns_Failure()         
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         87         var handler = new AddComponentToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs         92             new AddComponentToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs        101     public async Task AddComponentToDocument_With_Empty_Component_Id_Returns_Failure()        
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs        109         var handler = new AddComponentToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs        114             new AddComponentToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs        123     public async Task AddComponentToDocument_When_Component_Already_Attached_Returns_Failure()
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs        136         var handler = new AddComponentToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs        141             new AddComponentToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs        150     public async Task AddComponentToDocument_When_Cancellation_Is_Requested_Throws()          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs        154         var handler = new AddComponentToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddComponentToDocumentHandlerTests.cs        163                 new AddComponentToDocumentCommand(                                            
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs               9 public sealed class AddPageToDocumentHandlerTests                                             
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              12     public async Task AddPageToDocument_Adds_Page_To_Document()                               
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              23         var handler = new AddPageToDocumentHandler(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              27         var command = new AddPageToDocumentCommand(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              39     public async Task AddPageToDocument_With_Missing_Document_Returns_Failure()               
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              47         var handler = new AddPageToDocumentHandler(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              51         var command = new AddPageToDocumentCommand(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              62     public async Task AddPageToDocument_With_Missing_Page_Returns_Failure()                   
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              71         var handler = new AddPageToDocumentHandler(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              75         var command = new AddPageToDocumentCommand(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              87     public async Task AddPageToDocument_With_Empty_Document_Id_Returns_Failure()              
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              92         var handler = new AddPageToDocumentHandler(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs              96         var command = new AddPageToDocumentCommand(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs             107     public async Task AddPageToDocument_With_Empty_Page_Id_Returns_Failure()                  
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs             116         var handler = new AddPageToDocumentHandler(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs             120         var command = new AddPageToDocumentCommand(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs             131     public async Task AddPageToDocument_Cannot_Add_Duplicate_Page()                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs             142         var handler = new AddPageToDocumentHandler(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs             146         var command = new AddPageToDocumentCommand(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs             160     public async Task AddPageToDocument_When_Cancellation_Is_Requested_Throws()               
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs             165         var handler = new AddPageToDocumentHandler(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPageToDocumentHandlerTests.cs             172         var command = new AddPageToDocumentCommand(                                           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs          9 public sealed class AddPrototypeToDocumentHandlerTests                                        
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         12     public async Task AddPrototypeToDocument_Adds_Prototype_To_Document()                     
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         23         var handler = new AddPrototypeToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         28             new AddPrototypeToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         38     public async Task AddPrototypeToDocument_With_Missing_Document_Returns_Failure()          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         46         var handler = new AddPrototypeToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         51             new AddPrototypeToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         60     public async Task AddPrototypeToDocument_With_Missing_Prototype_Returns_Failure()         
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         68         var handler = new AddPrototypeToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         73             new AddPrototypeToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         82     public async Task AddPrototypeToDocument_With_Empty_Document_Id_Returns_Failure()         
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         84         var handler = new AddPrototypeToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         89             new AddPrototypeToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs         98     public async Task AddPrototypeToDocument_With_Empty_Prototype_Id_Returns_Failure()        
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs        106         var handler = new AddPrototypeToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs        111             new AddPrototypeToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs        120     public async Task AddPrototypeToDocument_When_Prototype_Already_Attached_Returns_Failure()
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs        133         var handler = new AddPrototypeToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs        138             new AddPrototypeToDocumentCommand(                                                
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs        147     public async Task AddPrototypeToDocument_When_Cancellation_Is_Requested_Throws()          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs        149         var handler = new AddPrototypeToDocumentHandler(                                      
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddPrototypeToDocumentHandlerTests.cs        158                 new AddPrototypeToDocumentCommand(                                            
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs           9 public sealed class AddVariableToDocumentHandlerTests                                         
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          12     public async Task AddVariableToDocument_Adds_Variable_To_Document()                       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          25         var handler = new AddVariableToDocumentHandler(                                       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          30             new AddVariableToDocumentCommand(                                                 
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          40     public async Task AddVariableToDocument_With_Missing_Document_Returns_Failure()           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          45         var handler = new AddVariableToDocumentHandler(                                       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          50             new AddVariableToDocumentCommand(                                                 
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          59     public async Task AddVariableToDocument_With_Missing_Variable_Returns_Failure()           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          69         var handler = new AddVariableToDocumentHandler(                                       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          74             new AddVariableToDocumentCommand(                                                 
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          83     public async Task AddVariableToDocument_With_Empty_Document_Id_Returns_Failure()          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          85         var handler = new AddVariableToDocumentHandler(                                       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          90             new AddVariableToDocumentCommand(                                                 
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs          99     public async Task AddVariableToDocument_With_Empty_Variable_Id_Returns_Failure()          
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs         101         var handler = new AddVariableToDocumentHandler(                                       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs         106             new AddVariableToDocumentCommand(                                                 
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs         115     public async Task AddVariableToDocument_When_Cancellation_Is_Requested_Throws()           
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs         117         var handler = new AddVariableToDocumentHandler(                                       
+C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\AddVariableToDocumentHandlerTests.cs         126                 new AddVariableToDocumentCommand(                                             
+
+
+
+
+===== NAMESPACE / PROJECT REFERENCES =====
+
+--- C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Api\RapidCMS.Api.csproj ---
+<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+<ProjectReference Include="..\RapidCMS.Application\RapidCMS.Application.csproj" />
+<ProjectReference Include="..\RapidCMS.Contracts\RapidCMS.Contracts.csproj" />
+<ProjectReference Include="..\RapidCMS.Infrastructure\RapidCMS.Infrastructure.csproj" />
+
+--- C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Application\RapidCMS.Application.csproj ---
+<ProjectReference Include="..\RapidCMS.Domain\RapidCMS.Domain.csproj" />
+<ProjectReference Include="..\RapidCMS.Contracts\RapidCMS.Contracts.csproj" />
+
+--- C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Contracts\RapidCMS.Contracts.csproj ---
+
+--- C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\RapidCMS.Domain.csproj ---
+
+--- C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Engine\RapidCMS.Engine.csproj ---
+<ProjectReference Include="..\RapidCMS.Domain\RapidCMS.Domain.csproj" />
+
+--- C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Infrastructure\RapidCMS.Infrastructure.csproj ---
+<ProjectReference Include="..\RapidCMS.Application\RapidCMS.Application.csproj" />
+<ProjectReference Include="..\RapidCMS.Domain\RapidCMS.Domain.csproj" />
+<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
+<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
+
+--- C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Application.Tests\RapidCMS.Application.Tests.csproj ---
+<PackageReference Include="coverlet.collector" Version="6.0.4" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
+<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+<PackageReference Include="xunit" Version="2.9.3" />
+<PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+<ProjectReference Include="..\..\src\RapidCMS.Application\RapidCMS.Application.csproj" />
+<ProjectReference Include="..\..\src\RapidCMS.Contracts\RapidCMS.Contracts.csproj" />
+<ProjectReference Include="..\..\src\RapidCMS.Domain\RapidCMS.Domain.csproj" />
+<ProjectReference Include="..\..\src\RapidCMS.Infrastructure\RapidCMS.Infrastructure.csproj" />
+
+--- C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Domain.Tests\RapidCMS.Domain.Tests.csproj ---
+<PackageReference Include="coverlet.collector" Version="6.0.4" />
+<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+<PackageReference Include="xunit" Version="2.9.3" />
+<PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+<ProjectReference Include="..\..\src\RapidCMS.Domain\RapidCMS.Domain.csproj" />
+
+--- C:\Users\M.Zohaib\Rapid-CMS\tests\RapidCMS.Engine.Tests\RapidCMS.Engine.Tests.csproj ---
+<PackageReference Include="coverlet.collector" Version="6.0.4" />
+<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+<PackageReference Include="xunit" Version="2.9.3" />
+<PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+<ProjectReference Include="..\..\src\RapidCMS.Engine\RapidCMS.Engine.csproj" />
+<ProjectReference Include="..\..\src\RapidCMS.Domain\RapidCMS.Domain.csproj" />
+
+===== AUDIT COMPLETE =====

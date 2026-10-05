@@ -1,0 +1,1050 @@
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Assets\Asset.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Assets;
+
+public sealed class Asset : Entity<AssetId>
+{
+    public string Name { get; private set; }
+
+    public string Source { get; private set; }
+
+    private Asset(
+        AssetId id,
+        string name,
+        string source)
+        : base(id)
+    {
+        Name = name;
+        Source = source;
+    }
+
+    public static Asset Create(
+        string name,
+        string source)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Asset name cannot be empty.",
+                nameof(name));
+
+        if (string.IsNullOrWhiteSpace(source))
+            throw new ArgumentException(
+                "Asset source cannot be empty.",
+                nameof(source));
+
+        return new Asset(
+            AssetId.New(),
+            name.Trim(),
+            source.Trim());
+    }
+
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Asset name cannot be empty.",
+                nameof(name));
+
+        Name = name.Trim();
+    }
+
+    public void ChangeSource(string source)
+    {
+        if (string.IsNullOrWhiteSpace(source))
+            throw new ArgumentException(
+                "Asset source cannot be empty.",
+                nameof(source));
+
+        Source = source.Trim();
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Common\DomainException.cs =====
+namespace RapidCMS.Domain.Common;
+
+public sealed class DomainException : Exception
+{
+    public DomainException(string message)
+        : base(message)
+    {
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Common\Entity.cs =====
+namespace RapidCMS.Domain.Common;
+
+public abstract class Entity<TId>
+{
+    public TId Id { get; }
+
+    protected Entity(TId id)
+    {
+        Id = id;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(this, obj))
+            return true;
+
+        if (obj is not Entity<TId> other)
+            return false;
+
+        return EqualityComparer<TId>.Default.Equals(Id, other.Id);
+    }
+
+    public override int GetHashCode()
+    {
+        return EqualityComparer<TId>.Default.GetHashCode(Id!);
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Common\ValueObject.cs =====
+namespace RapidCMS.Domain.Common;
+
+public abstract class ValueObject
+{
+    protected abstract IEnumerable<object?> GetEqualityComponents();
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not ValueObject other)
+            return false;
+
+        return GetEqualityComponents()
+            .SequenceEqual(other.GetEqualityComponents());
+    }
+
+    public override int GetHashCode()
+    {
+        return GetEqualityComponents()
+            .Aggregate(
+                0,
+                (current, component) =>
+                    HashCode.Combine(current, component));
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Components\Component.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.References;
+
+namespace RapidCMS.Domain.Components;
+
+public sealed class Component : Entity<NodeId>
+{
+    private readonly List<ComponentProperty> _properties = new();
+    private readonly List<ComponentBehavior> _behaviors = new();
+    private readonly List<NodeReference> _references = new();
+
+    public ComponentType Type { get; private set; }
+
+    public IReadOnlyList<ComponentProperty> Properties => _properties;
+
+    public IReadOnlyList<ComponentBehavior> Behaviors => _behaviors;
+
+    public IReadOnlyList<NodeReference> References => _references;
+
+    private Component(NodeId nodeId, ComponentType type)
+        : base(nodeId)
+    {
+        Type = type;
+    }
+
+    public static Component Create(NodeId nodeId, ComponentType type)
+    {
+        if (nodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Node ID cannot be empty.",
+                nameof(nodeId));
+
+        return new Component(nodeId, type);
+    }
+
+    public void ChangeType(ComponentType type)
+    {
+        Type = type;
+    }
+
+    public void SetProperty(ComponentProperty property)
+    {
+        ArgumentNullException.ThrowIfNull(property);
+
+        var existingIndex = _properties.FindIndex(
+            p => p.Name == property.Name);
+
+        if (existingIndex >= 0)
+            _properties[existingIndex] = property;
+        else
+            _properties.Add(property);
+    }
+
+    public void RemoveProperty(string name)
+    {
+        _properties.RemoveAll(p => p.Name == name);
+    }
+
+    public void AddBehavior(ComponentBehavior behavior)
+    {
+        if (_behaviors.Contains(behavior))
+            return;
+
+        _behaviors.Add(behavior);
+    }
+
+    public void RemoveBehavior(ComponentBehavior behavior)
+    {
+        _behaviors.Remove(behavior);
+    }
+
+    public void AddReference(NodeReference reference)
+    {
+        ArgumentNullException.ThrowIfNull(reference);
+
+        if (_references.Contains(reference))
+            return;
+
+        _references.Add(reference);
+    }
+
+    public void RemoveReference(NodeReference reference)
+    {
+        _references.Remove(reference);
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Components\ComponentBehavior.cs =====
+namespace RapidCMS.Domain.Components;
+
+public readonly record struct ComponentBehavior(string Name)
+{
+    public static ComponentBehavior Create(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Behavior name cannot be empty.",
+                nameof(name));
+
+        return new ComponentBehavior(name.Trim());
+    }
+
+    public override string ToString() => Name;
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Components\ComponentProperty.cs =====
+using RapidCMS.Domain.Common;
+
+namespace RapidCMS.Domain.Components;
+
+public sealed class ComponentProperty : ValueObject
+{
+    public string Name { get; }
+    public string Value { get; }
+
+    private ComponentProperty(string name, string value)
+    {
+        Name = name;
+        Value = value;
+    }
+
+    public static ComponentProperty Create(string name, string value)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Property name cannot be empty.",
+                nameof(name));
+
+        return new ComponentProperty(name.Trim(), value ?? string.Empty);
+    }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return Name;
+        yield return Value;
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Components\ComponentType.cs =====
+namespace RapidCMS.Domain.Components;
+
+public readonly record struct ComponentType(string Value)
+{
+    public static ComponentType Create(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException(
+                "Component type cannot be empty.",
+                nameof(value));
+
+        return new ComponentType(value.Trim());
+    }
+
+    public override string ToString() => Value;
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Documents\Document.Components.cs =====
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Documents;
+
+public sealed partial class Document
+{
+    public void AddComponent(ComponentId componentId)
+    {
+        if (componentId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Component ID cannot be empty.",
+                nameof(componentId));
+
+        if (ComponentIds.Contains(componentId))
+            throw new InvalidOperationException(
+                $"Component '{componentId.Value}' is already attached to this document.");
+
+        _componentIds.Add(componentId);
+    }
+
+    public void RemoveComponent(ComponentId componentId)
+    {
+        _componentIds.Remove(componentId);
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Documents\Document.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Documents;
+
+public sealed partial class Document : Entity<DocumentId>
+{
+    private readonly List<PageId> _pageIds = new();
+    private readonly List<AssetId> _assetIds = new();
+    private readonly List<VariableId> _variableIds = new();
+    private readonly List<PrototypeId> _prototypeIds = new();
+    private readonly List<ReferenceId> _referenceIds = new();
+    private readonly List<ComponentId> _componentIds = new();
+
+    public IReadOnlyList<PageId> PageIds => _pageIds;
+    public IReadOnlyList<AssetId> AssetIds => _assetIds;
+    public IReadOnlyList<VariableId> VariableIds => _variableIds;
+    public IReadOnlyList<PrototypeId> PrototypeIds => _prototypeIds;
+    public IReadOnlyList<ReferenceId> ReferenceIds => _referenceIds;
+    public IReadOnlyList<ComponentId> ComponentIds => _componentIds;
+
+    private Document(DocumentId id)
+        : base(id)
+    {
+    }
+
+    public static Document Create()
+    {
+        return new Document(DocumentId.New());
+    }
+
+    public static Document Create(DocumentId id)
+    {
+        if (id.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Document ID cannot be empty.",
+                nameof(id));
+
+        return new Document(id);
+    }
+
+    public void AddPage(PageId pageId)
+    {
+        if (pageId.Value == Guid.Empty)
+            throw new ArgumentException("Page ID cannot be empty.", nameof(pageId));
+
+        if (_pageIds.Contains(pageId))
+            throw new InvalidOperationException(
+                $"Page '{pageId}' is already part of the document.");
+
+        _pageIds.Add(pageId);
+    }
+
+    public void RemovePage(PageId pageId)
+    {
+        _pageIds.Remove(pageId);
+    }
+
+    public void AddAsset(AssetId assetId)
+    {
+        if (assetId.Value == Guid.Empty)
+            throw new ArgumentException("Asset ID cannot be empty.", nameof(assetId));
+
+        if (_assetIds.Contains(assetId))
+            throw new InvalidOperationException(
+                $"Asset '{assetId}' is already part of the document.");
+
+        _assetIds.Add(assetId);
+    }
+
+    public void RemoveAsset(AssetId assetId)
+    {
+        _assetIds.Remove(assetId);
+    }
+
+    public void AddVariable(VariableId variableId)
+    {
+        if (variableId.Value == Guid.Empty)
+            throw new ArgumentException("Variable ID cannot be empty.", nameof(variableId));
+
+        if (_variableIds.Contains(variableId))
+            throw new InvalidOperationException(
+                $"Variable '{variableId}' is already part of the document.");
+
+        _variableIds.Add(variableId);
+    }
+
+    public void RemoveVariable(VariableId variableId)
+    {
+        _variableIds.Remove(variableId);
+    }
+
+    public void AddPrototype(PrototypeId prototypeId)
+    {
+        if (prototypeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Prototype ID cannot be empty.",
+                nameof(prototypeId));
+
+        if (_prototypeIds.Contains(prototypeId))
+            throw new InvalidOperationException(
+                $"Prototype '{prototypeId}' is already part of the document.");
+
+        _prototypeIds.Add(prototypeId);
+    }
+
+    public void RemovePrototype(PrototypeId prototypeId)
+    {
+        _prototypeIds.Remove(prototypeId);
+    }
+
+    public void AddReference(ReferenceId referenceId)
+    {
+        if (referenceId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Reference ID cannot be empty.",
+                nameof(referenceId));
+
+        if (_referenceIds.Contains(referenceId))
+            throw new InvalidOperationException(
+                $"Reference '{referenceId}' is already part of the document.");
+
+        _referenceIds.Add(referenceId);
+    }
+
+    public void RemoveReference(ReferenceId referenceId)
+    {
+        _referenceIds.Remove(referenceId);
+    }
+
+
+}
+
+
+
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Identity\AssetId.cs =====
+namespace RapidCMS.Domain.Identity;
+
+public readonly record struct AssetId(Guid Value)
+{
+    public static AssetId New() => new(Guid.NewGuid());
+
+    public override string ToString() => Value.ToString();
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Identity\ComponentId.cs =====
+namespace RapidCMS.Domain.Identity;
+
+public readonly record struct ComponentId(Guid Value)
+{
+    public static ComponentId New() => new(Guid.NewGuid());
+
+    public override string ToString() => Value.ToString();
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Identity\DocumentId.cs =====
+namespace RapidCMS.Domain.Identity;
+
+public readonly record struct DocumentId(Guid Value)
+{
+    public static DocumentId New() => new(Guid.NewGuid());
+
+    public override string ToString() => Value.ToString();
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Identity\NodeId.cs =====
+namespace RapidCMS.Domain.Identity;
+
+public readonly record struct NodeId(Guid Value)
+{
+    public static NodeId New() => new(Guid.NewGuid());
+
+    public override string ToString() => Value.ToString();
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Identity\PageId.cs =====
+namespace RapidCMS.Domain.Identity;
+
+public readonly record struct PageId(Guid Value)
+{
+    public PageId(int value)
+        : this(CreateGuid(value))
+    {
+    }
+
+    public static PageId New()
+        => new(Guid.NewGuid());
+
+    public static implicit operator PageId(int value)
+        => new(value);
+
+    public static implicit operator Guid(PageId id)
+        => id.Value;
+
+    public override string ToString()
+        => Value.ToString();
+
+    private static Guid CreateGuid(int value)
+    {
+        var bytes = new byte[16];
+        BitConverter.GetBytes(value).CopyTo(bytes, 0);
+        return new Guid(bytes);
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Identity\PrototypeId.cs =====
+namespace RapidCMS.Domain.Identity;
+
+public readonly record struct PrototypeId(Guid Value)
+{
+    public static PrototypeId New() => new(Guid.NewGuid());
+
+    public override string ToString() => Value.ToString();
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Identity\ReferenceId.cs =====
+namespace RapidCMS.Domain.Identity;
+
+public readonly record struct ReferenceId(Guid Value)
+{
+    public static ReferenceId New() => new(Guid.NewGuid());
+
+    public override string ToString() => Value.ToString();
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Identity\VariableId.cs =====
+namespace RapidCMS.Domain.Identity;
+
+public readonly record struct VariableId(Guid Value)
+{
+    public static VariableId New() => new(Guid.NewGuid());
+
+    public override string ToString() => Value.ToString();
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Nodes\Node.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Components;
+using RapidCMS.Domain.Identity;
+using RapidCMS.Domain.Styles;
+
+namespace RapidCMS.Domain.Nodes;
+
+public sealed class Node : Entity<NodeId>
+{
+    private readonly List<NodeId> _children = new();
+
+    public string Name { get; private set; }
+
+    public NodeId? ParentId { get; private set; }
+
+    public Component? Component { get; private set; }
+
+    public Style? Style { get; private set; }
+
+    public IReadOnlyList<NodeId> Children => _children;
+
+    private Node(NodeId id, string name)
+        : base(id)
+    {
+        Name = name;
+    }
+
+    public static Node Create(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Node name cannot be empty.",
+                nameof(name));
+
+        return new Node(NodeId.New(), name);
+    }
+
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Node name cannot be empty.",
+                nameof(name));
+
+        Name = name;
+    }
+
+    public void AttachComponent(Component component)
+    {
+        ArgumentNullException.ThrowIfNull(component);
+
+        if (component.Id != Id)
+            throw new InvalidOperationException(
+                "Component must belong to this node.");
+
+        if (Component is not null)
+            throw new InvalidOperationException(
+                "Node already has a component.");
+
+        Component = component;
+    }
+
+    public void RemoveComponent()
+    {
+        Component = null;
+    }
+
+    public void AttachStyle(Style style)
+    {
+        ArgumentNullException.ThrowIfNull(style);
+
+        if (style.Id != Id)
+            throw new InvalidOperationException(
+                "Style must belong to this node.");
+
+        if (Style is not null)
+            throw new InvalidOperationException(
+                "Node already has a style.");
+
+        Style = style;
+    }
+
+    public void RemoveStyle()
+    {
+        Style = null;
+    }
+
+    public void AddChild(Node child)
+    {
+        ArgumentNullException.ThrowIfNull(child);
+
+        if (child.Id == Id)
+            throw new InvalidOperationException(
+                "A node cannot be its own child.");
+
+        if (_children.Contains(child.Id))
+            throw new InvalidOperationException(
+                $"Node '{child.Id}' is already a child.");
+
+        if (ParentId == child.Id)
+            throw new InvalidOperationException(
+                "Adding this child would create a cycle.");
+
+        _children.Add(child.Id);
+        child.ParentId = Id;
+    }
+
+    public void RemoveChild(Node child)
+    {
+        ArgumentNullException.ThrowIfNull(child);
+
+        if (_children.Remove(child.Id))
+            child.ParentId = null;
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Pages\Page.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Pages;
+
+public sealed class Page : Entity<PageId>
+{
+    public string Name { get; private set; }
+
+    public NodeId? RootNodeId { get; private set; }
+
+    private Page(PageId id, string name)
+        : base(id)
+    {
+        Name = name;
+    }
+
+    public static Page Create(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Page name cannot be empty.",
+                nameof(name));
+
+        return new Page(PageId.New(), name);
+    }
+
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Page name cannot be empty.",
+                nameof(name));
+
+        Name = name;
+    }
+
+    public void SetRootNode(NodeId rootNodeId)
+    {
+        if (rootNodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Root node ID cannot be empty.",
+                nameof(rootNodeId));
+
+        if (RootNodeId.HasValue)
+            throw new InvalidOperationException(
+                "Page already has a root node.");
+
+        RootNodeId = rootNodeId;
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Prototypes\PrototypeLink.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Prototypes;
+
+public sealed class PrototypeLink : Entity<PrototypeId>
+{
+    public NodeId SourceNodeId { get; }
+
+    public NodeId TargetNodeId { get; }
+
+    public string Action { get; private set; }
+
+    private PrototypeLink(
+        PrototypeId id,
+        NodeId sourceNodeId,
+        NodeId targetNodeId,
+        string action)
+        : base(id)
+    {
+        SourceNodeId = sourceNodeId;
+        TargetNodeId = targetNodeId;
+        Action = action;
+    }
+
+    public static PrototypeLink Create(
+        NodeId sourceNodeId,
+        NodeId targetNodeId,
+        string action)
+    {
+        if (sourceNodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Source node ID cannot be empty.",
+                nameof(sourceNodeId));
+
+        if (targetNodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Target node ID cannot be empty.",
+                nameof(targetNodeId));
+
+        if (sourceNodeId == targetNodeId)
+            throw new InvalidOperationException(
+                "A prototype link cannot target its source node.");
+
+        if (string.IsNullOrWhiteSpace(action))
+            throw new ArgumentException(
+                "Prototype action cannot be empty.",
+                nameof(action));
+
+        return new PrototypeLink(
+            PrototypeId.New(),
+            sourceNodeId,
+            targetNodeId,
+            action.Trim());
+    }
+
+    public void ChangeAction(string action)
+    {
+        if (string.IsNullOrWhiteSpace(action))
+            throw new ArgumentException(
+                "Prototype action cannot be empty.",
+                nameof(action));
+
+        Action = action.Trim();
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\References\DocumentReference.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.References;
+
+public sealed class DocumentReference : Entity<ReferenceId>
+{
+    public string SourceType { get; }
+
+    public Guid SourceId { get; }
+
+    public string TargetType { get; }
+
+    public Guid TargetId { get; }
+
+    public string Relation { get; private set; }
+
+    private DocumentReference(
+        ReferenceId id,
+        string sourceType,
+        Guid sourceId,
+        string targetType,
+        Guid targetId,
+        string relation)
+        : base(id)
+    {
+        SourceType = sourceType;
+        SourceId = sourceId;
+        TargetType = targetType;
+        TargetId = targetId;
+        Relation = relation;
+    }
+
+    public static DocumentReference Create(
+        string sourceType,
+        Guid sourceId,
+        string targetType,
+        Guid targetId,
+        string relation)
+    {
+        if (string.IsNullOrWhiteSpace(sourceType))
+            throw new ArgumentException(
+                "Source type cannot be empty.",
+                nameof(sourceType));
+
+        if (sourceId == Guid.Empty)
+            throw new ArgumentException(
+                "Source ID cannot be empty.",
+                nameof(sourceId));
+
+        if (string.IsNullOrWhiteSpace(targetType))
+            throw new ArgumentException(
+                "Target type cannot be empty.",
+                nameof(targetType));
+
+        if (targetId == Guid.Empty)
+            throw new ArgumentException(
+                "Target ID cannot be empty.",
+                nameof(targetId));
+
+        if (sourceId == targetId)
+            throw new InvalidOperationException(
+                "A reference cannot target itself.");
+
+        if (string.IsNullOrWhiteSpace(relation))
+            throw new ArgumentException(
+                "Relation cannot be empty.",
+                nameof(relation));
+
+        return new DocumentReference(
+            ReferenceId.New(),
+            sourceType.Trim(),
+            sourceId,
+            targetType.Trim(),
+            targetId,
+            relation.Trim());
+    }
+
+    public void ChangeRelation(string relation)
+    {
+        if (string.IsNullOrWhiteSpace(relation))
+            throw new ArgumentException(
+                "Relation cannot be empty.",
+                nameof(relation));
+
+        Relation = relation.Trim();
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\References\NodeReference.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.References;
+
+public sealed class NodeReference : ValueObject
+{
+    public NodeId TargetNodeId { get; }
+
+    private NodeReference(NodeId targetNodeId)
+    {
+        TargetNodeId = targetNodeId;
+    }
+
+    public static NodeReference Create(NodeId targetNodeId)
+    {
+        if (targetNodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Target node ID cannot be empty.",
+                nameof(targetNodeId));
+
+        return new NodeReference(targetNodeId);
+    }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return TargetNodeId;
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Styles\Style.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Styles;
+
+public sealed class Style : Entity<NodeId>
+{
+    private readonly List<StyleProperty> _properties = new();
+
+    public IReadOnlyList<StyleProperty> Properties => _properties;
+
+    private Style(NodeId nodeId)
+        : base(nodeId)
+    {
+    }
+
+    public static Style Create(NodeId nodeId)
+    {
+        if (nodeId.Value == Guid.Empty)
+            throw new ArgumentException(
+                "Node ID cannot be empty.",
+                nameof(nodeId));
+
+        return new Style(nodeId);
+    }
+
+    public void SetProperty(StyleProperty property)
+    {
+        ArgumentNullException.ThrowIfNull(property);
+
+        var existingIndex = _properties.FindIndex(
+            p => p.Name == property.Name);
+
+        if (existingIndex >= 0)
+            _properties[existingIndex] = property;
+        else
+            _properties.Add(property);
+    }
+
+    public void RemoveProperty(string name)
+    {
+        _properties.RemoveAll(
+            p => p.Name == name);
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Styles\StyleProperty.cs =====
+using RapidCMS.Domain.Common;
+
+namespace RapidCMS.Domain.Styles;
+
+public sealed class StyleProperty : ValueObject
+{
+    public string Name { get; }
+
+    public string Value { get; }
+
+    private StyleProperty(
+        string name,
+        string value)
+    {
+        Name = name;
+        Value = value;
+    }
+
+    public static StyleProperty Create(
+        string name,
+        string value)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Style property name cannot be empty.",
+                nameof(name));
+
+        return new StyleProperty(
+            name.Trim(),
+            value ?? string.Empty);
+    }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return Name;
+        yield return Value;
+    }
+}
+
+===== C:\Users\M.Zohaib\Rapid-CMS\src\RapidCMS.Domain\Variables\Variable.cs =====
+using RapidCMS.Domain.Common;
+using RapidCMS.Domain.Identity;
+
+namespace RapidCMS.Domain.Variables;
+
+public sealed class Variable : Entity<VariableId>
+{
+    public string Name { get; private set; }
+
+    public string Value { get; private set; }
+
+    private Variable(
+        VariableId id,
+        string name,
+        string value)
+        : base(id)
+    {
+        Name = name;
+        Value = value;
+    }
+
+    public static Variable Create(
+        string name,
+        string value)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Variable name cannot be empty.",
+                nameof(name));
+
+        return new Variable(
+            VariableId.New(),
+            name.Trim(),
+            value ?? string.Empty);
+    }
+
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException(
+                "Variable name cannot be empty.",
+                nameof(name));
+
+        Name = name.Trim();
+    }
+
+    public void SetValue(string value)
+    {
+        Value = value ?? string.Empty;
+    }
+}
+

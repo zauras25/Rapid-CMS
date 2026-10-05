@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/RapidCMS.Api/RapidCMS.Api.csproj" />
+    <Project Path="src/RapidCMS.Application/RapidCMS.Application.csproj" />
+    <Project Path="src/RapidCMS.Contracts/RapidCMS.Contracts.csproj" />
+    <Project Path="src/RapidCMS.Domain/RapidCMS.Domain.csproj" />
+    <Project Path="src/RapidCMS.Engine/RapidCMS.Engine.csproj" />
+    <Project Path="src/RapidCMS.Infrastructure/RapidCMS.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RapidCMS.Application.Tests/RapidCMS.Application.Tests.csproj" />
+    <Project Path="tests/RapidCMS.Domain.Tests/RapidCMS.Domain.Tests.csproj" />
+    <Project Path="tests/RapidCMS.Engine.Tests/RapidCMS.Engine.Tests.csproj" />
+  </Folder>
+</Solution>

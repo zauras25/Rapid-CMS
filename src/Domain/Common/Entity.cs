@@ -1,12 +1,24 @@
+using RapidCMS.Domain.Compatibility;
+
 namespace RapidCMS.Domain.Common;
 
 public abstract class Entity<TId>
 {
     public TId Id { get; }
 
+    public CompatibilityMetadata Compatibility { get; private set; }
+
     protected Entity(TId id)
     {
         Id = id;
+        Compatibility = CompatibilityMetadata.Native();
+    }
+
+    public void SetCompatibility(CompatibilityMetadata compatibility)
+    {
+        ArgumentNullException.ThrowIfNull(compatibility);
+
+        Compatibility = compatibility;
     }
 
     public override bool Equals(object? obj)
@@ -25,12 +37,18 @@ public abstract class Entity<TId>
         return EqualityComparer<TId>.Default.GetHashCode(Id!);
     }
 
-    public static bool operator ==(Entity<TId>? left, Entity<TId>? right)
+    public static bool operator ==(
+        Entity<TId>? left,
+        Entity<TId>? right)
     {
-        return EqualityComparer<Entity<TId>?>.Default.Equals(left, right);
+        return EqualityComparer<Entity<TId>?>.Default.Equals(
+            left,
+            right);
     }
 
-    public static bool operator !=(Entity<TId>? left, Entity<TId>? right)
+    public static bool operator !=(
+        Entity<TId>? left,
+        Entity<TId>? right)
     {
         return !(left == right);
     }

@@ -60,3 +60,27 @@ public sealed class DocumentComponentRecord
     public Guid DocumentId { get; set; }
     public Guid ComponentId { get; set; }
 }
+
+public sealed class PageRecord
+{
+    public Guid Id { get; set; }
+
+    public Guid DocumentId { get; set; }
+
+    public string Name { get; set; } = string.Empty;
+
+    public Guid? RootNodeId { get; set; }
+}
+
+public sealed class NodeRecord
+{
+    public Guid Id { get; set; }
+
+    public Guid PageId { get; set; }
+
+    public string Name { get; set; } = string.Empty;
+
+    public Guid? ParentId { get; set; }
+
+    public int SortOrder { get; set; }
+}

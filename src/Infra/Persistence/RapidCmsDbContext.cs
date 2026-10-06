@@ -18,6 +18,9 @@ public sealed class RapidCmsDbContext : DbContext
     public DbSet<DocumentReferenceRecord> DocumentReferences => Set<DocumentReferenceRecord>();
     public DbSet<DocumentComponentRecord> DocumentComponents => Set<DocumentComponentRecord>();
 
+    public DbSet<PageRecord> Pages => Set<PageRecord>();
+    public DbSet<NodeRecord> Nodes => Set<NodeRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -99,6 +102,43 @@ public sealed class RapidCmsDbContext : DbContext
             entity.ToTable("DocumentComponents");
             entity.HasKey(x => new { x.DocumentId, x.ComponentId });
             entity.HasIndex(x => x.ComponentId);
+        });
+
+        modelBuilder.Entity<PageRecord>(entity =>
+        {
+            entity.ToTable("Pages");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Name)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.HasIndex(x => x.DocumentId);
+
+            entity.HasIndex(x => x.RootNodeId);
+        });
+
+        modelBuilder.Entity<NodeRecord>(entity =>
+        {
+            entity.ToTable("Nodes");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Name)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.HasIndex(x => x.PageId);
+
+            entity.HasIndex(x => x.ParentId);
+
+            entity.HasIndex(x => new
+            {
+                x.PageId,
+                x.ParentId,
+                x.SortOrder
+            });
         });
     }
 }
